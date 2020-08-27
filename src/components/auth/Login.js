@@ -1,33 +1,37 @@
 import React, { Component } from "react";
-import axios from "axios";
 import TextField from "@material-ui/core/TextField";
+import AuthService from '../../auth/auth-service';
 
 export class Login extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      title: "",
-      description: "",
+      user: '',
+      password: ''
     };
+    this.service = new AuthService();
   }
 
   handleSubmit = (e) => {
     e.preventDefault();
     const body = {
-      title: this.state.title,
-      description: this.state.description,
+      user: this.state.user,
+      password: this.state.password,
     };
-    axios
-      .post(process.env.REACT_APP_API_URL + "/products/add", body, {
-        withCredentials: true,
-      })
-      .then((response) => {
-        // limpiar el formulario.
-        this.setState({
-          title: "",
-          description: "",
-        });
-      });
+    this
+    .service
+    .login(body.user, body.password)
+    .then(response => {
+        this.setState({user: '', password: ''});
+        this
+            .props
+            .callback(response);
+        this
+            .props
+            .history
+            .push('/profile');
+    })
+    .catch(error => console.log(error))
   };
 
   handleChange = (e) => {
@@ -47,7 +51,7 @@ export class Login extends Component {
             <form onSubmit={this.handleSubmit}>
               <TextField
                 required
-                name="title"
+                name="user"
                 label="Email"
                 variant="outlined"
                 className="w-100 mb-3"
@@ -56,7 +60,7 @@ export class Login extends Component {
               />
               <TextField
                 label="Contraseña"
-                name="description"
+                name="password"
                 variant="outlined"
                 className="w-100 mb-3"
                 value={this.state.description}
