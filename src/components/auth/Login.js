@@ -75,7 +75,7 @@ export class Login extends Component {
               </button>
             </form>
             <a
-              href="/auth/google"
+              href="http://localhost:5000/api/auth/google"
               class="btn-kokomo btn-kokomo-grey btn-block p-3 mt-4"
             >
               Login con Google

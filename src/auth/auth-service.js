@@ -22,6 +22,7 @@ class AuthService {
             .post('/login', {username, password})
             .then(response => response.data)
     };
+   
     upload = (file) => {
         console.log(file)
         const image = new FormData();

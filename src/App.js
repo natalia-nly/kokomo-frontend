@@ -5,9 +5,12 @@ import { Switch, Route } from "react-router-dom";
 import LandingPage from "./components/LandingPage";
 import Navbar from "./components/Navbar";
 import Login from "./components/auth/Login";
+import Logout from "./components/auth/Logout";
 import SignUp from "./components/auth/SignUp";
 import SignUpLocal from "./components/auth/SignUpLocal";
 import Profile from "./components/Profile";
+import ProtectedRoute from './auth/protected-route.js'
+import CreateProperty from "./components/CreateProperty";
 
 function App() {
   const initialState = {
@@ -40,11 +43,25 @@ function App() {
         <Route
             path='/signup-local'
             render={(props) => <SignUpLocal {...props} callback={getTheUser}/>}/>
-
-        <Route path="/profile">
-          <Profile />
-        </Route>
-
+        <ProtectedRoute
+          user={state.loggedInUser}
+          callback={getTheUser}
+          path='/profile'
+          component={Profile}/>
+        
+        <ProtectedRoute
+          user={state.loggedInUser}
+          callback={getTheUser}
+          path='/property/create-property'
+          component={CreateProperty}/>
+        <Route
+            path='/create-property'
+            render={(props) => <CreateProperty {...props} callback={getTheUser}/>}/>
+            
+        <Route
+          exact
+          path='/logout'
+          render={(props) => <Logout {...props} callback={getTheUser}/>}/>
         {/* 
 
             <Route path="/signup" render={(props) => <Signup {...props} callback={this.getTheUser} />} />
