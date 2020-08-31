@@ -11,6 +11,7 @@ import SignUpLocal from "./components/auth/SignUpLocal";
 import Profile from "./components/Profile";
 import ProtectedRoute from './auth/protected-route.js'
 import CreateProperty from "./components/CreateProperty";
+import Checks from "./components/Checks";
 
 function App() {
   const initialState = {
@@ -30,6 +31,12 @@ function App() {
       <Switch>
         <Route exact path="/">
           <LandingPage />
+        </Route>
+        <Route exact path="/checks">
+        <div className="mt-5 pt-5 container">
+        <Checks />
+        </div>
+          
         </Route>
 
         <Route
