@@ -57,7 +57,6 @@ useEffect(()=>{
         <Route exact path="/">
           <LandingPage />
         </Route>
-<<<<<<< HEAD
         <Route exact path="/checks">
         <div className="mt-5 pt-5 container">
         <Checks />
@@ -65,8 +64,6 @@ useEffect(()=>{
           
         </Route>
 
-=======
->>>>>>> b670dbe632b3c4acfd02a78e4cdbfc9cfbff5b53
         <Route
             path='/login'
             render={(props) => <Login {...props} callback={getTheUser}/>}/>
