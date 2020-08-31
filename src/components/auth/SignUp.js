@@ -1,15 +1,15 @@
 import React, { Component } from "react";
 import TextField from "@material-ui/core/TextField";
-import AuthService from '../../auth/auth-service';
+import AuthService from "../../auth/auth-service";
 
 export class SignUp extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      user: '',
-      email: '',
-      telNumber:'',
-      password: ''
+      user: "",
+      email: "",
+      telNumber: "",
+      password: "",
     };
     this.service = new AuthService();
   }
@@ -22,20 +22,14 @@ export class SignUp extends Component {
       telNumber: this.state.telNumber,
       email: this.state.email,
     };
-    this
-    .service
-    .signup(body.user, body.password, body.telNumber, body.email)
-    .then(response => {
-        this.setState({user: '', password: '', telNumber: '', email: ''});
-        this
-            .props
-            .callback(response);
-        this
-            .props
-            .history
-            .push('/profile');
-    })
-    .catch(error => console.log(error))
+    this.service
+      .signup(body.user, body.password, body.telNumber, body.email)
+      .then((response) => {
+        this.setState({ user: "", password: "", telNumber: "", email: "" });
+        this.props.callback(response);
+        this.props.history.push("/profile");
+      })
+      .catch((error) => console.log(error));
   };
 
   handleChange = (e) => {
@@ -78,8 +72,7 @@ export class SignUp extends Component {
                 variant="outlined"
                 className="w-100 mb-3"
                 value={this.state.email}
-                onChange={this.handleChange}
-              />
+                onChange={this.handleChange}/>
               <TextField
                 label="Contraseña"
                 name="password"

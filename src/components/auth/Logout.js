@@ -6,7 +6,14 @@ export class Logout extends Component {
         super(props);
         this.service = new AuthService();
     }
-    render() {
+
+    eraseLocalStorage() {
+        localStorage.clear();
+    }
+    render() 
+    {
+        this
+            .eraseLocalStorage()
         this
             .service
             .logout()
@@ -14,6 +21,7 @@ export class Logout extends Component {
                 this
                     .props
                     .callback(null);
+            
             })
             .catch((error) => console.log(error));
         return <Redirect to={'/'}/>;

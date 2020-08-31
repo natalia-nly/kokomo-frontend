@@ -1,13 +1,13 @@
-import React, { Component } from "react";
+import React, { Component} from "react";
 import TextField from "@material-ui/core/TextField";
-import AuthService from '../../auth/auth-service';
+import AuthService from "../../auth/auth-service";
 
 export class Login extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      user: '',
-      password: ''
+      user: "",
+      password: "",
     };
     this.service = new AuthService();
   }
@@ -18,20 +18,14 @@ export class Login extends Component {
       user: this.state.user,
       password: this.state.password,
     };
-    this
-    .service
-    .login(body.user, body.password)
-    .then(response => {
-        this.setState({user: '', password: ''});
-        this
-            .props
-            .callback(response);
-        this
-            .props
-            .history
-            .push('/profile');
-    })
-    .catch(error => console.log(error))
+    this.service
+      .login(body.user, body.password)
+      .then((response) => {
+        this.setState({ user: "", password: "" });
+        this.props.callback(response);
+        this.props.history.push("/profile");
+      })
+      .catch((error) => console.log(error));
   };
 
   handleChange = (e) => {
@@ -39,6 +33,8 @@ export class Login extends Component {
       [e.target.name]: e.target.value,
     });
   };
+ 
+
 
   render() {
     return (
@@ -77,9 +73,7 @@ export class Login extends Component {
             <a
               href="http://localhost:5000/api/auth/google"
               class="btn-kokomo btn-kokomo-grey btn-block p-3 mt-4"
-            >
-              Login con Google
-            </a>
+            >Login con Google</a>
           </div>
         </div>
       </div>

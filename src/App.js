@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
 import { Switch, Route } from "react-router-dom";
@@ -11,17 +11,42 @@ import SignUpLocal from "./components/auth/SignUpLocal";
 import Profile from "./components/Profile";
 import ProtectedRoute from './auth/protected-route.js'
 import CreateProperty from "./components/CreateProperty";
+import AuthService from "./auth/auth-service";
 
 function App() {
   const initialState = {
+   
     loggedInUser: null
   }
 
-  const [state, setState] = useState(initialState)
+const [state, setState] = useState(initialState)
+  
 
-  const getTheUser = (userObj) => {
-    setState({loggedInUser: userObj})
-  }
+const getTheUser = (userObj) => {
+  setState({loggedInUser: userObj})
+}
+
+// Retrieve your data from locaStorage
+var saveData = JSON.parse(localStorage.saveData || null) || {};
+const service = new AuthService()
+
+// Store your data.
+function saveStuff(obj) {
+    saveData.obj = obj;
+    localStorage.saveData = JSON.stringify(saveData);
+}
+
+function loadStuff() {
+    return saveData.obj || "default";
+}
+useEffect(()=>{
+  if(state.loggedInUser===null){
+    service.loggedin().then((response)=>{
+      saveStuff(response)  
+      getTheUser(loadStuff())
+  })}})
+
+
 
   return (
     <div>
@@ -31,24 +56,21 @@ function App() {
         <Route exact path="/">
           <LandingPage />
         </Route>
-
         <Route
             path='/login'
             render={(props) => <Login {...props} callback={getTheUser}/>}/>
-
         <Route
             path='/signup'
             render={(props) => <SignUp {...props} callback={getTheUser}/>}/>
-
         <Route
             path='/signup-local'
             render={(props) => <SignUpLocal {...props} callback={getTheUser}/>}/>
         <ProtectedRoute
+          key={state.loggedInUser}
           user={state.loggedInUser}
           callback={getTheUser}
           path='/profile'
           component={Profile}/>
-        
         <ProtectedRoute
           user={state.loggedInUser}
           callback={getTheUser}
@@ -57,7 +79,6 @@ function App() {
         <Route
             path='/create-property'
             render={(props) => <CreateProperty {...props} callback={getTheUser}/>}/>
-            
         <Route
           exact
           path='/logout'
