@@ -27,11 +27,11 @@ const Profile = (props) => {
           paddingBottom: "30px",
         }}
       >
-        <img src="{{user.avatar}}" alt="Avatar" className="avatar" />
+        <img src="{{props.loggedInUser.avatar}}" alt="Avatar" className="avatar" />
 
-        <h2>USERNAME</h2>
-        <p>EMAIL</p>
-        <p>telNumber</p>
+        <h2>Hola {props.loggedInUser.username}!</h2>
+        <p>email: {props.loggedInUser.email}</p>
+        <p>Número de teléfono: {props.loggedInUser.telNumber}</p>
       </div>
       <div className="body-container">
         <div className="row">
@@ -44,7 +44,6 @@ const Profile = (props) => {
             </Link>
           </div>
         </div>
-
         <h4 className="section-title"> Tus Locales</h4>
       </div>
     </div>
