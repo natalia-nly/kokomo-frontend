@@ -9,89 +9,105 @@ import Logout from "./components/auth/Logout";
 import SignUp from "./components/auth/SignUp";
 import SignUpLocal from "./components/auth/SignUpLocal";
 import Profile from "./components/Profile";
-import ProtectedRoute from './auth/protected-route.js'
+import ProtectedRoute from "./auth/protected-route.js";
 import CreateProperty from "./components/CreateProperty";
 import Checks from "./components/Checks";
 import AuthService from "./auth/auth-service";
-import Search from "./components/search/Search"
+import Search from "./components/search/Search";
+import CarouselProperties from "./components/properties/CarouselProperties";
 
 function App() {
-  const initialState = {  
-    loggedInUser: null
-  }
+  const initialState = {
+    loggedInUser: null,
+  };
 
-const [state, setState] = useState(initialState)
-  
+  const [state, setState] = useState(initialState);
 
-const getTheUser = (userObj) => {
-  setState({loggedInUser: userObj})
-}
+  const getTheUser = (userObj) => {
+    setState({ loggedInUser: userObj });
+  };
 
-// Retrieve your data from locaStorage
-var saveData = JSON.parse(localStorage.saveData || null) || {};
-const service = new AuthService()
+  // Retrieve your data from locaStorage
+  var saveData = JSON.parse(localStorage.saveData || null) || {};
+  const service = new AuthService();
 
-// Store your data.
-function saveStuff(obj) {
+  // Store your data.
+  function saveStuff(obj) {
     saveData.obj = obj;
     localStorage.saveData = JSON.stringify(saveData);
-}
+  }
 
-function loadStuff() {
-    return saveData.obj || "default";
-}
-useEffect(()=>{
-  if(state.loggedInUser===null){
-    service.loggedin().then((response)=>{
-      saveStuff(response)  
-      getTheUser(loadStuff())
-  })}})
+  function loadStuff() {
+    return saveData.obj;
+  }
 
-
+  useEffect(() => {
+    if (state.loggedInUser === null) {
+      if (loadStuff()) {
+        getTheUser(loadStuff());
+      } else if (loadStuff === (null || undefined)) {
+        service.loggedin().then((response) => {
+          saveStuff(response);
+          getTheUser(loadStuff());
+        });
+      }
+    }
+  });
 
   return (
     <div>
-    <Navbar getTheUser={state.loggedInUser} key={state.loggedInUser}/>  
+      <Navbar getTheUser={state.loggedInUser} key={state.loggedInUser} />
 
       <Switch>
         <Route exact path="/">
           <LandingPage />
         </Route>
         <Route exact path="/checks">
-        <div className="mt-5 pt-5 container">
-        <Checks />
-        </div>
-          
+          <div className="mt-5 pt-5 container">
+            <Checks />
+          </div>
         </Route>
-
+        <Route exact path="/carousel-properties">
+          <CarouselProperties getTheUser={state.loggedInUser}/>
+        </Route>
+        <Route path="/property/:id">
+          <CarouselProperties />
+        </Route>
         <Route
-            path='/login'
-            render={(props) => <Login {...props} callback={getTheUser}/>}/>
+          path="/login"
+          render={(props) => <Login {...props} callback={getTheUser} />}
+        />
         <Route
-            path='/signup'
-            render={(props) => <SignUp {...props} callback={getTheUser}/>}/>
+          path="/signup"
+          render={(props) => <SignUp {...props} callback={getTheUser} />}
+        />
         <Route
-            path='/signup-local'
-            render={(props) => <SignUpLocal {...props} callback={getTheUser}/>}/>
+          path="/signup-local"
+          render={(props) => <SignUpLocal {...props} callback={getTheUser} />}
+        />
         <ProtectedRoute
           key={state.loggedInUser}
           user={state.loggedInUser}
           callback={getTheUser}
-          path='/profile'
-          component={Profile}/>
+          path="/profile"
+          component={Profile}
+        />
         <ProtectedRoute
           user={state.loggedInUser}
           callback={getTheUser}
-          path='/property/create-property'
-          component={CreateProperty}/>
-         <ProtectedRoute
+          path="/property/create-property"
+          component={CreateProperty}
+        />
+        <ProtectedRoute
           user={state.loggedInUser}
-          path='/search'
-          component={Search}/>
+          path="/search"
+          component={Search}
+        />
         <Route
           exact
-          path='/logout'
-          render={(props) => <Logout {...props} callback={getTheUser}/>}/>
+          path="/logout"
+          render={(props) => <Logout {...props} callback={getTheUser} />}
+        />
         {/* 
           <Route
             path='/create-property'
