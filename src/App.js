@@ -15,8 +15,7 @@ import Checks from "./components/Checks";
 import AuthService from "./auth/auth-service";
 
 function App() {
-  const initialState = {
-   
+  const initialState = {  
     loggedInUser: null
   }
 

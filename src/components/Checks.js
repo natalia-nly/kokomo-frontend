@@ -1,25 +1,20 @@
 import React from 'react';
 import { withStyles } from '@material-ui/core/styles';
-import { purple } from '@material-ui/core/colors';
 import FormGroup from '@material-ui/core/FormGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Switch from '@material-ui/core/Switch';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
-
-
-import FormLabel from '@material-ui/core/FormLabel';
 import FormControl from '@material-ui/core/FormControl';
-import FormHelperText from '@material-ui/core/FormHelperText';
 
-const PurpleSwitch = withStyles({
+const KokomoSwitch = withStyles({
   switchBase: {
-    color: purple[100],
+    color: 'white',
     '&$checked': {
-      color: purple[500],
+      color: '#ffba69',
     },
     '&$checked + $track': {
-      backgroundColor: purple[500],
+      backgroundColor: '#ffba69',
     },
   },
   checked: {},
@@ -46,25 +41,28 @@ export default function CustomizedSwitches() {
     <FormControl component="fieldset">
     <FormGroup>
       <Typography component="div">
-     
+      
         <Grid component="label" container alignItems="center" spacing={1}>
           <Grid item>
-            <PurpleSwitch checked={weekCheck.monday} onChange={handleChange} name="monday" />
+            <KokomoSwitch checked={weekCheck.monday} onChange={handleChange} name="monday" />
           </Grid>
           <Grid item>Lunes</Grid>
         </Grid>
         <Grid component="label" container alignItems="center" spacing={1}>
           <Grid item>
-            <PurpleSwitch checked={weekCheck.tuesday} onChange={handleChange} name="tuesday" />
+            <KokomoSwitch checked={weekCheck.tuesday} onChange={handleChange} name="tuesday" />
           </Grid>
           <Grid item>Martes</Grid>
         </Grid>
         <Grid component="label" container alignItems="center" spacing={1}>
           <Grid item>
-            <PurpleSwitch checked={weekCheck.wednesday} onChange={handleChange} name="wednesday" />
+            <KokomoSwitch checked={weekCheck.wednesday} onChange={handleChange} name="wednesday" />
           </Grid>
           <Grid item>Miércoles</Grid>
         </Grid>
+
+
+
       </Typography>
     </FormGroup>
     </FormControl>
