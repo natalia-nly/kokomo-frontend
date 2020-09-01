@@ -13,6 +13,7 @@ import ProtectedRoute from './auth/protected-route.js'
 import CreateProperty from "./components/CreateProperty";
 import Checks from "./components/Checks";
 import AuthService from "./auth/auth-service";
+import Search from "./components/search/Search"
 
 function App() {
   const initialState = {  
@@ -83,14 +84,18 @@ useEffect(()=>{
           callback={getTheUser}
           path='/property/create-property'
           component={CreateProperty}/>
-        <Route
-            path='/create-property'
-            render={(props) => <CreateProperty {...props} callback={getTheUser}/>}/>
+         <ProtectedRoute
+          user={state.loggedInUser}
+          path='/search'
+          component={Search}/>
         <Route
           exact
           path='/logout'
           render={(props) => <Logout {...props} callback={getTheUser}/>}/>
         {/* 
+          <Route
+            path='/create-property'
+            render={(props) => <CreateProperty {...props} callback={getTheUser}/>}/>
 
             <Route path="/signup" render={(props) => <Signup {...props} callback={this.getTheUser} />} />
 
