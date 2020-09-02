@@ -43,9 +43,9 @@ function App() {
 
   useEffect(() => {
     if (state.loggedInUser === null) {
-      if (loadStuff()) {
+      if (loadStuff()!== (null||undefined)) {
         getTheUser(loadStuff());
-      } else if (loadStuff === (null || undefined)) {
+      } else {
         service.loggedin().then((response) => {
           saveStuff(response);
           getTheUser(loadStuff());
