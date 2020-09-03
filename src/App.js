@@ -66,11 +66,7 @@ function App() {
         <Route exact path="/create-property">
           <CreateProperty />
         </Route>
-        <Route exact path="/checks">
-          <div className="mt-5 pt-5 container">
-            <Checks />
-          </div>
-        </Route>
+        
         <Route exact path="/carousel-properties">
           <CarouselProperties getTheUser={state.loggedInUser}/>
         </Route>
@@ -99,11 +95,11 @@ function App() {
           path="/property/create-property"
           component={CreateProperty}
         />
-        {/* <ProtectedRoute
+        <ProtectedRoute
           user={state.loggedInUser}
           path="/search"
           component={Search}
-        /> */}
+        />
         <ProtectedRoute
           user={state.loggedInUser}
           path="/property/:propertyId"

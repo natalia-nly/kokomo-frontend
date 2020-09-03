@@ -1,53 +1,4 @@
-import React, {useState, useEffect} from "react";
-import axios from "axios";
-
-const PropertyDetails = (props) => {
-    const initialState = {
-        property: {
-            name: '',
-            location: {
-                name: 'Test'
-            },
-            openingHours: [{
-                openingDays: {
-                    openingDay: '',
-                    closingDay: ''
-                },
-                openingTimes: [
-                    {
-                      openingTime: 0,
-                      closingTime: 0
-                    }
-                ],
-                weekDays: []
-            }],
-            bookings: []
-        },
-        favourites: props.getTheUser
-    };
-
-    const [state,
-        setState] = useState(initialState);
-
-    useEffect(() => {
-        console.log(props)
-        axios
-            .get("http://localhost:5000/api/property/" + props.match.params.propertyId)
-            .then((response) => {
-                console.log("CONSOLE LOG DESDE AXIOS GET", response);
-                setState({
-                    ...state,
-                    property: response.data
-                });
-            });
-    }, [1]);
-
-    let property = state.property
-    console.log(state.property)
-
-    return (
-        <div>
-            <div
+<div
                 className="home-bg image-background"
                 style={{
                 "background-image": `url(${state.property.mainImage})`
@@ -130,17 +81,17 @@ const PropertyDetails = (props) => {
                             <h3 className="subtitle-search mb-4">Días de apertura</h3>
 
                             <p>Día de apertura:
-                                <span id="openingDay1">{state.property.openingHours[0].openingDays.openingDay}</span>
+                                <span id="openingDay1">{state.property.openingDays[0].openingDay}</span>
                             </p>
 
                             <p>Día de cierre:
-                                <span id="closingDay1">{state.property.openingHours[0].openingDays.closingDay}</span>
+                                <span id="closingDay1">{state.property.openingDays[0].closingDay}</span>
                             </p>
 
-                            <p>Días de la semana: {state.property.openingHours[0].weekDays}</p>
+                            <p>Días de la semana: {state.property.weekDays}</p>
 
-                            <p>Hora de apertura: {state.property.openingHours[0].openingTimes.openingTime}</p>
-                            <p>Hora de cierre: {state.property.openingHours[0].openingTimes.closingTime}</p>
+                            <p>Hora de apertura: {state.property.openingHours[0].openingTime}</p>
+                            <p>Hora de cierre: {state.property.openingHours[0].closingTime}</p>
 
                         </div>
                         <div
@@ -185,8 +136,3 @@ const PropertyDetails = (props) => {
 
                 </div>
             </div>
-        </div>
-    )
-}
-
-export default PropertyDetails;
