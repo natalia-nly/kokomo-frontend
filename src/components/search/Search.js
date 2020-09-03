@@ -151,7 +151,7 @@ const Search = (props) => {
   return (
     <div>
       <div className="container mt-4 mapa">
-        <h1>Búsqueda de local</h1>
+        <h1>Búsqueda de locales</h1>
         <h2>Todos los locales</h2>
         <GoogleMapReact
           bootstrapURLKeys={{
