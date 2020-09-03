@@ -1,5 +1,4 @@
 import React, {useState} from "react";
-import TextField from "@material-ui/core/TextField";
 import AuthService from "../auth/auth-service";
 
 function CreateProperty(props) {
@@ -92,6 +91,24 @@ function CreateProperty(props) {
         });
     };
 
+    const handleOpeningTime = (e) => {
+        let openingHours = [...state.openingHours];
+        openingHours[0].openingTimes[0].openingTime = e.target.value;
+        setState({
+            ...state,
+            "openingHours.openingTimes": openingHours
+        });
+    };
+
+    const handleClosingTime = (e) => {
+        let openingHours = [...state.openingHours];
+        openingHours[0].openingTimes[0].closingTime = e.target.value;
+        setState({
+            ...state,
+            "openingHours.openingTimes": openingHours
+        });
+    };
+
     return (
         <div className="body-container">
             <div className="hero">
@@ -143,18 +160,7 @@ function CreateProperty(props) {
                             </label>
                             <input type="text" name="ubication" id="input-ubication"/>
                         </div>
-                        <div className="form-group">
-                            <label htmlFor="input-latitude" className="label active">
-                                Latitud
-                            </label>
-                            <input type="number" name="latitude" id="input-latitude" step=".01"/>
-                        </div>
-                        <div className="form-group">
-                            <label htmlFor="input-longitude" className="label active">
-                                Longitud
-                            </label>
-                            <input type="number" name="longitude" id="input-longitude" step=".01"/>
-                        </div>
+                       
                     </div>
                 </div>
                 <h3 className="section-title">Horarios</h3>
@@ -275,20 +281,36 @@ function CreateProperty(props) {
                             <label htmlFor="input-openhour" className="label active">
                                 Hora de apertura
                             </label>
-                            <input type="number" name="openhour" id="input-openhour"/>
+                            <input
+                                type="number"
+                                name="openingHours"
+                                id="input-opening"
+                                value={state.openingHours[0].openingDays.openingDay}
+                                onChange={handleOpeningTime}/>
                         </div>
                         <div className="form-group">
                             <label htmlFor="input-closehour" className="label active">
-                                Hora de cierre
+                            Hora de cierre
                             </label>
-                            <input type="number" name="closehour" id="input-closehour"/>
+                            <input
+                                type="number"
+                                name="closingHours"
+                                id="input-closehour"
+                                value={state.openingHours[0].openingDays.closingDay}
+                                onChange={handleClosingTime}/>
                         </div>
                         <div className="form-group">
-                            <label htmlFor="input-duration" className="label active">
-                                Duración de la reserva (en minutos)
+                            <label htmlFor="bookingDuration" className="label active">
+                            Duración de la reserva (en minutos)
                             </label>
-                            <input type="number" name="duration" id="input-duration"/>
+                            <input
+                                type="number"
+                                name="bookingDuration"
+                                value={state.bookingDuration}
+                                onChange={handleChange}/>
                         </div>
+                        
+
                         <div className="form-group">
                             <label htmlFor="input-places" className="label active">
                                 Plazas

@@ -62,6 +62,9 @@ function App() {
         <Route exact path="/">
           <LandingPage />
         </Route>
+        <Route exact path="/create-property">
+          <CreateProperty />
+        </Route>
         <Route exact path="/checks">
           <div className="mt-5 pt-5 container">
             <Checks />
@@ -98,37 +101,16 @@ function App() {
           path="/property/create-property"
           component={CreateProperty}
         />
-        <ProtectedRoute
+        {/* <ProtectedRoute
           user={state.loggedInUser}
           path="/search"
           component={Search}
-        />
+        /> */}
         <Route
           exact
           path="/logout"
           render={(props) => <Logout {...props} callback={getTheUser} />}
         />
-        {/* 
-          <Route
-            path='/create-property'
-            render={(props) => <CreateProperty {...props} callback={getTheUser}/>}/>
-
-            <Route path="/signup" render={(props) => <Signup {...props} callback={this.getTheUser} />} />
-
-            <Route path="/projects/:id" render={(props) => <ProjectDetails {...props} />} />
-
-             CON LA KEY SE VUELVE A CARGAR TODO CADA VEZ QUE SE MODIFICA ALGO
-            <Route exact path="/projects" render={(props) => <ProjectList {...props} user={this.state.loggedInUser} key={this.state.loggedInUser}/>} />
-
-            <ProtectedRoute
-              path="/profile"
-              user={this.state.loggedInUser}
-              component={Profile}
-              /> 
-            <Route exact path="/fileupload">
-              <Componente/>
-            </Route>
-            */}
       </Switch>
     </div>
   );
