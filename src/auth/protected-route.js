@@ -13,8 +13,9 @@ function saveStuff(obj) {
 }
 
 function loadStuff() {
-    return saveData.obj || "default";
+    return saveData.obj;
 }
+
 
 const ProtectedRoute = ({
     component: Component,
@@ -30,7 +31,10 @@ const ProtectedRoute = ({
                 if (user) {
                     console.log('user2',user)
                     return <Component {...props} loggedInUser={user} callback={callback}/>
-                } else{
+                } else if(loadStuff()!== (null||undefined)){
+                    return <Component {...props} loggedInUser={loadStuff()} callback={callback}/>
+                }
+                else {
                     return <Redirect
                         to={{
                         pathname: '/login',

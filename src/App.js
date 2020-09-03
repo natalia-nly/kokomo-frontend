@@ -15,6 +15,7 @@ import Checks from "./components/Checks";
 import AuthService from "./auth/auth-service";
 import Search from "./components/search/Search";
 import CarouselProperties from "./components/properties/CarouselProperties";
+import PropertyDetails from "./components/properties/PropertyDetails";
 
 function App() {
   const initialState = {
@@ -70,9 +71,6 @@ function App() {
         <Route exact path="/carousel-properties">
           <CarouselProperties getTheUser={state.loggedInUser}/>
         </Route>
-        <Route path="/property/:id">
-          <CarouselProperties />
-        </Route>
         <Route
           path="/login"
           render={(props) => <Login {...props} callback={getTheUser} />}
@@ -102,6 +100,11 @@ function App() {
           user={state.loggedInUser}
           path="/search"
           component={Search}
+        />
+        <ProtectedRoute
+          user={state.loggedInUser}
+          path="/property/:propertyId"
+          component={PropertyDetails}
         />
         <Route
           exact
