@@ -23,7 +23,7 @@ export class Login extends Component {
       .then((response) => {
         this.setState({ user: "", password: "" });
         this.props.callback(response);
-        this.props.history.push("/profile");
+        this.props.history.push("/");
       })
       .catch((error) => console.log(error));
   };

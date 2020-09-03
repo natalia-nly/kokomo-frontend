@@ -5,7 +5,7 @@ const Navbar = (props) => {
     console.log(props.getTheUser)
 
     let finalNavbar = (
-    <nav className="navbar navbar-expand-sm navbar-light fixed-top" style={{"background-color": "rgb(255, 255, 255)"}}>
+    <nav className="navbar navbar-expand-sm navbar-light fixed-top" style={{"backgroundColor": "rgb(255, 255, 255)"}}>
         <a className="navbar-brand" href="/">KOKOMO</a>
         <button className="navbar-toggler d-lg-none" type="button" data-toggle="collapse" data-target="#collapsibleNavId"
             aria-controls="collapsibleNavId" aria-expanded="false" aria-label="Toggle navigation"><i className="fas fa-bars"></i></button>
@@ -30,7 +30,7 @@ const Navbar = (props) => {
     )
 
     const navbarLogin = (
-        <nav class="navbar-kokomo">
+        <nav className="navbar-kokomo">
         <ul>
             {/* eslint-disable-next-line */}
             <li><Link to="/" className="mdi mdi-home"></Link></li>
