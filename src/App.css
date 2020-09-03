@@ -780,6 +780,7 @@ h4.section-title {
     right: auto;
     width: auto;
     margin: 10px;
+    z-index: 100;
   }
   .navbar-kokomo ul {
     display: flex;
@@ -960,7 +961,7 @@ h4.section-title {
   }
 
   .mapa {
-    width: 1200px;
-    height: 800px;
+    width: 100%;
+    height: 400px;
   }
 }

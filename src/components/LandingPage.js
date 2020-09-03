@@ -148,7 +148,7 @@ const LandingPage = () => {
         </div>
       </div>
       {/* googlemaps */}
-      <div className="container mt-4 mapa">
+      <div className="mapa">
         <GoogleMapReact
           bootstrapURLKeys={{
             key: process.env.REACT_APP_GOOGLE_API_KEY,
