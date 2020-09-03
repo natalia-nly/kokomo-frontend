@@ -78,7 +78,7 @@ const Search = (props) => {
 
     return `
     <div>
-    <a href="http://localhost:3000/property/${place._id}" className="btn-kokomo btn-kokomo-danger style="font-size: 16px;">
+    <a href="http://localhost:3000/property/${place._id}" class="btn-kokomo btn-kokomo-danger" style="font-size: 16px;">
     ${place.name}
     </a>
 
@@ -143,10 +143,10 @@ const Search = (props) => {
       console.log("CONSOLE LOG DESDE AXIOS GET", response);
       setState({
         ...state,
-        allResults: response.data,
+        allResults: response.data[0],
       });
     });
-  },[1]);
+  },[2]);
 
   return (
     <div>

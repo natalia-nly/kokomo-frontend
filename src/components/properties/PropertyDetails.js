@@ -22,8 +22,7 @@ const PropertyDetails = (props) => {
                 weekDays: []
             }],
             bookings: []
-        },
-        favourites: props.getTheUser
+        }
     };
 
     const [state,
@@ -32,7 +31,7 @@ const PropertyDetails = (props) => {
     useEffect(() => {
         console.log(props)
         axios
-            .get("http://localhost:5000/api/property/" + props.match.params.propertyId)
+            .get("http://localhost:5000/api/property/" + props.match.params.propertyId, {withCredentials: true})
             .then((response) => {
                 console.log("CONSOLE LOG DESDE AXIOS GET", response);
                 setState({
@@ -40,7 +39,7 @@ const PropertyDetails = (props) => {
                     property: response.data
                 });
             });
-    }, [1]);
+    }, [2]);
 
     let property = state.property
     console.log(state.property)

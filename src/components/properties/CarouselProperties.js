@@ -5,17 +5,19 @@ import axios from "axios";
 const CarouselProperties = (props) => {
   const initialState = {
     properties: [],
-    favourites: props.getTheUser,
+    favourites: []
   };
 
   const [state, setState] = useState(initialState);
 
   useEffect(() => {
-    axios.get("http://localhost:5000/api/").then((response) => {
-      console.log("CONSOLE LOG DESDE AXIOS GET", response);
+    axios
+      .get("http://localhost:5000/api/", { withCredentials: true })
+      .then((response) => {
+        console.log("CONSOLE LOG DESDE AXIOS GET", response);
 
-      setState({ ...state, properties: response.data });
-    });
+        setState({ ...state, favourites: response.data[1] , properties:response.data[0]});
+      });
   }, 1);
 
   let allProperties = "";
@@ -23,7 +25,10 @@ const CarouselProperties = (props) => {
   allProperties = state.properties.map((property, index) => {
     console.log("DESDE EL map: ", property);
     let heartKokomo = "far fa-heart fa-stack-1x fa-inverse";
-    if (state.favourites !== null && state.favourites.favourites.includes(property._id)) {
+    if (
+      state.favourites.length &&
+      state.favourites.includes(property._id)
+    ) {
       heartKokomo = "fas fa-heart fa-stack-1x fa-inverse";
     }
     return (
