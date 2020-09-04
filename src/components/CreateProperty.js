@@ -50,7 +50,7 @@ function CreateProperty(props) {
     e.preventDefault();
     const body = state;
     axios
-      .post("http://localhost:5000/api/property/create-property", body)
+      .post("http://localhost:5000/api/property/create-property", body, { withCredentials: true })
       .then((result) => {
         props.history.push("/profile");
       })
