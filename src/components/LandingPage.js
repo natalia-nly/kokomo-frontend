@@ -127,7 +127,7 @@ const LandingPage = () => {
         allResults: response.data[0],
       });
     });
-  },[1]);
+  },[]);
 
   return (
     <div>

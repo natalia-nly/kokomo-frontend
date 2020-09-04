@@ -136,3 +136,148 @@
 
                 </div>
             </div>
+
+            //from navbar search
+            <Link to="/search" className="mdi mdi-magnify"></Link>
+
+            //results search
+            <div className="body-container">
+            <h3 className="mt-4 mb-4 section-title">Resultados de tu búsqueda</h3>
+            <div className="properties-group-2">
+            {state.listOfPlaces.map(result =>{
+            return(
+                <div className="one-property">
+                        <a href="/property/propertyId">
+                            <div className="property-card">
+                            <span className="fa-stack fa-2x float-right heart-home">
+                                <i className="fas fa-circle fa-stack-2x orange-80"></i>
+                                <i className="fas fa-heart fa-stack-1x fa-inverse"></i>
+                            </span>
+                            <div>
+                                <img src="{result.mainImage}" style="z-index: 1;"/>
+                                <img src="{result.mainImage}" className="blur-image"/>
+                            </div>
+                            </div>
+                        </a>
+                        <div className="search-pc">
+                            <h3>{result.name}</h3>
+                            <p className="mdi mdi-map-marker-radius"> {result.location.name}</p>
+                                <div className="row mt-3 ml-2 mb-4">
+                                {schedules(result)}
+                                </div>
+                        </div>
+                    </div>
+            )}
+                    
+                )
+}
+            </div>
+        </div>
+
+
+
+
+
+
+function schedules(result) {
+    return (
+        <div>
+            {/* {result.timeboxes.map(timebox =>{
+                <form onSubmit={handleSubmit}>
+          <input type="hidden" name="propertyId" value=""/>
+          <input type="hidden" name="day" value=""/>
+          <input type="hidden" name="guests" value=""/>
+          <input type="submit" class="kokomo-hours" value=""/>
+        </form>
+            })}*/}
+            <h1>schedules</h1>
+        </div>
+    )
+}
+
+const handleSubmit = (event) => {
+    {/*event.preventDefault();
+axios
+  .get("http://localhost:5000/api/search/maps?search=" + state.search)
+  .then((response) => {
+    console.log(response);
+    setState({
+      ...state,
+      oneResult: response.data.candidates[0].name,
+      lat: response.data.candidates[0].geometry.location.lat,
+      lng: response.data.candidates[0].geometry.location.lng,
+    });
+  });*/
+    };
+   
+
+
+    0:
+guests: "2"
+property:
+availablePlaces: 20
+bookingDuration: 30
+bookings: []
+categories: ["Restaurante"]
+comments: []
+createdAt: "2020-09-03T11:16:19.083Z"
+description: "Paelles variades i racions de marisc en un restaurant mariner amb terrassa i sostre modern pintat de blau."
+location: {name: "Barcelona", lat: 41.393542, long: 2.203153}
+media: ["https://uh.gsstatic.es/sfAttachPlugin/744809.jpg"]
+name: "Xiringuito Escribà"
+openingHours: [{…}]
+updatedAt: "2020-09-03T11:16:19.083Z"
+__v: 0
+_id: "5f50d083340539513cde1711"
+__proto__: Object
+timeboxes: (22) [{…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}]
+__proto__:
+constructor: ƒ Object()
+hasOwnProperty: ƒ hasOwnProperty()
+isPrototypeOf: ƒ isPrototypeOf()
+propertyIsEnumerable: ƒ propertyIsEnumerable()
+toLocaleString: ƒ toLocaleString()
+toString: ƒ toString()
+valueOf: ƒ valueOf()
+__defineGetter__: ƒ __defineGetter__()
+__defineSetter__: ƒ __defineSetter__()
+__lookupGetter__: ƒ __lookupGetter__()
+__lookupSetter__: ƒ __lookupSetter__()
+get __proto__: ƒ __proto__()
+set __proto__: ƒ __proto__()
+1: {property: null, timeboxes: Array(26), guests: "2"}
+2: {property: {…}, timeboxes: Array(26), guests: "2"}
+length: 3
+__proto__: Array(0)
+
+{
+    property: {
+      location: [Object],
+      categories: [],
+      media: [],
+      bookings: [],
+      _id: 5f525c17279482567e8585f5,
+      name: 'El Capo',
+      description: 'El Capo es uno de los chiringuitos más carismáticos de todo el Baix Llobregat. Un espacio elegante, a pie de playa, donde disfrutar de la paz y el relax.',
+      mainImage: '',
+      openingHours: [Array],
+      bookingDuration: 30,
+      availablePlaces: 40,
+      comments: [],
+      createdAt: 2020-09-04T15:24:07.803Z,
+      updatedAt: 2020-09-04T15:24:07.803Z,
+      __v: 0
+    },
+    timeboxes: [
+      [Object], [Object], [Object],
+      [Object], [Object], [Object],
+      [Object], [Object], [Object],
+      [Object], [Object], [Object],
+      [Object], [Object], [Object],
+      [Object], [Object], [Object],
+      [Object], [Object], [Object],
+      [Object], [Object], [Object],
+      [Object], [Object]
+    ],
+    guests: '3'
+  }
