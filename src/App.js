@@ -11,7 +11,6 @@ import SignUpLocal from "./components/auth/SignUpLocal";
 import Profile from "./components/Profile";
 import ProtectedRoute from "./auth/protected-route.js";
 import CreateProperty from "./components/CreateProperty";
-import Checks from "./components/Checks";
 import AuthService from "./auth/auth-service";
 import Search from "./components/search/Search";
 import CarouselProperties from "./components/properties/CarouselProperties";
@@ -67,7 +66,9 @@ function App() {
                     <LandingPage/>
                 </Route>
                 <Route exact path="/create-property">
-                    <CreateProperty/>
+                <div className="mt-5">
+                <CreateProperty/>
+                </div>
                 </Route>
 
                 <Route exact path="/carousel-properties">
