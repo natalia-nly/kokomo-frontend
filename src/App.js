@@ -15,6 +15,7 @@ import AuthService from "./auth/auth-service";
 import Search from "./components/search/Search";
 import CarouselProperties from "./components/properties/CarouselProperties";
 import PropertyDetails from "./components/properties/PropertyDetails";
+import Home from "./components/Home";
 
 function App() {
     const initialState = {
@@ -63,7 +64,7 @@ function App() {
 
             <Switch>
                 <Route exact path="/">
-                    <LandingPage/>
+                {state.loggedInUser === null ? <LandingPage/> : <Home />}
                 </Route>
                 <Route exact path="/create-property">
                 <div className="mt-5">
