@@ -169,14 +169,14 @@ const Search = (props) => {
                     allResults: response.data[0]
                 });
             });
-    }, []);
+    },[]);
 if(state.availableResults.length){
   return (
     <div>
         <div className="container mt-4 mapa">
             <h1>Búsqueda de locales</h1>
             <h2>Todos los locales</h2>
-            <GoogleMapReact
+           <GoogleMapReact
                 bootstrapURLKeys={{
                 key: process.env.REACT_APP_GOOGLE_API_KEY,
                 language: "sp"
@@ -246,7 +246,7 @@ if(state.availableResults.length){
                 defaultZoom={zoom}
                 options={getMapOptions}
                 yesIWantToUseGoogleMapApiInternals
-                onGoogleApiLoaded={({map, maps}) => handleApiLoaded(map, maps, state.allResults)}/>
+                onGoogleApiLoaded={({map, maps}) => handleApiLoaded(map, maps, state.allResults)}/> 
         </div>
         <div className="body-container">
             <h3 className="section-title mt-4 mdi mdi-magnify">

@@ -2,8 +2,6 @@ import React from "react";
 import { Link } from "react-router-dom";
 
 const Navbar = (props) => {
-  console.log(props.getTheUser);
-
   let finalNavbar = (
     <nav
       className="navbar navbar-expand-sm navbar-light fixed-top"

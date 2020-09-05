@@ -7,16 +7,16 @@ import Stepper from "@material-ui/core/Stepper";
 import Step from "@material-ui/core/Step";
 import StepLabel from "@material-ui/core/StepLabel";
 import Check from "@material-ui/icons/Check";
-import ScheduleIcon from '@material-ui/icons/Schedule';
-import RestaurantIcon from '@material-ui/icons/Restaurant';
-import RoomIcon from '@material-ui/icons/Room';
+import ScheduleIcon from "@material-ui/icons/Schedule";
+import RestaurantIcon from "@material-ui/icons/Restaurant";
+import RoomIcon from "@material-ui/icons/Room";
 import StepConnector from "@material-ui/core/StepConnector";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 import { useHistory } from "react-router-dom";
 
 function CreateProperty() {
-    let history = useHistory();
+  let history = useHistory();
 
   const QontoConnector = withStyles({
     alternativeLabel: {
@@ -186,12 +186,12 @@ function CreateProperty() {
       marginRight: theme.spacing(1),
     },
     buttonActive: {
-        backgroundColor: "#3294bb",
-        color: "#ffffff"
+      backgroundColor: "#3294bb",
+      color: "#ffffff",
     },
     buttonSuccess: {
-        backgroundColor: "#28a745",
-        color: "#ffffff"
+      backgroundColor: "#28a745",
+      color: "#ffffff",
     },
     instructions: {
       marginTop: theme.spacing(1),
@@ -248,7 +248,7 @@ function CreateProperty() {
         withCredentials: true,
       })
       .then((result) => {
-        history.push('/someRoute')
+        history.push("/someRoute");
       })
       .catch((error) => console.log(error));
   };
@@ -257,6 +257,13 @@ function CreateProperty() {
     setState({
       ...state,
       [e.target.name]: e.target.value,
+    });
+  };
+
+  const handleFile = (e) => {
+    setState({
+      ...state,
+      mainImage: e.target.file[0]
     });
   };
 
@@ -312,7 +319,7 @@ function CreateProperty() {
   };
 
   function getSteps() {
-    return [(<p>Datos principales</p>), (<p>Horarios</p>), (<p>El local</p>)];
+    return [<p>Datos principales</p>, <p>Horarios</p>, <p>El local</p>];
   }
 
   function getStepContent(step) {
