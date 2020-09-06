@@ -72,7 +72,7 @@ function App() {
         </Route>
 
         <Route exact path="/carousel-properties">
-          <CarouselProperties getTheUser={state.loggedInUser} />
+          <CarouselProperties getTheUser={state.loggedInUser} filter="all" />
         </Route>
 
         <Route

@@ -149,6 +149,18 @@ p {
   color: #ffba69;
   background-color: #fcfcfc;
   border-color: #fcfcfc;
+  transition: .6s all ease;
+}
+
+.btn-kokomo-google {
+  color: #585353;
+  border: 1px solid #585353;
+}
+
+.btn-kokomo-google:hover {
+  color: #585353;
+  background-color: #f5f5f5;
+  border: 1px solid #585353;
 }
 
 .navbar-kokomo {

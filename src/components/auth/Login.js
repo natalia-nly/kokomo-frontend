@@ -1,4 +1,4 @@
-import React, { Component} from "react";
+import React, { Component } from "react";
 import TextField from "@material-ui/core/TextField";
 import AuthService from "../../auth/auth-service";
 
@@ -33,8 +33,6 @@ export class Login extends Component {
       [e.target.name]: e.target.value,
     });
   };
- 
-
 
   render() {
     return (
@@ -44,36 +42,50 @@ export class Login extends Component {
           style={{ "min-height": "100vh" }}
         >
           <div class="col-sm-12 col-md-4 align-self-center">
+            <h2 class="hero-title text-center mb-4">Iniciar sesión</h2>
             <form onSubmit={this.handleSubmit}>
-              <TextField
-                required
-                name="user"
-                label="Usuario"
-                variant="outlined"
-                className="w-100 mb-3"
-                value={this.state.title}
-                onChange={this.handleChange}
-              />
-              <TextField
-                label="Contraseña"
-                name="password"
-                variant="outlined"
-                className="w-100 mb-3"
-                value={this.state.description}
-                onChange={this.handleChange}
-              />
+              <div className="form-group">
+                <label htmlFor="user" className="label active">
+                  Nombre de usuario
+                </label>
+                <input
+                  type="text"
+                  name="user"
+                  value={this.state.user}
+                  onChange={this.handleChange}
+                />
+              </div>
+              <div className="form-group">
+                <label htmlFor="password" className="label active">
+                  Contraseña
+                </label>
+                <input
+                  type="password"
+                  name="password"
+                  value={this.state.password}
+                  onChange={this.handleChange}
+                />
+              </div>
 
               <button
                 type="submit"
                 class="btn-kokomo btn-kokomo-success btn-block p-3"
               >
-                Login
+                Iniciar sesión
               </button>
             </form>
+
             <a
               href="http://localhost:5000/api/auth/google"
-              class="btn-kokomo btn-kokomo-grey btn-block p-3 mt-4"
-            >Login con Google</a>
+              class="btn-kokomo btn-kokomo-google btn-block p-3 mt-4"
+            >
+              {" "}
+              <img
+                src="/images/google.svg"
+                style={{ width: "20px", marginRight: "8px" }}
+              />{" "}
+              Iniciar sesión con Google
+            </a>
           </div>
         </div>
       </div>

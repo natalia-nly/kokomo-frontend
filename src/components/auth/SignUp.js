@@ -46,41 +46,53 @@ export class SignUp extends Component {
           style={{ "min-height": "100vh" }}
         >
           <div class="col-sm-12 col-md-4 align-self-center">
+            <h2 class="hero-title text-center mb-4">Crea tu cuenta</h2>
             <form onSubmit={this.handleSubmit}>
-              <TextField
-                required
-                name="user"
-                label="Nombre de usuario"
-                variant="outlined"
-                className="w-100 mb-3"
-                value={this.state.user}
-                onChange={this.handleChange}
-              />
-              <TextField
-                required
-                name="telNumber"
-                label="Teléfono"
-                variant="outlined"
-                className="w-100 mb-3"
-                value={this.state.telNumber}
-                onChange={this.handleChange}
-              />
-              <TextField
-                required
-                name="email"
-                label="Email"
-                variant="outlined"
-                className="w-100 mb-3"
-                value={this.state.email}
-                onChange={this.handleChange}/>
-              <TextField
-                label="Contraseña"
-                name="password"
-                variant="outlined"
-                className="w-100 mb-3"
-                value={this.state.password}
-                onChange={this.handleChange}
-              />
+              <div className="form-group">
+                <label htmlFor="user" className="label active">
+                  Nombre de usuario
+                </label>
+                <input
+                  type="text"
+                  name="user"
+                  value={this.state.user}
+                  onChange={this.handleChange}
+                />
+              </div>
+              <div className="form-group">
+                <label htmlFor="telNumber" className="label active">
+                  Número de teléfono
+                </label>
+                <input
+                  type="number"
+                  name="telNumber"
+                  value={this.state.telNumber}
+                  onChange={this.handleChange}
+                />
+              </div>
+              <div className="form-group">
+                <label htmlFor="email" className="label active">
+                  Email
+                </label>
+                <input
+                  type="email"
+                  name="email"
+                  value={this.state.email}
+                  onChange={this.handleChange}
+                />
+              </div>
+
+              <div className="form-group">
+                <label htmlFor="password" className="label active">
+                  Contraseña
+                </label>
+                <input
+                  type="password"
+                  name="password"
+                  value={this.state.password}
+                  onChange={this.handleChange}
+                />
+              </div>
 
               <button
                 type="submit"
@@ -91,8 +103,12 @@ export class SignUp extends Component {
             </form>
             <a
               href="/auth/google"
-              class="btn-kokomo btn-kokomo-grey btn-block p-3 mt-4"
+              class="btn-kokomo btn-kokomo-google btn-block p-3 mt-4"
             >
+              <img
+                src="/images/google.svg"
+                style={{ width: "20px", marginRight: "8px" }}
+              />{" "}
               Registrarme con Google
             </a>
           </div>
