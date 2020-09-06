@@ -27,7 +27,7 @@ const Profile = (props) => {
           paddingBottom: "30px",
         }}
       >
-        <img src="{{props.loggedInUser.avatar}}" alt="Avatar" className="avatar" />
+        <img src={props.loggedInUser.avatar} alt="Avatar" className="avatar" />
 
         <h2>Hola {props.loggedInUser.username}!</h2>
         <p>email: {props.loggedInUser.email}</p>
