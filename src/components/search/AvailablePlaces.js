@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, {useState} from "react";
 import axios from "axios";
 import { useHistory } from "react-router-dom";
 
@@ -50,7 +50,7 @@ const AvailablePlaces = (props) => {
               <i className="fas fa-heart fa-stack-1x fa-inverse"></i>
             </span>
             <div>
-              <img src={result.property.mainImage} className="blur-image" />
+              <img src={result.property.mainImage} className="blur-image" alt={result.property.name} />
             </div>
           </div>
         </a>

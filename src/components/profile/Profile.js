@@ -25,7 +25,7 @@ const Profile = (props) => {
                     bookings: response.data.bookings
                 });
             });
-    }, []);
+    });
 
 
  if(state.bookings.length){
