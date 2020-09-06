@@ -8,7 +8,7 @@ import Login from "./components/auth/Login";
 import Logout from "./components/auth/Logout";
 import SignUp from "./components/auth/SignUp";
 import SignUpLocal from "./components/auth/SignUpLocal";
-import Profile from "./components/Profile";
+import Profile from "./components/profile/Profile";
 import ProtectedRoute from "./auth/protected-route.js";
 import CreateProperty from "./components/CreateProperty";
 import AuthService from "./auth/auth-service";

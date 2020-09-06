@@ -1,37 +1,38 @@
-import React from "react";
+import React, {useState, useEffect} from "react";
+import GoogleMapReact from "google-map-react";
+import axios from "axios";
+var curr = new Date();
+curr.setDate(curr.getDate());
+var date = curr
+    .toISOString()
+    .substr(0, 10);
+const initialState = {
+    allResults: [],
+    bookingDate: date,
+    numberGuests: 0
+};
+const center = {
+    lat: 41.35,
+    lng: 2.1
+};
 
-const Map = (props) => {
-    
-    var curr = new Date();
-    curr.setDate(curr.getDate());
-    var date = curr
-        .toISOString()
-        .substr(0, 10);
-    const initialState = {
-        search: "",
-        oneResult: "",
-        miles: 100,
-        lat: 41.2651462,
-        lng: 1.993513,
-        allResults: [],
-        selected: "",
-        direccion: "Chalito",
-        oneResult: "",
-        bookingDate: date,
-        numberGuests: 0
-    };
+const zoom = 11;
 
+const Map = () => {
     const [state,
         setState] = useState(initialState);
 
-    const center = {
-        lat: state.lat,
-        lng: state.lng
-    };
-
-    const zoom = 11;
-    const key = process.env.REACT_APP_GOOGLE_API_KEY;
-    console.log(key);
+    useEffect(() => {
+        axios
+            .get("http://localhost:5000/api/")
+            .then((response) => {
+                console.log("CONSOLE LOG DESDE AXIOS GET", response);
+                setState({
+                    ...state,
+                    allResults: response.data[0]
+                });
+            });
+    }, []);
     const getMapOptions = (maps) => {
         return {
             disableDefaultUI: false,
@@ -65,7 +66,7 @@ const Map = (props) => {
             .name}
     </a>
 
-      <div style="font-size: 14px;">
+    <div style="font-size: 14px;">
         <span style="color: grey;">Rating:
         ${place
             .rating}
@@ -93,8 +94,6 @@ const Map = (props) => {
     </div>`;
     };
 
-    // Refer to
-    // https://github.com/google-map-react/google-map-react#use-google-maps-api
     const handleApiLoaded = (map, maps, places) => {
         const markers = [];
         const infowindows = [];
@@ -118,19 +117,20 @@ const Map = (props) => {
         });
     };
 
-    useEffect(() => {
-        axios
-            .get("http://localhost:5000/api/")
-            .then((response) => {
-                console.log("CONSOLE LOG DESDE AXIOS GET", response);
-                setState({
-                    ...state,
-                    allResults: response.data[0]
-                });
-            });
-    }, []);
-
-    return <div></div>;
+    return (
+        <div className="container mt-4 mapa">
+            <GoogleMapReact
+                bootstrapURLKeys={{
+                key: process.env.REACT_APP_GOOGLE_API_KEY,
+                language: "sp"
+            }}
+                defaultCenter={center}
+                defaultZoom={zoom}
+                options={getMapOptions}
+                yesIWantToUseGoogleMapApiInternals
+                onGoogleApiLoaded={({map, maps}) => handleApiLoaded(map, maps, state.allResults)}/>
+        </div>
+    );
 };
 
 export default Map;

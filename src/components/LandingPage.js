@@ -1,134 +1,9 @@
-import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import React from "react";
 import CarouselProperties from "./properties/CarouselProperties";
-import GoogleMapReact from "google-map-react";
 import axios from "axios";
+import Map from "./search/Map";
 
 const LandingPage = () => {
-
-  var curr = new Date();
-  curr.setDate(curr.getDate());
-  var date = curr.toISOString().substr(0, 10);
-  const initialState = {
-    search: "",
-    oneResult: "",
-    miles: 100,
-    lat: 41.2651462,
-    lng: 1.993513,
-    allResults: [],
-    selected: "",
-    direccion: "Chalito",
-    oneResult: "",
-    bookingDate: date,
-    numberGuests: 0,
-  };
-
-  const [state, setState] = useState(initialState);
-
-  const center = {
-    lat: state.lat,
-    lng: state.lng,
-  };
-
-  const zoom = 11;
-  const key = process.env.REACT_APP_GOOGLE_API_KEY;
-  console.log(key);
-  const getMapOptions = (maps) => {
-    return {
-      disableDefaultUI: false,
-      mapTypeControl: true,
-      streetViewControl: true,
-      styles: [
-        {
-          featureType: "poi",
-          elementType: "labels",
-          stylers: [
-            {
-              visibility: "on",
-            },
-          ],
-        },
-      ],
-    };
-  };
-
-  const getInfoWindowString = (place) => {
-    var today = new Date();
-    var openingDate = new Date(place.openingHours[0].openingDays.openingDay);
-    var closingDate = new Date(place.openingHours[0].openingDays.closingDay);
-
-    return `
-    <div>
-    <a href="http://localhost:3000/property/${place._id}" class="btn-kokomo btn-kokomo-danger" style="font-size: 16px;">
-    ${place.name}
-    </a>
-
-      <div style="font-size: 14px;">
-        <span style="color: grey;">Rating:
-        ${place.rating}
-        </span>
-        <span style="color: orange;">${String.fromCharCode(9733).repeat(
-          Math.floor(place.rating)
-        )}</span><span style="color: lightgrey;">${String.fromCharCode(
-      9733
-    ).repeat(5 - Math.floor(place.rating))}</span>
-      </div>
-      <div style="font-size: 14px; color: grey;">Category:
-        ${place.categories[0]}
-      </div>
-      <div style="font-size: 14px; color: grey;">
-        ${"$".repeat(place.price_level)}
-      </div>
-      <div style="font-size: 14px; color: green;">
-        ${
-          openingDate.getTime() <= today.getTime() &&
-          today.getTime() <= closingDate.getTime()
-            ? "Open"
-            : "Closed"
-        }
-      </div>
-    </div>`;
-  };
-
-  // Refer to
-  // https://github.com/google-map-react/google-map-react#use-google-maps-api
-  const handleApiLoaded = (map, maps, places) => {
-    const markers = [];
-    const infowindows = [];
-
-    places.forEach((place) => {
-      markers.push(
-        new maps.Marker({
-          position: {
-            lat: place.location.lat,
-            lng: place.location.long,
-          },
-          map,
-        })
-      );
-
-      infowindows.push(
-        new maps.InfoWindow({ content: getInfoWindowString(place) })
-      );
-    });
-
-    markers.forEach((marker, i) => {
-      marker.addListener("click", () => {
-        infowindows[i].open(map, marker);
-      });
-    });
-  };
-
-  useEffect(() => {
-    axios.get("http://localhost:5000/api/").then((response) => {
-      console.log("CONSOLE LOG DESDE AXIOS GET", response);
-      setState({
-        ...state,
-        allResults: response.data[0],
-      });
-    });
-  },[]);
-
   return (
     <div>
       <div className="hero-landing" style={{ padding: "50px 10px" }}>
@@ -147,21 +22,8 @@ const LandingPage = () => {
           <h2 className="hero-arrow-desktop mdi mdi-arrow-down"></h2>
         </div>
       </div>
-      {/* googlemaps */}
       <div className="mapa">
-        <GoogleMapReact
-          bootstrapURLKeys={{
-            key: process.env.REACT_APP_GOOGLE_API_KEY,
-            language: "sp",
-          }}
-          defaultCenter={center}
-          defaultZoom={zoom}
-          options={getMapOptions}
-          yesIWantToUseGoogleMapApiInternals
-          onGoogleApiLoaded={({ map, maps }) =>
-            handleApiLoaded(map, maps, state.allResults)
-          }
-        />
+        <Map />
       </div>
       <div className="bg-landing">
         <div className="container">
@@ -239,28 +101,7 @@ const LandingPage = () => {
         </div>
       </div>
       <div className="landing-container" style={{ "padding-bottom": "80px" }}>
-        {/* <div className="">
-        <h2 className="title-search-home">Nuestros chiringuitos</h2>
-        <div className="properties-group">
-            {{#each properties}}
-            <a href="/property/{{_id}}">
-                <div className="property-card">
-                    <span className="fa-stack fa-2x float-right heart-home">
-                        <i className="fas fa-circle fa-stack-2x orange-80"></i>
-                        <i className="far fa-heart fa-stack-1x fa-inverse"></i>
-                    </span>
-                    <img src="{{mainImage}}" style="z-index: 1;">
-                    <img src="{{mainImage}}" className="blur-image">
-
-
-                    <h3>{{name}}</h3>
-                    <p className="mdi mdi-map-marker-radius"> {{location.name}}</p>
-                </div>
-            </a>
-            {{/each}}
-        </div> */}
         <CarouselProperties />
-
         <div className="banner-orange">
           <div className="row">
             <div className="col-md-6">
@@ -281,51 +122,6 @@ const LandingPage = () => {
             </div>
           </div>
         </div>
-
-        {/* <h2 className="title-search-home mt-4">Estilo chillout</h2>
-        <div className="properties-group">
-            {{#each properties}}
-            {{#ifCond categories "includes" "Chillout"}}
-            <a href="/property/{{_id}}">
-                <div className="property-card">
-                    <span className="fa-stack fa-2x float-right heart-home">
-                        <i className="fas fa-circle fa-stack-2x orange-80"></i>
-                        <i className="far fa-heart fa-stack-1x fa-inverse"></i>
-                    </span>
-                    <img src="{{mainImage}}" style="z-index: 1;">
-                    <img src="{{mainImage}}" className="blur-image">
-
-
-                    <h3>{{name}}</h3>
-                    <p className="mdi mdi-map-marker-radius"> {{location.name}}</p>
-                </div>
-            </a>
-            {{/ifCond}}
-            {{/each}}
-        </div> */}
-
-        {/* <h2 className="title-search-home mt-4">Los mejores restaurantes</h2>
-        <div className="properties-group">
-            {{#each properties}}
-            {{#ifCond categories "includes" "Restaurante"}}
-            <a href="/property/{{_id}}">
-                <div className="property-card">
-                    <span className="fa-stack fa-2x float-right heart-home">
-                        <i className="fas fa-circle fa-stack-2x orange-80"></i>
-                        <i className="far fa-heart fa-stack-1x fa-inverse"></i>
-                    </span>
-                    <img src="{{mainImage}}" style="z-index: 1;">
-                    <img src="{{mainImage}}" className="blur-image">
-
-
-                    <h3>{{name}}</h3>
-                    <p className="mdi mdi-map-marker-radius"> {{location.name}}</p>
-                </div>
-            </a>
-            {{/ifCond}}
-            {{/each}}
-        </div> 
-        </div>*/}
       </div>
       <div className="footer">
         <p>
