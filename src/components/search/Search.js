@@ -50,13 +50,13 @@ const Search = (props) => {
   }
 
   return (
-    <div>
-      <div className="container mt-4 mapa">
+    <div className="body-container">
+      <div>
         <h1>Búsqueda de locales</h1>
         <h2>Todos los locales</h2>
         <Map />
       </div>
-      <div className="body-container">
+      <div >
         <h3 className="section-title mt-4 mdi mdi-magnify">
           Busca el mejor sitio
         </h3>
