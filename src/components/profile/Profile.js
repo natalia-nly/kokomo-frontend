@@ -2,35 +2,49 @@ import React, {useState, useEffect} from "react";
 import {Link} from "react-router-dom";
 import Booking from "./Booking"
 import axios from "axios";
-const initialState ={
-    bookings:[]
+const initialState = {
+    bookings: []
 }
-let reservas = <p>Todavía no tienes reservas</p> 
+let reservas = <p>Todavía no tienes reservas</p>
 
 const Profile = (props) => {
     console.log("estamos en profile");
-    
 
     const [state,
         setState] = useState(initialState);
 
     useEffect(() => {
         axios
-            .get("http://localhost:5000/api/booking/my-bookings",{
-                withCredentials: true})
+            .get("http://localhost:5000/api/booking/my-bookings", {withCredentials: true})
             .then((response) => {
-                console.log("CONSOLE LOG DESDE AXIOS GET", response);
+                console.log("CONSOLE LOG DESDE AXIOS GET", response.data.bookings);
                 setState({
                     ...state,
                     bookings: response.data.bookings
                 });
+
             });
-    });
+    }, []);
 
+    const deleteBooking = () => {
+        axios
+            .get("http://localhost:5000/api/booking/my-bookings", {withCredentials: true})
+            .then((response) => {
+                console.log("CONSOLE LOG DESDE AXIOS GET", response.data.bookings);
+                setState({
+                    ...state,
+                    bookings: response.data.bookings
+                });
 
- if(state.bookings.length){
-    reservas = state.bookings.map(booking => <Booking booking={booking}/>)
-  }
+            });
+    };
+
+    if (state.bookings.length) {
+        console.log(state.bookings)
+        reservas = state
+            .bookings
+            .map(booking => <Booking booking={booking} callback={deleteBooking}/>)
+    }
 
     return (
         <div>
@@ -53,10 +67,7 @@ const Profile = (props) => {
                 backgroundColor: "white",
                 paddingBottom: "30px"
             }}>
-                <img
-                    src={props.loggedInUser.avatar}
-                    alt="Avatar"
-                    className="avatar"/>
+                <img src={props.loggedInUser.avatar} alt="Avatar" className="avatar"/>
 
                 <h2>Hola {props.loggedInUser.username}!</h2>
                 <p>email: {props.loggedInUser.email}</p>
@@ -65,9 +76,7 @@ const Profile = (props) => {
             <div className="body-container">
                 <div className="row">
                     <div className="col">
-                        <Link
-                            to="/property/create-property"
-                            className="btn-kokomo btn-kokomo-success float-right">
+                        <Link to="/search" className="btn-kokomo btn-kokomo-success float-right">
                             Crear una nueva reserva
                         </Link>
                     </div>
