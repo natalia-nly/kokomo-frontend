@@ -1,7 +1,7 @@
-import React, {useState, useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
-import {Switch, Route} from "react-router-dom";
+import { Switch, Route } from "react-router-dom";
 import LandingPage from "./components/LandingPage";
 import Navbar from "./components/Navbar";
 import Login from "./components/auth/Login";
@@ -18,97 +18,107 @@ import PropertyDetails from "./components/properties/PropertyDetails";
 import Home from "./components/Home";
 
 function App() {
-    const initialState = {
-        loggedInUser: null
-    };
+  const initialState = {
+    loggedInUser: null,
+  };
 
-    const [state,
-        setState] = useState(initialState);
+  const [state, setState] = useState(initialState);
 
-    const getTheUser = (userObj) => {
-        setState({loggedInUser: userObj});
-    };
+  const getTheUser = (userObj) => {
+    setState({ loggedInUser: userObj });
+  };
 
-    // Retrieve your data from locaStorage
-    var saveData = JSON.parse(localStorage.saveData || null) || {};
-    const service = new AuthService();
+  // Retrieve your data from locaStorage
+  var saveData = JSON.parse(localStorage.saveData || null) || {};
+  const service = new AuthService();
 
-    // Store your data.
-    function saveStuff(obj) {
-        saveData.obj = obj;
-        localStorage.saveData = JSON.stringify(saveData);
+  // Store your data.
+  function saveStuff(obj) {
+    saveData.obj = obj;
+    localStorage.saveData = JSON.stringify(saveData);
+  }
+
+  function loadStuff() {
+    return saveData.obj;
+  }
+
+  useEffect(() => {
+    if (state.loggedInUser === null) {
+      if (loadStuff() !== (null || undefined)) {
+        getTheUser(loadStuff());
+      } else {
+        service.loggedin().then((response) => {
+          saveStuff(response);
+          getTheUser(loadStuff());
+        });
+      }
     }
+  });
 
-    function loadStuff() {
-        return saveData.obj;
-    }
+  return (
+    <div>
+      <Navbar getTheUser={state.loggedInUser} key={state.loggedInUser} />
 
-    useEffect(() => {
-        if (state.loggedInUser === null) {
-            if (loadStuff() !== (null || undefined)) {
-                getTheUser(loadStuff());
-            } else {
-                service
-                    .loggedin()
-                    .then((response) => {
-                        saveStuff(response);
-                        getTheUser(loadStuff());
-                    });
-            }
-        }
-    });
+      <Switch>
+        <Route exact path="/">
+          {state.loggedInUser === null ? <LandingPage /> : <Home />}
+        </Route>
+        <Route exact path="/create-property">
+          <div className="mt-5">
+            <CreateProperty />
+          </div>
+        </Route>
 
-    return (
-        <div>
-            <Navbar getTheUser={state.loggedInUser} key={state.loggedInUser}/>
+        <Route exact path="/carousel-properties">
+          <CarouselProperties getTheUser={state.loggedInUser} />
+        </Route>
 
-            <Switch>
-                <Route exact path="/">
-                {state.loggedInUser === null ? <LandingPage/> : <Home />}
-                </Route>
-                <Route exact path="/create-property">
-                <div className="mt-5">
-                <CreateProperty/>
-                </div>
-                </Route>
+        <Route
+          path="/login"
+          render={(props) => <Login {...props} callback={getTheUser} />}
+        />
+        <Route
+          path="/signup"
+          render={(props) => <SignUp {...props} callback={getTheUser} />}
+        />
+        <Route
+          path="/signup-local"
+          render={(props) => <SignUpLocal {...props} callback={getTheUser} />}
+        />
+        <ProtectedRoute
+          key={state.loggedInUser}
+          user={state.loggedInUser}
+          callback={getTheUser}
+          path="/profile"
+          component={Profile}
+        />
+        <ProtectedRoute
+          user={state.loggedInUser}
+          callback={getTheUser}
+          path="/property/create-property"
+          component={CreateProperty}
+        />
+        <ProtectedRoute
+          user={state.loggedInUser}
+          path="/search"
+          component={Search}
+        />
 
-                <Route exact path="/carousel-properties">
-                    <CarouselProperties getTheUser={state.loggedInUser}/>
-                </Route>
+        <Route
+          path="/property/:propertyId"
+          render={(props) => (
+            <PropertyDetails {...props} getTheUser={state.loggedInUser} />
+          )}
+        />
 
-                <Route
-                    path="/login"
-                    render={(props) => <Login {...props} callback={getTheUser}/>}/>
-                <Route
-                    path="/signup"
-                    render={(props) => <SignUp {...props} callback={getTheUser}/>}/>
-                <Route
-                    path="/signup-local"
-                    render={(props) => <SignUpLocal {...props} callback={getTheUser}/>}/>
-                <ProtectedRoute
-                    key={state.loggedInUser}
-                    user={state.loggedInUser}
-                    callback={getTheUser}
-                    path="/profile"
-                    component={Profile}/>
-                <ProtectedRoute
-                    user={state.loggedInUser}
-                    callback={getTheUser}
-                    path="/property/create-property"
-                    component={CreateProperty}/>
-                <ProtectedRoute user={state.loggedInUser} path="/search" component={Search}/>
-
-                <Route
-                    path="/property/:propertyId"
-                    render={(props) => <PropertyDetails {...props} getTheUser={state.loggedInUser}/>}/>
-
-                <Route
-                    exact
-                    path="/logout"
-                    render={(props) => <Logout {...props} callback={getTheUser}/>}/>
-            </Switch>
-        </div>
-    );
+        <Route
+          exact
+          path="/logout"
+          render={(props) => <Logout {...props} callback={getTheUser} />}
+        />
+      </Switch>
+    </div>
+  );
 }
 
 export default App;
