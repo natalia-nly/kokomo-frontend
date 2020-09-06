@@ -48,7 +48,7 @@ export class Login extends Component {
               <TextField
                 required
                 name="user"
-                label="Email"
+                label="Usuario"
                 variant="outlined"
                 className="w-100 mb-3"
                 value={this.state.title}

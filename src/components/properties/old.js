@@ -281,3 +281,17 @@ __proto__: Array(0)
     ],
     guests: '3'
   }
+
+
+                                          {/* <input
+                                            type="hidden"
+                                            name="propeprtyId"
+                                            value={result.property._id}
+                                            ref={(input) => {
+                                            propertyInput = input
+                                        }}/> */}
+
+                                        //booking controlesrs--->booking create schedule filter:
+                                        ([{
+                                            timeBoxes
+                                          }]
