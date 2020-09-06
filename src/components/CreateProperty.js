@@ -248,7 +248,7 @@ function CreateProperty() {
         withCredentials: true,
       })
       .then((result) => {
-        history.push("/someRoute");
+        history.push("/");
       })
       .catch((error) => console.log(error));
   };

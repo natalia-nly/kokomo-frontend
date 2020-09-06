@@ -16,6 +16,8 @@ import Search from "./components/search/Search";
 import CarouselProperties from "./components/properties/CarouselProperties";
 import PropertyDetails from "./components/properties/PropertyDetails";
 import Home from "./components/Home";
+import Favourites from "./components/Favourites";
+import MyBookings from "./components/MyBookings";
 
 function App() {
   const initialState = {
@@ -91,6 +93,20 @@ function App() {
           callback={getTheUser}
           path="/profile"
           component={Profile}
+        />
+        <ProtectedRoute
+          key={state.loggedInUser}
+          user={state.loggedInUser}
+          callback={getTheUser}
+          path="/my-favourites"
+          component={Favourites}
+        />
+        <ProtectedRoute
+          key={state.loggedInUser}
+          user={state.loggedInUser}
+          callback={getTheUser}
+          path="/my-bookings"
+          component={MyBookings}
         />
         <ProtectedRoute
           user={state.loggedInUser}
