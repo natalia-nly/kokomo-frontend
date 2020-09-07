@@ -2,6 +2,9 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Tabs from "react-bootstrap/Tabs";
 import Tab from "react-bootstrap/Tab";
+import AvailableTimes from "./availableTimes"
+import Map from "../search/Map"
+
 
 const PropertyDetails = (props) => {
   const initialState = {
@@ -27,9 +30,35 @@ const PropertyDetails = (props) => {
       ],
       bookings: [],
     },
+    availableResults: []
   };
 
   const [state, setState] = useState(initialState);
+  
+  const handleChange = (event) => {
+    setState({
+      ...state,
+      [event.target.name]: event.target.value,
+    });
+  };
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    const body = {
+      bookingDate: state.bookingDate,
+      numberGuests: state.numberGuests,
+    };
+    axios
+      .post("http://localhost:5000/api/search/property/" +props.match.params.propertyId, body, {
+        withCredentials: true,
+      })
+      .then((response) => {
+        console.log(response.data);
+        setState({
+          ...state,
+          availableResults: response.data,
+        });
+      });
+  };
 
   useEffect(() => {
     console.log(props);
@@ -48,7 +77,13 @@ const PropertyDetails = (props) => {
   }, [2]);
 
   let property = state.property;
-  console.log(state.property);
+  console.log(state.availableResults);
+
+  let availableTimes = <></>;
+
+  if (state.availableResults.length) {
+    availableTimes = <AvailableTimes guests={state.numberGuests} results={state.availableResults} />;
+  }
 
   let showProperty = (
     <div
@@ -90,6 +125,7 @@ const PropertyDetails = (props) => {
             </p>
             <p>Duración de la reserva: {state.property.bookingDuration}</p>
             <p>Plazas disponibles: {state.property.availablePlaces}</p>
+            <Map lat={state.lat}  lng={state.lng} property={state.property}/>
           </Tab>
           <Tab
             eventKey="nav-comments"
@@ -166,35 +202,51 @@ const PropertyDetails = (props) => {
             </p>
           </Tab>
         </Tabs>
-
-        <form action="/local/{{property._id}}" method="POST" className="mt-4">
-          <div className="display-form mb-3">
-            <div>
-              <input
-                type="date"
-                name="bookingDate"
-                data-date-format="DD MMMM YYYY"
-                id=""
-                className="kokomo-input"
-              />
+        <div className="row d-flex align-items-center justify-content-center">
+          <form className="form-row mb-5" onSubmit={handleSubmit}>
+            <div className="row">
+              <div className="col-md-6">
+                <div className="form-group">
+                  <label htmlFor="bookingDate" className="label active">
+                    ¿Qué día quieres venir?
+                  </label>
+                  <input
+                    type="date"
+                    name="bookingDate"
+                    onChange={handleChange}
+                    value={state.bookingDate}
+                    data-date-format="DD MMMM YYYY"
+                  />
+                </div>
+              </div>
+              <div className="col-md-6">
+                <div className="form-group">
+                  <label htmlFor="numberGuests" className="label active">
+                    ¿Cuántos seréis?
+                  </label>
+                  <input
+                    type="number"
+                    name="numberGuests"
+                    min="1"
+                    onChange={handleChange}
+                    value={state.numberGuests}
+                    className="kokomo-input"
+                  />
+                </div>
+              </div>
             </div>
-            <div>
-              <input
-                type="number"
-                name="numberGuests"
-                id=""
-                min="0"
-                className="kokomo-input"
-                placeholder="Personas"
-              />
-            </div>
-          </div>
-          <input
-            type="submit"
-            value="Ver disponibilidad"
-            className="kokomo-btn-form"
-          />
-        </form>
+            <input
+              type="submit"
+              value="Ver disponibildad"
+              className="kokomo-btn-form p-3"
+            />
+          </form>
+         
+        </div>
+        <h3 className="mt-4 mb-4 section-title">Resultados de tu búsqueda</h3>
+        
+        {availableTimes}
+        
       </div>
     </div>
   );
@@ -207,7 +259,6 @@ const PropertyDetails = (props) => {
     }}
   >
     <div className="container-left"></div>
-
     <div className="white-card">
       <div className="title-heart">
         <div>
@@ -239,6 +290,7 @@ const PropertyDetails = (props) => {
           </p>
           <p>Duración de la reserva: {state.property.bookingDuration}</p>
           <p>Plazas disponibles: {state.property.availablePlaces}</p>
+          <Map lat={state.lat}  lng={state.lng} property={state.property}/>
         </Tab>
         <Tab
           eventKey="nav-comments"

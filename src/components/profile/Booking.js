@@ -1,80 +1,100 @@
 import React, {useState, useEffect} from "react";
 import axios from "axios";
-import {useHistory} from "react-router-dom";
+import Map from "../search/Map"
+
 const initialState = {
-    bookingId: ''
+    bookingId: ""
 };
 
 const Booking = (props) => {
     const [state,
         setState] = useState(initialState);
-    let history = useHistory()
+
     console.log("estamos en booking");
     console.log(props);
     useEffect(() => {
-
         setState({
             ...state,
-            bookingId: props.booking.bookingId
+            bookingId: props.booking.bookingId,
+            lat:props.booking.property.location.lat,
+            lng:props.booking.property.location.long,
+            property: props.booking.property
         });
-
     }, []);
 
     const deleteBooking = (event) => {
         event.preventDefault();
-        console.log(state.bookingId)
+        console.log(state.bookingId);
         axios.post("http://localhost:5000/api/booking/delete/" + event.target.bookingId.value, {}, {withCredentials: true}).then((response) => {
             console.log(response.data);
-            props.callback()
+            props.callback();
         });
     };
 
     return (
-        <div>
-            <div className="column-xs">
-                <p className="mb-4">
-                    <span className="booking-ref">{props.booking.bookingRef}</span>
-                </p>
+        <div className="group-booking">
+            <div className="row">
+                <div className="column-xs">
+                    <div >
+                        <p className="mb-4">
+                            <span className="booking-ref">{props.booking.bookingRef}</span>
+                        </p>
+                    </div>
+                    <div >
+                        <p>
+                            <span className="fa-stack fa-lg">
+                                <i className="fas fa-square fa-stack-2x orange-20"></i>
+                                <i className="far fa-calendar-check fa-stack-1x orange"></i>
+                            </span>
+                            {props.booking.day}
+                        </p>
+                        <p>
+                            <span className="fa-stack fa-lg">
+                                <i className="fas fa-square fa-stack-2x orange-20"></i>
+                                <i className="far fa-clock fa-stack-1x orange"></i>
+                            </span>
+                            {props.booking.time}
+                        </p>
+                    </div>
+                    <div >
+                        <p>
+                            <span className="fa-stack fa-lg">
+                                <i className="fas fa-square fa-stack-2x orange-20"></i>
+                                <i className="fas fa-users fa-stack-1x orange"></i>
+                            </span>
+                            {props.booking.guests}
+                            persona(s)
+                        </p>
+                        <p>
+                            <span className="fa-stack fa-lg">
+                                <i className="fas fa-square fa-stack-2x orange-20"></i>
+                                <i className="fas fa-map-marker-alt fa-stack-1x orange"></i>
+                            </span>
+                            {props.booking.property.name}
+                        </p>
+                    </div>
+
+                </div>
+                <div className="column-m">
+                    <Map lat={state.lat}  lng={state.lng} property={state.property}/>
+                </div>
             </div>
-            <div className="column-xl">
-                <p>
-                    <span className="fa-stack fa-lg">
-                        <i className="fas fa-square fa-stack-2x orange-20"></i>
-                        <i className="far fa-calendar-check fa-stack-1x orange"></i>
-                    </span>
-                    {props.booking.day}
-                </p>
-                <p>
-                    <span className="fa-stack fa-lg">
-                        <i className="fas fa-square fa-stack-2x orange-20"></i>
-                        <i className="far fa-clock fa-stack-1x orange"></i>
-                    </span>
-                    {props.booking.time}
-                </p>
+            <div className="row">
+            <div>
+                    <form onSubmit={deleteBooking}>
+                        <input type="hidden" name="bookingId" value={props.booking._id}/>
+                        <button className="kokomo-btn-form p-2">Cancelar reserva</button>
+                    </form>
+                </div>
             </div>
-            <div className="column-xl">
-                <p>
-                    <span className="fa-stack fa-lg">
-                        <i className="fas fa-square fa-stack-2x orange-20"></i>
-                        <i className="fas fa-users fa-stack-1x orange"></i>
-                    </span>
-                    {props.booking.guests}
-                    personas
-                </p>
-                <p>
-                    <span className="fa-stack fa-lg">
-                        <i className="fas fa-square fa-stack-2x orange-20"></i>
-                        <i className="fas fa-map-marker-alt fa-stack-1x orange"></i>
-                    </span>
-                    {props.booking.property.name}
-                </p>
-            </div>
-            <div className="column-xs">
-                <form onSubmit={deleteBooking}>
-                <input type="hidden" name="bookingId" value={props.booking._id} />
-                <button>Cancelar reserva
-                    </button>
-                </form>
+
+           {/* <div className="dropdown dropleft float-right">
+                <div>
+                    <form onSubmit={deleteBooking}>
+                        <input type="hidden" name="bookingId" value={props.booking._id}/>
+                        <button className="kokomo-btn-form p-2">Cancelar reserva</button>
+                    </form>
+                </div>
                 <div className="dropdown dropleft float-right">
                     <button
                         className="btn-kokomo btn-kokomo-grey"
@@ -103,7 +123,7 @@ const Booking = (props) => {
                         </a>
                     </div>
                 </div>
-            </div>
+            </div>  */}
         </div>
     );
 };

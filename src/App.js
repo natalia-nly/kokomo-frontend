@@ -17,7 +17,7 @@ import CarouselProperties from "./components/properties/CarouselProperties";
 import PropertyDetails from "./components/properties/PropertyDetails";
 import Home from "./components/Home";
 import Favourites from "./components/Favourites";
-import MyBookings from "./components/MyBookings";
+import MyBookings from "./components/profile/MyBookings";
 
 function App() {
   const initialState = {
@@ -28,6 +28,10 @@ function App() {
 
   const getTheUser = (userObj) => {
     setState({ loggedInUser: userObj });
+  };
+
+  const reset= () => {
+    setState(initialState);
   };
 
   // Retrieve your data from locaStorage
@@ -56,6 +60,7 @@ function App() {
       }
     }
   });
+
 
   return (
     <div>
@@ -130,7 +135,7 @@ function App() {
         <Route
           exact
           path="/logout"
-          render={(props) => <Logout {...props} callback={getTheUser} />}
+          render={(props) => <Logout {...props} reset={reset} callback={getTheUser} />}
         />
       </Switch>
     </div>
