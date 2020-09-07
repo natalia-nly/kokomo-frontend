@@ -18,6 +18,7 @@ import PropertyDetails from "./components/properties/PropertyDetails";
 import Home from "./components/Home";
 import Favourites from "./components/Favourites";
 import MyBookings from "./components/profile/MyBookings";
+import PropertyCategory from "./components/properties/PropertyCategory";
 
 function App() {
   const initialState = {
@@ -30,7 +31,7 @@ function App() {
     setState({ loggedInUser: userObj });
   };
 
-  const reset= () => {
+  const reset = () => {
     setState(initialState);
   };
 
@@ -61,7 +62,6 @@ function App() {
     }
   });
 
-
   return (
     <div>
       <Navbar getTheUser={state.loggedInUser} key={state.loggedInUser} />
@@ -75,6 +75,12 @@ function App() {
             <CreateProperty />
           </div>
         </Route>
+        <Route
+          path="/category/:name"
+          render={(props) => (
+            <PropertyCategory {...props} getTheUser={state.loggedInUser} />
+          )}
+        />
 
         <Route exact path="/carousel-properties">
           <CarouselProperties getTheUser={state.loggedInUser} filter="all" />
@@ -135,7 +141,9 @@ function App() {
         <Route
           exact
           path="/logout"
-          render={(props) => <Logout {...props} reset={reset} callback={getTheUser} />}
+          render={(props) => (
+            <Logout {...props} reset={reset} callback={getTheUser} />
+          )}
         />
       </Switch>
     </div>

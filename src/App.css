@@ -537,6 +537,7 @@ h1 {
 
 .tab-content {
   padding: 20px 0;
+  overflow: scroll;
 }
 
 .display-form {

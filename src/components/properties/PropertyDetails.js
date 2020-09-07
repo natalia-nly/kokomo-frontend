@@ -125,7 +125,7 @@ const PropertyDetails = (props) => {
             </p>
             <p>Duración de la reserva: {state.property.bookingDuration}</p>
             <p>Plazas disponibles: {state.property.availablePlaces}</p>
-            <Map lat={state.lat}  lng={state.lng} property={state.property}/>
+ 
           </Tab>
           <Tab
             eventKey="nav-comments"
@@ -200,6 +200,7 @@ const PropertyDetails = (props) => {
               Hora de cierre:{" "}
               {state.property.openingHours[0].openingTimes.closingTime}
             </p>
+            <Map lat={state.lat}  lng={state.lng} property={state.property}/>
           </Tab>
         </Tabs>
         <div className="row d-flex align-items-center justify-content-center">
@@ -290,7 +291,6 @@ const PropertyDetails = (props) => {
           </p>
           <p>Duración de la reserva: {state.property.bookingDuration}</p>
           <p>Plazas disponibles: {state.property.availablePlaces}</p>
-          <Map lat={state.lat}  lng={state.lng} property={state.property}/>
         </Tab>
         <Tab
           eventKey="nav-comments"
@@ -365,6 +365,7 @@ const PropertyDetails = (props) => {
             Hora de cierre:{" "}
             {state.property.openingHours[0].openingTimes.closingTime}
           </p>
+          <Map lat={state.lat}  lng={state.lng} property={state.property}/>
         </Tab>
       </Tabs>
 
