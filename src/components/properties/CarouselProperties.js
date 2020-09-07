@@ -11,7 +11,8 @@ const CarouselProperties = (props) => {
   const [state, setState] = useState(initialState);
 
   useEffect(() => {
-    axios
+    if(props.filter === "All"){
+      axios
       .get("http://localhost:5000/api/", { withCredentials: true })
       .then((response) => {
         console.log("CONSOLE LOG DESDE AXIOS GET", response);
@@ -22,7 +23,45 @@ const CarouselProperties = (props) => {
           properties: response.data[0],
         });
       });
-  }, [1]);
+    } else if (props.filter === "Favourites") {
+      axios
+      .get("http://localhost:5000/api/", { withCredentials: true })
+      .then((response) => {
+        console.log("CONSOLE LOG DESDE AXIOS GET", response);
+        
+        setState({
+          ...state,
+          favourites: response.data[1],
+          properties: response.data[0],
+        });
+      });
+    } else if (props.filter === "Categories") {
+      axios
+      .get("http://localhost:5000/api/search/category/" + props.match.params.name, { withCredentials: true })
+      .then((response) => {
+        console.log("CONSOLE LOG DESDE AXIOS GET", response);
+
+        setState({
+          ...state,
+          favourites: response.data[1],
+          properties: response.data[0],
+        });
+      })
+    } else {
+      axios
+      .get("http://localhost:5000/api/search/category/" + props.filter, { withCredentials: true })
+      .then((response) => {
+        console.log("CONSOLE LOG DESDE AXIOS GET", response);
+
+        setState({
+          ...state,
+          favourites: response.data[1],
+          properties: response.data[0],
+        });
+      })
+    }
+  }, [1])
+
 
   // const handleFavourite = (propertyId) => {
   //   axios

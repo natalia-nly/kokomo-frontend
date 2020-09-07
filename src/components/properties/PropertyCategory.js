@@ -14,7 +14,7 @@ const PropertyCategory = (props) => {
     console.log(props);
     axios
       .get(
-        "http://localhost:5000/api/search/category/" + props.match.params.name
+        "http://localhost:5000/api/search/category/" + state.title
       )
       .then((response) => {
         console.log("CONSOLE LOG DESDE AXIOS GET", response.data[0]);
@@ -33,7 +33,7 @@ const PropertyCategory = (props) => {
           {state.title}
         </h3>
 
-        <CarouselProperties />
+        <CarouselProperties filter={state.title}/>
 
         <p>Todavía no tienes favoritos</p>
       </div>

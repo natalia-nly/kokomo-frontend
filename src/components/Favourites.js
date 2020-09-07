@@ -10,7 +10,7 @@ const Favourites = () => {
                     <i class="fas fa-heart fa-sm"></i>
                     Tus favoritos</h3>
 
-                    <CarouselProperties/>
+                    <CarouselProperties filter="Favourites"/>
 
                 <p>Todavía no tienes favoritos</p>
 

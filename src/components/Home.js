@@ -55,13 +55,13 @@ const Home = () => {
 
         <div className="">
           <h2 className="title-search-home">Nuestros chiringuitos</h2>
-          <CarouselProperties />
+          <CarouselProperties filter="All"/>
 
           <h2 className="title-search-home mt-4">Estilo chillout</h2>
-          <CarouselProperties />
+          <CarouselProperties filter="Chillout"/>
 
           <h2 className="title-search-home mt-4">Los mejores restaurantes</h2>
-          <CarouselProperties />
+          <CarouselProperties filter="Restaurante"/>
         </div>
       </div>
     </div>
