@@ -67,11 +67,11 @@ const Navbar = (props) => {
         </li>
         {/* eslint-disable-next-line */}
         <li>
-          <Link to="/my-bookings" className="mdi mdi-calendar"></Link>
+          <a href="http://localhost:3000/my-bookings" className="mdi mdi-calendar"/>
         </li>
         {/* eslint-disable-next-line */}
         <li>
-          <Link to="/profile" className="mdi mdi-account-circle"></Link>
+          <a href="http://localhost:3000/profile" className="mdi mdi-account-circle"/>
         </li>
       </ul>
     </nav>

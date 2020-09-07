@@ -295,3 +295,29 @@ __proto__: Array(0)
                                         ([{
                                             timeBoxes
                                           }]
+
+
+
+
+                                          property:
+availablePlaces: 20
+bookingDuration: 30
+bookings: (2) ["5f551d905c669356d7e4930a", "5f55faf20a28f120f6ec67a8"]
+categories: ["Restaurante"]
+comments: []
+createdAt: "2020-09-05T11:26:10.393Z"
+description: "Paelles variades i racions de marisc en un restaurant mariner amb terrassa i sostre modern pintat de blau."
+location: {name: "Barcelona", lat: 41.393542, long: 2.203153}
+mainImage: "https://images.unsplash.com/photo-1534837570149-9771bfc4944e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1500&q=80"
+media: ["https://uh.gsstatic.es/sfAttachPlugin/744809.jpg"]
+name: "Xiringuito Escribà"
+openingHours: [{…}]
+updatedAt: "2020-09-07T09:18:42.138Z"
+__v: 0
+_id: "5f5375d2a0681839bd07945f"
+__proto__: Object
+time: "12:30"
+timeBox: "5f5375d3a0681839bd079514"
+updatedAt: "2020-09-06T17:34:08.116Z"
+__v: 0
+_id: "5f551d905c669356d7e4930a"

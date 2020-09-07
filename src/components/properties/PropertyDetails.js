@@ -3,6 +3,7 @@ import axios from "axios";
 import Tabs from "react-bootstrap/Tabs";
 import Tab from "react-bootstrap/Tab";
 
+
 const PropertyDetails = (props) => {
   const initialState = {
     property: {
@@ -207,7 +208,6 @@ const PropertyDetails = (props) => {
     }}
   >
     <div className="container-left"></div>
-
     <div className="white-card">
       <div className="title-heart">
         <div>

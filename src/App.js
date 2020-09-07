@@ -17,7 +17,7 @@ import CarouselProperties from "./components/properties/CarouselProperties";
 import PropertyDetails from "./components/properties/PropertyDetails";
 import Home from "./components/Home";
 import Favourites from "./components/Favourites";
-import MyBookings from "./components/MyBookings";
+import MyBookings from "./components/profile/MyBookings";
 
 function App() {
   const initialState = {

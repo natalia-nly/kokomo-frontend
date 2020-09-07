@@ -731,8 +731,19 @@ h4.section-title {
 
 .mapa {
   width: 100%;
-  height: 50vh;
+  height: 40vh;
 }
+
+.mapa-property {
+  width: 100%;
+  height: 20vh;
+}
+
+.column-m {
+  width:80%;
+}
+
+
 
 /* # 01. MEDIA QUERIES
 ---------------------------------------------------------------------------------------------------- */
@@ -973,6 +984,12 @@ h4.section-title {
   .div-booking .column-xl {
     width: 30%;
   }
+  .column-m {
+    width: 25%;
+  }
+
+
+
   .category-group {
     width: 560px;
     overflow: scroll
@@ -981,5 +998,14 @@ h4.section-title {
   .mapa {
     width: 100%;
     height: 40vh;
+  }
+
+  .mapa-property {
+    width: 100%;
+    height: 20vh;
+  }
+
+  .row{
+    justify-content: space-between;
   }
 }
