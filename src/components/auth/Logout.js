@@ -21,10 +21,14 @@ export class Logout extends Component {
                 this
                     .props
                     .callback(null);
-            
+                    this
+                    .props
+                    .reset();
+                    
             })
             .catch((error) => console.log(error));
-        return <Redirect to={'/'}/>;
+            return <Redirect to={'/'}/>;
+            
     }
 }
 export default Logout;

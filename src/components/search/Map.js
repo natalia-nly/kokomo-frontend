@@ -1,7 +1,10 @@
 import React, {useState, useEffect} from "react";
 import GoogleMapReact from "google-map-react";
 import axios from "axios";
-var curr = new Date();
+
+
+const Map = (props) => {
+    var curr = new Date();
 curr.setDate(curr.getDate());
 var date = curr
     .toISOString()
@@ -17,8 +20,6 @@ var center = {
 };
 
 const zoom = 11;
-
-const Map = (props) => {
     const [state,
         setState] = useState(initialState);
 
@@ -107,6 +108,7 @@ const Map = (props) => {
     const handleApiLoaded = (map, maps, places) => {
         const markers = [];
         const infowindows = [];
+        console.log(places.length)
         if (places.length) {
             places.forEach((place) => {
                 markers.push(new maps.Marker({
@@ -120,6 +122,7 @@ const Map = (props) => {
                 infowindows.push(new maps.InfoWindow({content: getInfoWindowString(place)}));
             });
         } else {
+            console.log(places)
             markers.push(new maps.Marker({
                 position: {
                     lat: places.location.lat,

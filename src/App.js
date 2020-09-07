@@ -30,6 +30,10 @@ function App() {
     setState({ loggedInUser: userObj });
   };
 
+  const reset= () => {
+    setState(initialState);
+  };
+
   // Retrieve your data from locaStorage
   var saveData = JSON.parse(localStorage.saveData || null) || {};
   const service = new AuthService();
@@ -56,6 +60,7 @@ function App() {
       }
     }
   });
+
 
   return (
     <div>
@@ -130,7 +135,7 @@ function App() {
         <Route
           exact
           path="/logout"
-          render={(props) => <Logout {...props} callback={getTheUser} />}
+          render={(props) => <Logout {...props} reset={reset} callback={getTheUser} />}
         />
       </Switch>
     </div>

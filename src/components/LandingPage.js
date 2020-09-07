@@ -23,7 +23,7 @@ const LandingPage = () => {
         </div>
       </div>
       <div className="mapa">
-        <Map />
+        <Map/>
       </div>
       <div className="bg-landing">
         <div className="container">
