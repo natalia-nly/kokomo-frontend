@@ -10,7 +10,7 @@ import SignUp from "./components/auth/SignUp";
 import SignUpLocal from "./components/auth/SignUpLocal";
 import Profile from "./components/profile/Profile";
 import ProtectedRoute from "./auth/protected-route.js";
-import CreateProperty from "./components/CreateProperty";
+import CreateProperty from "./components/properties/CreateProperty";
 import AuthService from "./auth/auth-service";
 import Search from "./components/search/Search";
 import CarouselProperties from "./components/properties/CarouselProperties";

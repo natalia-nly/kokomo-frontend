@@ -4,7 +4,7 @@ import CarouselProperties from "./properties/CarouselProperties";
 const Home = () => {
   return (
     <div>
-      <div className="home-container" style={{ "padding-bottom": "80px" }}>
+      <div className="home-container" style={{ "paddingBottom": "80px" }}>
         <div className="hero">
           <h2 className="hero-title">Inicio</h2>
 
@@ -53,14 +53,14 @@ const Home = () => {
           </div>
         </div>
 
-        <div class="">
-          <h2 class="title-search-home">Nuestros chiringuitos</h2>
+        <div className="">
+          <h2 className="title-search-home">Nuestros chiringuitos</h2>
           <CarouselProperties />
 
-          <h2 class="title-search-home mt-4">Estilo chillout</h2>
+          <h2 className="title-search-home mt-4">Estilo chillout</h2>
           <CarouselProperties />
 
-          <h2 class="title-search-home mt-4">Los mejores restaurantes</h2>
+          <h2 className="title-search-home mt-4">Los mejores restaurantes</h2>
           <CarouselProperties />
         </div>
       </div>

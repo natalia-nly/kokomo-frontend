@@ -22,7 +22,21 @@ const CarouselProperties = (props) => {
           properties: response.data[0],
         });
       });
-  }, 1);
+  }, [1]);
+
+  // const handleFavourite = (propertyId) => {
+  //   axios
+  //     .post("http://localhost:5000/api/property/love/" + propertyId, { withCredentials: true })
+  //     .then((response) => {
+  //       console.log("Favorito añadido", response);
+
+  //       setState({
+  //         ...state,
+  //         favourites: response.data[1],
+  //         properties: response.data[0],
+  //       });
+  //     });
+  // }
 
   let allProperties = "";
 
@@ -32,29 +46,33 @@ const CarouselProperties = (props) => {
       heartKokomo = "fas fa-heart fa-stack-1x fa-inverse";
     }
     return (
-      <Link to={"/property/" + property._id}>
-        <Link to={"/property/" + property._id}>
+      
           <div className="property-card" key={index}>
+          <a>
             <span className="fa-stack fa-2x float-right heart-home">
               <i className="fas fa-circle fa-stack-2x orange-80"></i>
               <i className={heartKokomo}></i>
             </span>
+            </a>
+            <Link to={"/property/" + property._id}>
             <img
               src={property.mainImage}
               style={{
-                "z-index": 1,
+                "zIndex": 1,
               }}
             />
             <img src={property.mainImage} className="blur-image" />
-
+            </Link>
+            <Link to={"/property/" + property._id}>
             <h3>{property.name}</h3>
             <p className="mdi mdi-map-marker-radius">
               {" "}
               {property.location.name}
             </p>
+            </Link>
           </div>
-        </Link>
-      </Link>
+        
+      
     );
   });
 

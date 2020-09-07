@@ -18,28 +18,7 @@ import { useHistory } from "react-router-dom";
 function CreateProperty() {
   let history = useHistory();
 
-  const QontoConnector = withStyles({
-    alternativeLabel: {
-      top: 10,
-      left: "calc(-50% + 16px)",
-      right: "calc(50% + 16px)",
-    },
-    active: {
-      "& $line": {
-        borderColor: "#784af4",
-      },
-    },
-    completed: {
-      "& $line": {
-        borderColor: "#784af4",
-      },
-    },
-    line: {
-      borderColor: "#eaeaf0",
-      borderTopWidth: 3,
-      borderRadius: 1,
-    },
-  })(StepConnector);
+  
 
   const useQontoStepIconStyles = makeStyles({
     root: {
@@ -164,17 +143,8 @@ function CreateProperty() {
   }
 
   ColorlibStepIcon.propTypes = {
-    /**
-     * Whether this step is active.
-     */
     active: PropTypes.bool,
-    /**
-     * Mark the step as completed. Is passed to child components.
-     */
     completed: PropTypes.bool,
-    /**
-     * The label displayed in the step icon.
-     */
     icon: PropTypes.node,
   };
 
@@ -204,7 +174,7 @@ function CreateProperty() {
     description: "",
     categories: [],
     mainImage: "",
-    media: [],
+    file: null,
     location: {
       name: "",
       lat: 0,
@@ -227,27 +197,22 @@ function CreateProperty() {
     ],
     bookingDuration: 0,
     availablePlaces: 0,
-    comments: [
-      {
-        username: "",
-        day: null,
-        comment: "",
-      },
-    ],
-    rating: 0,
-    bookings: [],
   };
 
   const [state, setState] = useState(initialState);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const body = state;
+
+    const uploadData = new FormData();
+    uploadData.append("mainImage", state.file);
+
     axios
-      .post("http://localhost:5000/api/property/create-property", body, {
+      .post("http://localhost:5000/api/property/create-property", uploadData, {
         withCredentials: true,
       })
-      .then((result) => {
+      .then((response) => {
+        console.log("file uploaded", response.data)
         history.push("/");
       })
       .catch((error) => console.log(error));
@@ -261,9 +226,24 @@ function CreateProperty() {
   };
 
   const handleFile = (e) => {
+    setState({ ...state, file: e.target.files[0] });
+    // const uploadData = new FormData()
+    // uploadData.append("mainImage", state.mainImage)
+
+    //   axios.post("http://localhost:5000/api/properties/upload", uploadData)
+    //   .then(response => {
+    //       console.log("file uploaded", response.data)
+    //       setState({ ...state, mainImage: response.data.path });
+    //     })
+  };
+
+  const handleLocationName = (e) => {
     setState({
       ...state,
-      mainImage: e.target.file[0]
+      location: {
+        ...state.location,
+        name: e.target.value,
+      },
     });
   };
 
@@ -340,12 +320,21 @@ function CreateProperty() {
                     onChange={handleChange}
                   />
                 </div>
+
+                <div className="form-group">
+                  <label htmlFor="mainImage" className="label active">
+                    Imagen Principal
+                  </label>
+                  <input type="file" name="mainImage" onChange={handleFile} />
+                </div>
+              </div>
+              <div className="col-sm-12 col-md-6">
                 <div className="form-group">
                   <label htmlFor="description" className="label active">
                     Descripción
                   </label>
                   <input
-                    type="text"
+                    type="textarea"
                     name="description"
                     value={state.description}
                     onChange={handleChange}
@@ -353,24 +342,15 @@ function CreateProperty() {
                 </div>
 
                 <div className="form-group">
-                  <label htmlFor="input-image" className="label active">
-                    Imagen Principal
-                  </label>
-                  <input type="file" name="main" id="input-image-main" />
-                </div>
-              </div>
-              <div className="col-sm-12 col-md-6">
-                <div className="form-group">
-                  <label htmlFor="input-media" className="label active">
-                    Imagen Secundaria
-                  </label>
-                  <input type="file" name="media" id="input-image-media" />
-                </div>
-                <div className="form-group">
-                  <label htmlFor="input-ubication" className="label active">
+                  <label htmlFor="location" className="label active">
                     Ubicación
                   </label>
-                  <input type="text" name="ubication" id="input-ubication" />
+                  <input
+                    type="text"
+                    name="location"
+                    value={state.location.name}
+                    onChange={handleLocationName}
+                  />
                 </div>
               </div>
             </div>
@@ -382,25 +362,23 @@ function CreateProperty() {
             <div className="row">
               <div className="col-sm-12 col-md-6">
                 <div className="form-group">
-                  <label htmlFor="input-opening" className="label active">
+                  <label htmlFor="openingDay" className="label active">
                     Día de apertura
                   </label>
                   <input
                     type="date"
-                    name="openingHours"
-                    id="input-opening"
+                    name="openingDay"
                     value={state.openingHours[0].openingDays.openingDay}
                     onChange={handleOpeningDay}
                   />
                 </div>
                 <div className="form-group">
-                  <label htmlFor="input-closing" className="label active">
+                  <label htmlFor="closingDay" className="label active">
                     Día de cierre
                   </label>
                   <input
                     type="date"
-                    name="closing"
-                    id="input-closing"
+                    name="closingDay"
                     value={state.openingHours[0].openingDays.closingDay}
                     onChange={handleClosingDay}
                   />
@@ -414,14 +392,13 @@ function CreateProperty() {
                         <input
                           type="checkbox"
                           className="custom-control-input"
-                          id="input-monday"
                           name="monday"
                           value={1}
                           onChange={handleWeekdays}
                         />
                         <label
                           className="custom-control-label"
-                          htmlFor="input-monday"
+                          htmlFor="monday"
                         >
                           Lunes
                         </label>
@@ -430,14 +407,13 @@ function CreateProperty() {
                         <input
                           type="checkbox"
                           className="custom-control-input"
-                          id="input-tuesday"
                           name="tuesday"
                           value={2}
                           onChange={handleWeekdays}
                         />
                         <label
                           className="custom-control-label"
-                          htmlFor="input-tuesday"
+                          htmlFor="tuesday"
                         >
                           Martes
                         </label>
@@ -446,14 +422,13 @@ function CreateProperty() {
                         <input
                           type="checkbox"
                           className="custom-control-input"
-                          id="input-wednesday"
                           name="wednesday"
                           value={3}
                           onChange={handleWeekdays}
                         />
                         <label
                           className="custom-control-label"
-                          htmlFor="input-wednesday"
+                          htmlFor="wednesday"
                         >
                           Miércoles
                         </label>
@@ -462,14 +437,13 @@ function CreateProperty() {
                         <input
                           type="checkbox"
                           className="custom-control-input"
-                          id="input-thursday"
                           name="thursday"
                           value={4}
                           onChange={handleWeekdays}
                         />
                         <label
                           className="custom-control-label"
-                          htmlFor="input-thursday"
+                          htmlFor="thursday"
                         >
                           Jueves
                         </label>
@@ -480,14 +454,13 @@ function CreateProperty() {
                         <input
                           type="checkbox"
                           className="custom-control-input"
-                          id="input-friday"
                           name="friday"
                           value={5}
                           onChange={handleWeekdays}
                         />
                         <label
                           className="custom-control-label"
-                          htmlFor="input-friday"
+                          htmlFor="friday"
                         >
                           Viernes
                         </label>
@@ -496,14 +469,13 @@ function CreateProperty() {
                         <input
                           type="checkbox"
                           className="custom-control-input"
-                          id="input-saturday"
                           name="saturday"
                           value={6}
                           onChange={handleWeekdays}
                         />
                         <label
                           className="custom-control-label"
-                          htmlFor="input-saturday"
+                          htmlFor="saturday"
                         >
                           Sábado
                         </label>
@@ -512,14 +484,13 @@ function CreateProperty() {
                         <input
                           type="checkbox"
                           className="custom-control-input"
-                          id="input-sunday"
                           name="sunday"
                           value={0}
                           onChange={handleWeekdays}
                         />
                         <label
                           className="custom-control-label"
-                          htmlFor="input-sunday"
+                          htmlFor="sunday"
                         >
                           Domingo
                         </label>
@@ -530,25 +501,23 @@ function CreateProperty() {
               </div>
               <div className="col-sm-12 col-md-6">
                 <div className="form-group">
-                  <label htmlFor="input-openhour" className="label active">
+                  <label htmlFor="openingHours" className="label active">
                     Hora de apertura
                   </label>
                   <input
                     type="number"
                     name="openingHours"
-                    id="input-opening"
                     value={state.openingHours[0].openingDays.openingTime}
                     onChange={handleOpeningTime}
                   />
                 </div>
                 <div className="form-group">
-                  <label htmlFor="input-closehour" className="label active">
+                  <label htmlFor="closingHours" className="label active">
                     Hora de cierre
                   </label>
                   <input
                     type="number"
                     name="closingHours"
-                    id="input-closehour"
                     value={state.openingHours[0].openingDays.closingTime}
                     onChange={handleClosingTime}
                   />
@@ -619,8 +588,8 @@ function CreateProperty() {
           activeStep={activeStep}
           connector={<ColorlibConnector />}
         >
-          {steps.map((label) => (
-            <Step key={label}>
+          {steps.map((label, index) => (
+            <Step key={index}>
               <StepLabel StepIconComponent={ColorlibStepIcon}>
                 {label}
               </StepLabel>
@@ -630,7 +599,7 @@ function CreateProperty() {
         <div>
           {activeStep === steps.length ? (
             <div>
-              <Typography className={classes.instructions}>
+              <Typography className={classes.instructions} component="div">
                 All steps completed - you&apos;re finished
               </Typography>
               <Button onClick={handleReset} className={classes.button}>
@@ -639,7 +608,7 @@ function CreateProperty() {
             </div>
           ) : (
             <div>
-              <Typography className={classes.instructions}>
+              <Typography className={classes.instructions} component="div">
                 {getStepContent(activeStep)}
               </Typography>
               <div>
