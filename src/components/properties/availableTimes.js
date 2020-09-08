@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { useHistory } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 const AvailableTimes = (props) => {
   const initialState = {
@@ -86,9 +87,9 @@ const AvailableTimes = (props) => {
         >
           Compartir reserva por WhatsApp
         </a>
-        <a href="/" class="btn-kokomo btn-kokomo-grey mt-4 ml-2 p-3">
+        <Link to="/" class="btn-kokomo btn-kokomo-grey mt-4 ml-2 p-3">
           Volver a inicio
-        </a>
+        </Link>
       </div>
     </div>
   );

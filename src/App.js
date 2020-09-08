@@ -60,7 +60,7 @@ function App() {
         });
       }
     }
-  },[1]);
+  }, [1]);
 
   return (
     <div>
@@ -69,11 +69,7 @@ function App() {
         <Route exact path="/">
           {state.loggedInUser === null ? <LandingPage /> : <Home />}
         </Route>
-        <Route exact path="/create-property">
-          <div className="mt-5">
-            <CreateProperty />
-          </div>
-        </Route>
+        
         <Route
           path="/category/:name"
           render={(props) => (
@@ -120,6 +116,7 @@ function App() {
         />
         <ProtectedRoute
           user={state.loggedInUser}
+          exact
           callback={getTheUser}
           path="/property/create-property"
           component={CreateProperty}

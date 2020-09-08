@@ -6,6 +6,7 @@ import AvailableTimes from "./availableTimes";
 import DetailedMap from "../search/DetailedMap";
 import AuthService from "../../auth/auth-service";
 import Rating from "./Rating";
+import { Link } from "react-router-dom";
 
 const PropertyDetails = (props) => {
   const initialState = {
@@ -181,9 +182,9 @@ const PropertyDetails = (props) => {
   var showProperty = (
     <div className="mt-4 border-top">
       <p>Necesitas una cuenta para poder hacer reservas.</p>
-      <a href="/signup" className="btn btn-success mt-3">
+      <Link to="/signup" className="btn btn-success mt-3">
         Regístrate ahora
-      </a>
+      </Link>
     </div>
   );
 

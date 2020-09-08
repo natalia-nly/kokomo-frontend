@@ -95,7 +95,7 @@ const CarouselProperties = (props) => {
               <i className={heartKokomo}></i>
             </span>
             </a>
-            <a href={"/property/" + property._id}>
+            <Link to={"/property/" + property._id}>
             <img
               src={property.mainImage}
               style={{
@@ -103,14 +103,14 @@ const CarouselProperties = (props) => {
               }}
             />
             <img src={property.mainImage} className="blur-image" />
-            </a>
-            <a href={"/property/" + property._id}>
+            </Link>
+            <Link to={"/property/" + property._id}>
             <h3>{property.name}</h3>
             <p className="mdi mdi-map-marker-radius">
               {" "}
               {property.location.name}
             </p>
-            </a>
+            </Link>
           </div>
         
       

@@ -2,6 +2,7 @@ import React from "react";
 import CarouselProperties from "./properties/CarouselProperties";
 import axios from "axios";
 import GeneralMap from "./search/GeneralMap";
+import { Link } from "react-router-dom";
 
 const LandingPage = () => {
   console.log('LANDING')
@@ -61,44 +62,44 @@ const LandingPage = () => {
       </div>
       <div className="category-group" style={{ margin: "auto" }}>
         <div className="one-category">
-          <a href="/category/Surfer">
+          <Link to="/category/Surfer">
             <div className="img-container">
               <img src="/images/surf.png" alt="Surfer" />
             </div>
             <p>Surfer</p>
-          </a>
+          </Link>
         </div>
         <div className="one-category">
-          <a href="/category/Chillout">
+          <Link to="/category/Chillout">
             <div className="img-container">
               <img src="/images/chillout.png" alt="Chillout" />
             </div>
             <p>Chillout</p>
-          </a>
+          </Link>
         </div>
         <div className="one-category">
-          <a href="/category/Discoteca">
+          <Link to="/category/Discoteca">
             <div className="img-container">
               <img src="/images/disco.png" alt="Disco" />
             </div>
             <p>Disco</p>
-          </a>
+          </Link>
         </div>
         <div className="one-category">
-          <a href="/category/Bar">
+          <Link to="/category/Bar">
             <div className="img-container">
               <img src="/images/bar.png" alt="Bar" />
             </div>
             <p>Bar</p>
-          </a>
+          </Link>
         </div>
         <div className="one-category">
-          <a href="/category/Restaurante">
+          <Link to="/category/Restaurante">
             <div className="img-container">
               <img src="/images/restaurant.png" alt="Bar" />
             </div>
             <p>Restaurant</p>
-          </a>
+          </Link>
         </div>
       </div>
       <div className="landing-container" style={{ "paddingBottom": "80px" }}>

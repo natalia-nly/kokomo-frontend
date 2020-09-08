@@ -64,7 +64,7 @@ const Navbar = (props) => {
         </li>
         {/* eslint-disable-next-line */}
         <li className="search-icon-menu">
-          <a href="/search" className="mdi mdi-magnify" ></a>
+          <NavLink to="/search" className="mdi mdi-magnify" ></NavLink>
         </li>
         {/* eslint-disable-next-line */}
         <li>

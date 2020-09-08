@@ -649,7 +649,7 @@ h4.section-title {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
   grid-gap: 20px;
-  overflow: hidden;
+  overflow: scroll;
   padding: 0 0 50px 20px;
   margin-top: -20px;
 }
@@ -1029,7 +1029,7 @@ h4.section-title {
 
   .category-group {
     width: 560px;
-    overflow: scroll;
+    overflow: hidden;
   }
 
   .mapa {

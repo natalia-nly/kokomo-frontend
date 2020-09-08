@@ -14,6 +14,7 @@ import StepConnector from "@material-ui/core/StepConnector";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 import { useHistory } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 function CreateProperty() {
   let history = useHistory();
