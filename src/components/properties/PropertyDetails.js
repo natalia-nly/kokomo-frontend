@@ -28,8 +28,15 @@ const PropertyDetails = (props) => {
         },
       ],
       bookings: [],
+      comments: [
+        {
+          username: "",
+          comment: "",
+        },
+      ],
     },
     availableResults: [],
+    comment: "",
   };
 
   const [state, setState] = useState(initialState);
@@ -72,6 +79,27 @@ const PropertyDetails = (props) => {
       });
   };
 
+  const handleComment = (e) => {
+    e.preventDefault();
+    let body = {
+      username: props.getTheUser.username,
+      comment: state.comment,
+    };
+    axios
+      .post(
+        "http://localhost:5000/api/property/add-comment/" +
+          props.match.params.propertyId,
+        body,
+        {
+          withCredentials: true,
+        }
+      )
+      .then((response) => {
+        console.log("Comentario añadido", response.data);
+        setState({ ...state, property: response.data, comment: "" });
+      });
+  };
+
   useEffect(() => {
     console.log(props);
     axios
@@ -109,6 +137,19 @@ const PropertyDetails = (props) => {
       />
     );
   }
+
+  let allComments = state.property.comments.map((comment, index) => (
+    <div class="border-bottom pb-4 pt-4" key={index}>
+      <h5>
+        <i class="fas fa-user-circle"></i>
+        {comment.username}
+      </h5>
+      <p>
+        <i class="far fa-comment-dots"></i>
+        {comment.comment}
+      </p>
+    </div>));
+  
 
   var showProperty = (
     <div className="mt-4 border-top">
@@ -218,16 +259,18 @@ const PropertyDetails = (props) => {
           >
             <div class="row">
               <div class="col-md-6">
-                <form
-                  action="/property/add-comment/{{property._id}}"
-                  method="POST"
-                >
-                  <input type="hidden" name="userId" value={props.getTheUser} />
+                <form onSubmit={handleComment}>
                   <div class="form-group">
                     <label for="comment" class="label active">
                       Deja tu comentario
                     </label>
-                    <textarea name="comment" cols="30" rows="3"></textarea>
+                    <textarea
+                      name="comment"
+                      cols="30"
+                      rows="3"
+                      value={state.comment}
+                      onChange={handleChange}
+                    ></textarea>
                   </div>
 
                   <input
@@ -237,18 +280,7 @@ const PropertyDetails = (props) => {
                   />
                 </form>
               </div>
-              <div class="col-md-6">
-                <div class="border-bottom pb-4 pt-4">
-                  <h5>
-                    <i class="fas fa-user-circle"></i>
-                    username{" "}
-                  </h5>
-                  <p>
-                    <i class="far fa-comment-dots"></i>
-                    comment{" "}
-                  </p>
-                </div>
-              </div>
+              <div class="col-md-6">{allComments}</div>
             </div>
           </Tab>
           <Tab
