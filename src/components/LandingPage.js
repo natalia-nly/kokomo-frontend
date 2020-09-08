@@ -102,27 +102,27 @@ const LandingPage = () => {
       </div>
       <div className="landing-container" style={{ "padding-bottom": "80px" }}>
         <CarouselProperties filter="All"/>
-        <div className="banner-orange">
+      </div>
+      <div className="banner-orange">
           <div className="row">
             <div className="col-md-6">
-              <h2 className="hero-title" style={{ color: "white" }}>
+              <h2>
                 ¿Tienes un local?
               </h2>
-              <h2 className="hero-subtitle" style={{ color: "white" }}>
+              <h3>
                 Registra tus locales y consigue reservas de tus clientes
-              </h2>
+              </h3>
             </div>
             <div className="col-md-6">
               <a
                 href="/signup-local"
-                className="btn-kokomo btn-kokomo-white float-right p-2 mt-4"
+                className="btn-kokomo btn-kokomo-banner float-right p-2 mt-4"
               >
                 Crea tu cuenta
               </a>
             </div>
           </div>
         </div>
-      </div>
       <div className="footer">
         <p>
           Made in Barcelona |{" "}

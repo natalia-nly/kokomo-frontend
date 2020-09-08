@@ -1,5 +1,5 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 
 const Navbar = (props) => {
   let finalNavbar = (
@@ -7,11 +7,12 @@ const Navbar = (props) => {
       className="navbar navbar-expand-sm navbar-light fixed-top"
       style={{
         backgroundColor: "rgb(255, 255, 255)",
+        paddingBottom: 0
       }}
     >
-      <a className="navbar-brand" href="/">
+      <NavLink className="navbar-brand" to="/">
         KOKOMO
-      </a>
+      </NavLink>
       <button
         className="navbar-toggler d-lg-none"
         type="button"
@@ -26,24 +27,24 @@ const Navbar = (props) => {
       <div className="collapse navbar-collapse" id="collapsibleNavId">
         <ul className="navbar-nav ml-auto mt-2 mt-lg-0">
           <li className="nav-item">
-            <a className="nav-link" href="/">
+            <NavLink className="nav-link" to="/" exact activeClassName="navbar-active-logout">
               Inicio
-            </a>
+            </NavLink>
           </li>
           <li className="nav-item">
-            <a className="nav-link" href="/signup-local">
+            <NavLink className="nav-link" to="/signup-local" activeClassName="navbar-active-logout">
               Tengo un local
-            </a>
+            </NavLink>
           </li>
           <li className="nav-item">
-            <a className="nav-link" href="/signup">
+            <NavLink className="nav-link" to="/signup" activeClassName="navbar-active-logout">
               Registrarme ahora
-            </a>
+            </NavLink>
           </li>
           <li className="nav-item">
-            <a className="nav-link" href="/login">
+            <NavLink className="nav-link" to="/login" activeClassName="navbar-active-logout">
               Iniciar sesión
-            </a>
+            </NavLink>
           </li>
         </ul>
       </div>
@@ -55,23 +56,23 @@ const Navbar = (props) => {
       <ul>
         {/* eslint-disable-next-line */}
         <li>
-          <a href="http://localhost:3000/" className="mdi mdi-home" />
+          <NavLink to="/" className="mdi mdi-home" ></NavLink>
         </li>
         {/* eslint-disable-next-line */}
         <li>
-          <Link to="/my-favourites" className="mdi mdi-heart-outline"></Link>
+          <NavLink to="/my-favourites" className="mdi mdi-heart-outline"></NavLink>
         </li>
         {/* eslint-disable-next-line */}
         <li className="search-icon-menu">
-          <a href="http://localhost:3000/search" className="mdi mdi-magnify" />
+          <a href="/search" className="mdi mdi-magnify" ></a>
         </li>
         {/* eslint-disable-next-line */}
         <li>
-          <a href="http://localhost:3000/my-bookings" className="mdi mdi-calendar"/>
+          <NavLink to="/my-bookings" className="mdi mdi-calendar"></NavLink>
         </li>
         {/* eslint-disable-next-line */}
         <li>
-          <a href="http://localhost:3000/profile" className="mdi mdi-account-circle"/>
+          <NavLink to="/profile" className="mdi mdi-account-circle"></NavLink>
         </li>
       </ul>
     </nav>
