@@ -3,7 +3,8 @@ import {Link} from "react-router-dom";
 import Booking from "./Booking"
 import axios from "axios";
 const initialState = {
-    bookings: []
+    bookings: [],
+    properties:[]
 }
 let reservas = <p>Todavía no tienes reservas</p>
 
@@ -22,8 +23,16 @@ const Profile = (props) => {
                     ...state,
                     bookings: response.data.bookings
                 });
-
-            });
+            }); 
+            axios
+            .get("http://localhost:5000/api/booking/my-properties-bookings", {withCredentials: true})
+            .then((response) => {
+                console.log("CONSOLE LOG DESDE AXIOS GET", response.data.bookings);
+                setState({
+                    ...state,
+                    properties: response.data.bookings
+                });
+            }); 
     }, []);
 
     const deleteBooking = () => {
@@ -43,7 +52,7 @@ const Profile = (props) => {
         console.log(state.bookings)
         reservas = state
             .bookings
-            .map(booking => <Booking booking={booking} callback={deleteBooking}/>)
+            .map((booking,index) => <Booking key ={index} booking={booking} callback={deleteBooking}/>)
     }
 
     return (

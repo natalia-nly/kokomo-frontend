@@ -7,7 +7,7 @@ const AvailablePlaces = (props) => {
     availableResults: props.results,
   };
 
-  const [state, setState] = useState(initialState);
+  const [state] = useState(initialState);
 
   let history = useHistory();
 
@@ -50,7 +50,7 @@ const AvailablePlaces = (props) => {
               <i className="fas fa-heart fa-stack-1x fa-inverse"></i>
             </span>
             <div>
-            <img src={result.property.mainImage} style={{"z-index": "1"}}></img>
+            <img src={result.property.mainImage} style={{"zIndex": "1"}}></img>
               <img src={result.property.mainImage} className="blur-image" alt={result.property.name} />
             </div>
           </div>
@@ -61,8 +61,8 @@ const AvailablePlaces = (props) => {
             {result.property.location.name}
           </p>
           <div className="row mt-3 ml-2 mb-4">
-            {result.timeboxes.map((timebox) => (
-              <form onSubmit={handleSubmit}>
+            {result.timeboxes.map((timebox,index) => (
+              <form onSubmit={handleSubmit} key={index}>
                 <input type="hidden" name="scheduleId" value={timebox._id} />
 
                 <input type="hidden" name="day" value={timebox.day} />
