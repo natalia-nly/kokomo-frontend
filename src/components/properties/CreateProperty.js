@@ -173,8 +173,7 @@ function CreateProperty() {
     name: "",
     description: "",
     categories: [],
-    mainImage: "",
-    file: null,
+    mainImage: null,
     location: {
       name: "",
       lat: 0,
@@ -203,12 +202,41 @@ function CreateProperty() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
+    console.log(state)
     const uploadData = new FormData();
     uploadData.append("mainImage", state.file);
+    const body = {
+      name: state.name,
+      description: state.description,
+      categories: state.categories,
+      location: {
+        name: state.location.name,
+        lat: state.location.lat,
+        long: state.location.long,
+      },
+      openingHours: [
+        {
+          openingDays: {
+            openingDay: state.openingHours[0].openingDays.openingDay,
+            closingDay: state.openingHours[0].openingDays.closingDay,
+          },
+          weekDays: state.openingHours[0].weekDays,
+          openingTimes: [
+            {
+              openingTime: state.openingHours[0].openingTimes[0].openingTime,
+              closingTime: state.openingHours[0].openingTimes[0].closingTime,
+            },
+          ],
+        },
+      ],
+      bookingDuration: state.bookingDuration,
+      availablePlaces: state.availablePlaces,
+      mainImage: state.mainImage
+    }
+    
 
     axios
-      .post("http://localhost:5000/api/property/create-property", uploadData, {
+      .post("http://localhost:5000/api/property/create-property",{body,uploadData}, {
         withCredentials: true,
       })
       .then((response) => {
@@ -226,26 +254,21 @@ function CreateProperty() {
   };
 
   const handleFile = (e) => {
-    setState({ ...state, file: e.target.files[0] });
-    // const uploadData = new FormData()
-    // uploadData.append("mainImage", state.mainImage)
-
-    //   axios.post("http://localhost:5000/api/properties/upload", uploadData)
-    //   .then(response => {
-    //       console.log("file uploaded", response.data)
-    //       setState({ ...state, mainImage: response.data.path });
-    //     })
+    setState({ ...state, file: e.target.files[0]});
   };
 
-  const handleLocationName = (e) => {
-    setState({
-      ...state,
-      location: {
-        ...state.location,
-        name: e.target.value,
-      },
-    });
-  };
+  const handleSave = (e)=>{
+    e.preventDefault()
+    const uploadData = new FormData()
+    uploadData.append('mainImage',state.file)
+    axios.post('http://localhost:5000/api/property/upload', uploadData).then(
+        response=>{
+            console.log('File upload successful:', response.data)
+            setState({ ...state, mainImage: response.data.path});
+        }
+    )
+}
+
 
   const handleOpeningDay = (e) => {
     let openingHours = [...state.openingHours];
@@ -291,12 +314,31 @@ function CreateProperty() {
     } else {
       weekDays[0].weekDays.push(parseInt(e.target.value));
     }
-
     setState({
       ...state,
       openingHours: weekDays,
     });
   };
+
+  const handleGoogleSearch = (e) => {
+    e.preventDefault()
+    // buscar la direccion y mostrar un PIN en el mapa con la dirección
+    axios.get("http://localhost:5000/api/search/maps?search=" + state.search)
+    .then(response => {
+        console.log(response.data)
+        console.log(state)
+        // volver a renderizar el mapa con CENTER = lat, lng y un PIN =  lat, lng
+       setState({
+         ...state,
+         search:response.data.candidates[0].name,
+          location:{
+            lat: response.data.candidates[0].geometry.location.lat,
+            long: response.data.candidates[0].geometry.location.lng,
+            name: response.data.candidates[0].formatted_address
+          }
+        })
+        
+    })}
 
   function getSteps() {
     return [<p>Datos principales</p>, <p>Horarios</p>, <p>El local</p>];
@@ -320,12 +362,12 @@ function CreateProperty() {
                     onChange={handleChange}
                   />
                 </div>
-
                 <div className="form-group">
-                  <label htmlFor="mainImage" className="label active">
-                    Imagen Principal
-                  </label>
-                  <input type="file" name="mainImage" onChange={handleFile} />
+                <form onSubmit={handleSave}>
+                    <label>Imagen</label>
+                    <input type='file' name='imageUrl' onChange={handleFile}/>
+                    <input type='submit' value='Save'/>
+                </form>
                 </div>
               </div>
               <div className="col-sm-12 col-md-6">
@@ -340,17 +382,35 @@ function CreateProperty() {
                     onChange={handleChange}
                   />
                 </div>
-
+                <div className="col-sm-12 col-md-6">
                 <div className="form-group">
-                  <label htmlFor="location" className="label active">
-                    Ubicación
+                  <label htmlFor="categories" className="label active">
+                    Categoría
                   </label>
-                  <input
-                    type="text"
-                    name="location"
-                    value={state.location.name}
-                    onChange={handleLocationName}
-                  />
+                  <input list="categories" type="categories" id="input-categories" name="categories" onChange={handleChange}></input>
+                  <datalist id="categories">
+                        <option value="Chillout"/>
+                        <option value="Surfer"/>
+                        <option value="Restaurante"/>
+                        <option value="Discoteca"/>
+                        <option value="Bar"/>
+                    </datalist>
+                </div>
+                </div>
+                <div className="form-group">
+                <form onSubmit={handleGoogleSearch}>
+                    <label>Dirección</label>
+                    <input type="text"
+                        name="search"
+                        value={state.search}
+                        onChange={handleChange}
+                        />
+                    <input type="submit" value="Buscar" />
+                </form>
+                <p>Candidato: {state.search}</p>
+                <p>Dirección:{state.location.name}</p>
+                <p>Latitud:{state.location.lat}</p>
+                <p>Longitud:{state.location.long}</p>
                 </div>
               </div>
             </div>

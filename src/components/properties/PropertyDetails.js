@@ -30,7 +30,6 @@ const PropertyDetails = (props) => {
       bookings: [],
     },
     availableResults: [],
-    comment: ""
   };
 
   const [state, setState] = useState(initialState);
@@ -52,9 +51,7 @@ const PropertyDetails = (props) => {
         "http://localhost:5000/api/search/property/" +
           props.match.params.propertyId,
         body,
-        {
-          withCredentials: true,
-        }
+        { withCredentials: true }
       )
       .then((response) => {
         console.log(response.data);
@@ -62,6 +59,16 @@ const PropertyDetails = (props) => {
           ...state,
           availableResults: response.data,
         });
+      });
+  };
+
+  const handleFavourite = () => {
+    axios
+      .get("http://localhost:5000/api/property/love/" + state.property._id, {
+        withCredentials: true,
+      })
+      .then((response) => {
+        console.log("Favorito añadido", response.data);
       });
   };
 
@@ -81,14 +88,15 @@ const PropertyDetails = (props) => {
       });
   }, [2]);
 
-  const handleFavourite = () => {
-    axios
-      .get("http://localhost:5000/api/property/love/" + state.property._id, { withCredentials: true })
-      .then((response) => {
-        console.log("Favorito añadido", response.data);
-      });
+  let heartKokomo = "far fa-heart fa-stack-1x fa-inverse";
+  if (
+    props.getTheUser &&
+    props.getTheUser.favourites.includes(state.property._id)
+  ) {
+    heartKokomo = "fas fa-heart fa-stack-1x fa-inverse";
   }
 
+  var property = state.property;
   console.log(state.availableResults);
 
   let availableTimes = <></>;
@@ -102,131 +110,18 @@ const PropertyDetails = (props) => {
     );
   }
 
-  let heartKokomo = "far fa-heart fa-stack-1x fa-inverse";
-    if (props.getTheUser && props.getTheUser.favourites.includes(state.property._id)) {
-      heartKokomo = "fas fa-heart fa-stack-1x fa-inverse";
-    }
+  var showProperty = (
+    <div className="mt-4 border-top">
+      <p>Necesitas una cuenta para poder hacer reservas.</p>
+      <a href="/signup" className="btn btn-success mt-3">
+        Regístrate ahora
+      </a>
+    </div>
+  );
 
-
-  let showProperty = (
-    <div
-      className="home-bg image-background"
-      style={{
-        backgroundImage: `url(${state.property.mainImage})`,
-      }}
-    >
-      <div className="container-left"></div>
-
-      <div className="white-card">
-        <div className="title-heart">
-        <a onClick={handleFavourite}>
-          <div>
-            <span className="fa-stack fa-2x mr-4">
-              <i className="fas fa-circle fa-stack-2x orange"></i>
-              <i className={heartKokomo}></i>
-            </span>
-          </div>
-          </a>
-          <div>
-            <h2 className="title-search">{state.property.name}</h2>
-          </div>
-        </div>
-        <Tabs
-          defaultActiveKey="nav-description"
-          id="nav-tab"
-          className="nav nav-tabs nav-fill"
-        >
-          <Tab
-            eventKey="nav-description"
-            title="Descripción"
-            className="nav-item nav-link"
-          >
-            <h3 className="subtitle-search mb-4">
-              {state.property.description}
-            </h3>
-            <p>
-              <i className="fas fa-map-marker-alt"></i>
-              {state.property.location.name}
-            </p>
-            <p>Duración de la reserva: {state.property.bookingDuration}</p>
-            <p>Plazas disponibles: {state.property.availablePlaces}</p>
-          </Tab>
-          <Tab
-            eventKey="nav-comments"
-            title="Comentarios"
-            className="nav-item nav-link"
-          >
-            <div class="row">
-              <div class="col-md-6">
-                <form
-                  action="/property/add-comment/{{property._id}}"
-                  method="POST"
-                >
-                  <input
-                    type="hidden"
-                    name="userId"
-                    value="{{../user.username}}"
-                  />
-                  <div class="form-group">
-                    <label for="comment" class="label active">
-                      Deja tu comentario
-                    </label>
-                    <textarea name="comment" cols="30" rows="3"></textarea>
-                  </div>
-
-                  <input
-                    type="submit"
-                    value="Enviar"
-                    class="btn-kokomo btn-kokomo-grey btn-block"
-                  />
-                </form>
-              </div>
-              <div class="col-md-6">
-                <div class="border-bottom pb-4 pt-4">
-                  <h5>
-                    <i class="fas fa-user-circle"></i> username{" "}
-                  </h5>
-                  <p>
-                    <i class="far fa-comment-dots"></i> comment{" "}
-                  </p>
-                </div>
-              </div>
-            </div>
-          </Tab>
-          <Tab
-            eventKey="nav-openings"
-            title="Horarios"
-            className="nav-item nav-link"
-          >
-            <h3 className="subtitle-search mb-4">Días de apertura</h3>
-
-            <p>
-              Día de apertura:
-              <span id="openingDay1">
-                {state.property.openingHours[0].openingDays.openingDay}
-              </span>
-            </p>
-
-            <p>
-              Día de cierre:
-              <span id="closingDay1">
-                {state.property.openingHours[0].openingDays.closingDay}
-              </span>
-            </p>
-
-            <p>Días de la semana: {state.property.openingHours[0].weekDays}</p>
-
-            <p>
-              Hora de apertura:{" "}
-              {state.property.openingHours[0].openingTimes.openingTime}
-            </p>
-            <p>
-              Hora de cierre:{" "}
-              {state.property.openingHours[0].openingTimes.closingTime}
-            </p>
-            <Map lat={state.lat} lng={state.lng} property={state.property} />
-          </Tab>
-        </Tabs>
+  if (props.getTheUser) {
+    showProperty = (
+      <>
         <div className="row d-flex align-items-center justify-content-center">
           <form className="form-row mb-5" onSubmit={handleSubmit}>
             <div className="row">
@@ -269,11 +164,11 @@ const PropertyDetails = (props) => {
         </div>
 
         {availableTimes}
-      </div>
-    </div>
-  );
+      </>
+    );
+  }
 
-  let noUser = (
+  return (
     <div
       className="home-bg image-background"
       style={{
@@ -281,24 +176,24 @@ const PropertyDetails = (props) => {
       }}
     >
       <div className="container-left"></div>
+
       <div className="white-card">
         <div className="title-heart">
-        <a href="/signup">
-        <div>
-            <span className="fa-stack fa-2x mr-4">
-              <i className="fas fa-circle fa-stack-2x orange"></i>
-              <i className="far fa-heart fa-stack-1x fa-inverse"></i>
-            </span>
-          </div>
-        </a>
-          
+          <a onClick={handleFavourite}>
+            <div>
+              <span className="fa-stack fa-2x mr-4">
+                <i className="fas fa-circle fa-stack-2x orange"></i>
+                <i className={heartKokomo}></i>
+              </span>
+            </div>
+          </a>
           <div>
             <h2 className="title-search">{state.property.name}</h2>
           </div>
         </div>
         <Tabs
           defaultActiveKey="nav-description"
-          id="uncontrolled-tab-example"
+          id="nav-tab"
           className="nav nav-tabs nav-fill"
         >
           <Tab
@@ -327,11 +222,7 @@ const PropertyDetails = (props) => {
                   action="/property/add-comment/{{property._id}}"
                   method="POST"
                 >
-                  <input
-                    type="hidden"
-                    name="userId"
-                    value="{{../user.username}}"
-                  />
+                  <input type="hidden" name="userId" value={props.getTheUser} />
                   <div class="form-group">
                     <label for="comment" class="label active">
                       Deja tu comentario
@@ -349,10 +240,12 @@ const PropertyDetails = (props) => {
               <div class="col-md-6">
                 <div class="border-bottom pb-4 pt-4">
                   <h5>
-                    <i class="fas fa-user-circle"></i> username{" "}
+                    <i class="fas fa-user-circle"></i>
+                    username{" "}
                   </h5>
                   <p>
-                    <i class="far fa-comment-dots"></i> comment{" "}
+                    <i class="far fa-comment-dots"></i>
+                    comment{" "}
                   </p>
                 </div>
               </div>
@@ -383,31 +276,19 @@ const PropertyDetails = (props) => {
 
             <p>
               Hora de apertura:{" "}
-              {state.property.openingHours[0].openingTimes.openingTime}
+              {state.property.openingHours[0].openingTimes[0].openingTime}
             </p>
             <p>
               Hora de cierre:{" "}
-              {state.property.openingHours[0].openingTimes.closingTime}
+              {state.property.openingHours[0].openingTimes[0].closingTime}
             </p>
             <Map lat={state.lat} lng={state.lng} property={state.property} />
           </Tab>
         </Tabs>
-
-        <div className="mt-4 border-top">
-          <p>Necesitas una cuenta para poder hacer reservas.</p>
-          <a href="/signup" className="btn btn-success mt-3">
-            Regístrate ahora
-          </a>
-        </div>
+        {showProperty}
       </div>
     </div>
   );
-
-  if (!props.getTheUser) {
-    showProperty = noUser;
-  }
-
-  return <div>{showProperty}</div>;
 };
 
 export default PropertyDetails;
