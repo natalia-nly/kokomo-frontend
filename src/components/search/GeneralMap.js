@@ -2,7 +2,9 @@ import React, { useState, useEffect } from "react";
 import GoogleMapReact from "google-map-react";
 import axios from "axios";
 
-const Map = (props) => {
+
+const GeneralMap = () => {
+
   var curr = new Date();
   curr.setDate(curr.getDate());
   var date = curr.toISOString().substr(0, 10);
@@ -19,24 +21,18 @@ const Map = (props) => {
   const zoom = 11;
   const [state, setState] = useState(initialState);
 
-  if (props.lat && props.lng) {
-    center = {
-      lat: props.lat,
-      lng: props.lng,
-    };
-  }
 
   useEffect(() => {
-    console.log(props.property);
     axios.get("http://localhost:5000/api/").then((response) => {
       console.log("CONSOLE LOG DESDE AXIOS GET", response);
-
       setState({
         ...state,
         allResults: response.data[0],
       });
     });
   }, []);
+
+
   const getMapOptions = (maps) => {
     return {
       disableDefaultUI: false,
@@ -100,8 +96,11 @@ const Map = (props) => {
     const markers = [];
     const infowindows = [];
     console.log(places.length);
-    if (places.length) {
-      places.forEach((place) => {
+    console.log(places);
+   
+
+     places.forEach((place) => {
+        console.log(place.location);
         markers.push(
           new maps.Marker({
             position: {
@@ -115,23 +114,8 @@ const Map = (props) => {
         infowindows.push(
           new maps.InfoWindow({ content: getInfoWindowString(place) })
         );
-      });
-    } else {
-      console.log(places);
-      markers.push(
-        new maps.Marker({
-          position: {
-            lat: places.location.lat,
-            lng: places.location.long,
-          },
-          map,
-        })
-      );
-
-      infowindows.push(
-        new maps.InfoWindow({ content: getInfoWindowString(places) })
-      );
-    }
+      })
+    
 
     markers.forEach((marker, i) => {
       marker.addListener("click", () => {
@@ -140,45 +124,32 @@ const Map = (props) => {
     });
   };
 
-  if (props.property) {
-    console.log(props.property);
-    return (
-      <div className="container mt-4 mapa">
-        <GoogleMapReact
-          bootstrapURLKeys={{
-            key: process.env.REACT_APP_GOOGLE_API_KEY,
-            language: "sp",
-          }}
-          center={center}
-          defaultZoom={zoom}
-          options={getMapOptions}
-          yesIWantToUseGoogleMapApiInternals
-          onGoogleApiLoaded={({ map, maps }) =>
-            handleApiLoaded(map, maps, props.property)
-          }
-        />
-      </div>
-    );
-  } else {
+  var mapa = <></>
+  if(state.allResults.length){
+    mapa = ( <div className="container mt-4 mapa">
+    <GoogleMapReact
+      bootstrapURLKeys={{
+        key: process.env.REACT_APP_GOOGLE_API_KEY,
+        language: "sp",
+      }}
+      center={center}
+      defaultZoom={zoom}
+      options={getMapOptions}
+      yesIWantToUseGoogleMapApiInternals
+      onGoogleApiLoaded={({ map, maps }) =>
+        handleApiLoaded(map, maps, state.allResults)
+      }
+    />
+  </div>)
+  }
+
     console.log(state.allResults);
     return (
-      <div className="container mt-4 mapa">
-        <GoogleMapReact
-          bootstrapURLKeys={{
-            key: process.env.REACT_APP_GOOGLE_API_KEY,
-            language: "sp",
-          }}
-          center={center}
-          defaultZoom={zoom}
-          options={getMapOptions}
-          yesIWantToUseGoogleMapApiInternals
-          onGoogleApiLoaded={({ map, maps }) =>
-            handleApiLoaded(map, maps, state.allResults)
-          }
-        />
-      </div>
+     <div>
+       {mapa}
+     </div>
     );
-  }
+
 };
 
-export default Map;
+export default GeneralMap;

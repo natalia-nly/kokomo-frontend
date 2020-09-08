@@ -1,9 +1,10 @@
 import React from "react";
 import CarouselProperties from "./properties/CarouselProperties";
 import axios from "axios";
-import Map from "./search/Map";
+import GeneralMap from "./search/GeneralMap";
 
 const LandingPage = () => {
+  console.log('LANDING')
   return (
     <div>
       <div className="hero-landing" style={{ padding: "50px 10px" }}>
@@ -23,7 +24,7 @@ const LandingPage = () => {
         </div>
       </div>
       <div className="mapa">
-        <Map/>
+        <GeneralMap/>
       </div>
       <div className="bg-landing">
         <div className="container">

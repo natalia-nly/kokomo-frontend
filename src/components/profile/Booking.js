@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from "react";
 import axios from "axios";
-import Map from "../search/Map"
+import DetailedMap from "../search/DetailedMap"
 
 const initialState = {
     bookingId: ""
@@ -76,7 +76,7 @@ const Booking = (props) => {
 
                 </div>
                 <div className="column-m">
-                    <Map lat={state.lat}  lng={state.lng} property={state.property}/>
+                    <DetailedMap lat={state.lat}  lng={state.lng} property={state.property}/>
                 </div>
             </div>
             <div className="row">

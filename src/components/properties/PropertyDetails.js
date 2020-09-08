@@ -3,7 +3,7 @@ import axios from "axios";
 import Tabs from "react-bootstrap/Tabs";
 import Tab from "react-bootstrap/Tab";
 import AvailableTimes from "./availableTimes";
-import Map from "../search/Map";
+import DetailedMap from "../search/DetailedMap";
 
 const PropertyDetails = (props) => {
   const initialState = {
@@ -282,7 +282,7 @@ const PropertyDetails = (props) => {
               Hora de cierre:{" "}
               {state.property.openingHours[0].openingTimes[0].closingTime}
             </p>
-            <Map lat={state.lat} lng={state.lng} property={state.property} />
+            <DetailedMap lat={state.property.location.lat} lng={state.property.location.long} property={state.property} />
           </Tab>
         </Tabs>
         {showProperty}

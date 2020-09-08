@@ -79,6 +79,13 @@ const Profile = (props) => {
                         <Link to="/search" className="btn-kokomo btn-kokomo-success float-right">
                             Crear una nueva reserva
                         </Link>
+                        <div className="col">
+                        <Link
+                            to="/property/create-property"
+                            className="btn-kokomo btn-kokomo-success float-right">
+                            Crear un nuevo local
+                        </Link>
+                    </div>
                     </div>
                 </div>
                 <h4 className="section-title">

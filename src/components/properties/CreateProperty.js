@@ -398,7 +398,7 @@ function CreateProperty() {
                 </div>
                 </div>
                 <div className="form-group">
-                <form onSubmit={handleGoogleSearch}>
+                <form  onSubmit={handleGoogleSearch}>
                     <label>Dirección</label>
                     <input type="text"
                         name="search"

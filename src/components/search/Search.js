@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import AvailablePlaces from "./AvailablePlaces";
-import Map from "./Map";
+import GeneralMap from "./GeneralMap";
 
 var curr = new Date();
 curr.setDate(curr.getDate());
@@ -52,7 +52,7 @@ const Search = (props) => {
       <div>
         <h1>Búsqueda de locales</h1>
         <h2>Todos los locales</h2>
-        <Map />
+        <GeneralMap/>
       </div>
       <div >
         <h3 className="section-title mt-4 mdi mdi-magnify">

@@ -60,12 +60,11 @@ function App() {
         });
       }
     }
-  });
+  },[1]);
 
   return (
     <div>
       <Navbar getTheUser={state.loggedInUser} key={state.loggedInUser} />
-
       <Switch>
         <Route exact path="/">
           {state.loggedInUser === null ? <LandingPage /> : <Home />}
