@@ -28,7 +28,7 @@ const AvailablePlaces = (props) => {
     };
     axios
       .post(
-        "http://localhost:5000/api/booking/create-booking/" + params.scheduleId,
+        process.env.REACT_APP_API_URL + "/booking/create-booking/" + params.scheduleId,
         body,
         { withCredentials: true }
       )

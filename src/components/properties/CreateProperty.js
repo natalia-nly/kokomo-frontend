@@ -236,7 +236,7 @@ function CreateProperty() {
     
 
     axios
-      .post("http://localhost:5000/api/property/create-property",{body,uploadData}, {
+      .post(process.env.REACT_APP_API_URL + "/property/create-property",{body,uploadData}, {
         withCredentials: true,
       })
       .then((response) => {
@@ -261,7 +261,7 @@ function CreateProperty() {
     e.preventDefault()
     const uploadData = new FormData()
     uploadData.append('mainImage',state.file)
-    axios.post('http://localhost:5000/api/property/upload', uploadData).then(
+    axios.post(process.env.REACT_APP_API_URL + '/property/upload', uploadData).then(
         response=>{
             console.log('File upload successful:', response.data)
             setState({ ...state, mainImage: response.data.path});
@@ -323,7 +323,7 @@ function CreateProperty() {
   const handleGoogleSearch = (e) => {
     e.preventDefault()
     // buscar la direccion y mostrar un PIN en el mapa con la dirección
-    axios.get("http://localhost:5000/api/search/maps?search=" + state.search)
+    axios.get(process.env.REACT_APP_API_URL + "/search/maps?search=" + state.search)
     .then(response => {
         console.log(response.data)
         console.log(state)

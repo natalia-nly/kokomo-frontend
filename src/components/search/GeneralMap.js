@@ -23,7 +23,7 @@ const GeneralMap = () => {
 
 
   useEffect(() => {
-    axios.get("http://localhost:5000/api/").then((response) => {
+    axios.get(process.env.REACT_APP_API_URL + "/").then((response) => {
       console.log("CONSOLE LOG DESDE AXIOS GET", response);
       setState({
         ...state,
@@ -59,7 +59,7 @@ const GeneralMap = () => {
 
     return `
     <div>
-    <a href="http://localhost:3000/property/${
+    <a href="/property/${
       place._id
     }" class="btn-kokomo btn-kokomo-danger" style="font-size: 16px;">
     ${place.name}

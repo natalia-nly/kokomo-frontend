@@ -13,7 +13,7 @@ const CarouselProperties = (props) => {
   useEffect(() => {
     if(props.filter === "All"){
       axios
-      .get("http://localhost:5000/api/", { withCredentials: true })
+      .get(process.env.REACT_APP_API_URL + "/", { withCredentials: true })
       .then((response) => {
         console.log("CONSOLE LOG DESDE AXIOS GET", response);
 
@@ -25,7 +25,7 @@ const CarouselProperties = (props) => {
       });
     } else if (props.filter === "Favourites") {
       axios
-      .get("http://localhost:5000/api/", { withCredentials: true })
+      .get(process.env.REACT_APP_API_URL + "/", { withCredentials: true })
       .then((response) => {
         console.log("CONSOLE LOG DESDE AXIOS GET", response);
         
@@ -37,7 +37,7 @@ const CarouselProperties = (props) => {
       });
     } else if (props.filter === "Categories") {
       axios
-      .get("http://localhost:5000/api/search/category/" + props.match.params.name, { withCredentials: true })
+      .get(process.env.REACT_APP_API_URL + "/search/category/" + props.match.params.name, { withCredentials: true })
       .then((response) => {
         console.log("CONSOLE LOG DESDE AXIOS GET", response);
 
@@ -49,7 +49,7 @@ const CarouselProperties = (props) => {
       })
     } else {
       axios
-      .get("http://localhost:5000/api/search/category/" + props.filter, { withCredentials: true })
+      .get(process.env.REACT_APP_API_URL + "/search/category/" + props.filter, { withCredentials: true })
       .then((response) => {
         console.log("CONSOLE LOG DESDE AXIOS GET", response);
 
@@ -66,7 +66,7 @@ const CarouselProperties = (props) => {
   const handleFavourite = (propertyId) => {
     console.log("ID desde favs: ", propertyId)
     axios
-      .get("http://localhost:5000/api/property/love/" + propertyId, { withCredentials: true })
+      .get(process.env.REACT_APP_API_URL + "/property/love/" + propertyId, { withCredentials: true })
       .then((response) => {
         console.log("Favorito añadido", response);
         const newFavs = [...state.favourites]

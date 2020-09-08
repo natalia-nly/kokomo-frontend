@@ -16,7 +16,7 @@ const Profile = (props) => {
 
     useEffect(() => {
         axios
-            .get("http://localhost:5000/api/booking/my-bookings", {withCredentials: true})
+            .get(process.env.REACT_APP_API_URL + "/booking/my-bookings", {withCredentials: true})
             .then((response) => {
                 console.log("CONSOLE LOG DESDE AXIOS GET", response.data.bookings);
                 setState({
@@ -25,7 +25,7 @@ const Profile = (props) => {
                 });
             }); 
             axios
-            .get("http://localhost:5000/api/booking/my-properties-bookings", {withCredentials: true})
+            .get(process.env.REACT_APP_API_URL + "/booking/my-properties-bookings", {withCredentials: true})
             .then((response) => {
                 console.log("CONSOLE LOG DESDE AXIOS GET", response.data.bookings);
                 setState({
@@ -37,7 +37,7 @@ const Profile = (props) => {
 
     const deleteBooking = () => {
         axios
-            .get("http://localhost:5000/api/booking/my-bookings", {withCredentials: true})
+            .get(process.env.REACT_APP_API_URL + "/booking/my-bookings", {withCredentials: true})
             .then((response) => {
                 console.log("CONSOLE LOG DESDE AXIOS GET", response.data.bookings);
                 setState({
