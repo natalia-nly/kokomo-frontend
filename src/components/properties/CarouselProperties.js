@@ -63,19 +63,21 @@ const CarouselProperties = (props) => {
   }, [1])
 
 
-  // const handleFavourite = (propertyId) => {
-  //   axios
-  //     .post("http://localhost:5000/api/property/love/" + propertyId, { withCredentials: true })
-  //     .then((response) => {
-  //       console.log("Favorito añadido", response);
+  const handleFavourite = (propertyId) => {
+    console.log("ID desde favs: ", propertyId)
+    axios
+      .get("http://localhost:5000/api/property/love/" + propertyId, { withCredentials: true })
+      .then((response) => {
+        console.log("Favorito añadido", response);
+        const newFavs = [...state.favourites]
+        newFavs.push(propertyId)
 
-  //       setState({
-  //         ...state,
-  //         favourites: response.data[1],
-  //         properties: response.data[0],
-  //       });
-  //     });
-  // }
+        setState({
+          ...state,
+          favourites: newFavs
+        });
+      });
+  }
 
   let allProperties = "";
 
@@ -87,13 +89,13 @@ const CarouselProperties = (props) => {
     return (
       
           <div className="property-card" key={index}>
-          <a>
+          <a onClick={() => handleFavourite(property._id)}>
             <span className="fa-stack fa-2x float-right heart-home">
               <i className="fas fa-circle fa-stack-2x orange-80"></i>
               <i className={heartKokomo}></i>
             </span>
             </a>
-            <Link to={"/property/" + property._id}>
+            <a href={"/property/" + property._id}>
             <img
               src={property.mainImage}
               style={{
@@ -101,14 +103,14 @@ const CarouselProperties = (props) => {
               }}
             />
             <img src={property.mainImage} className="blur-image" />
-            </Link>
-            <Link to={"/property/" + property._id}>
+            </a>
+            <a href={"/property/" + property._id}>
             <h3>{property.name}</h3>
             <p className="mdi mdi-map-marker-radius">
               {" "}
               {property.location.name}
             </p>
-            </Link>
+            </a>
           </div>
         
       

@@ -100,7 +100,7 @@ const LandingPage = () => {
           </a>
         </div>
       </div>
-      <div className="landing-container" style={{ "padding-bottom": "80px" }}>
+      <div className="landing-container" style={{ "paddingBottom": "80px" }}>
         <CarouselProperties filter="All"/>
       </div>
       <div className="banner-orange">

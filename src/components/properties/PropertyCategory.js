@@ -35,7 +35,7 @@ const PropertyCategory = (props) => {
 
         <CarouselProperties filter={state.title}/>
 
-        <p>Todavía no tienes favoritos</p>
+        <p>Todavía no hay ningún local en esta categoría</p>
       </div>
     </div>
   );

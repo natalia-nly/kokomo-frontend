@@ -30,6 +30,7 @@ const PropertyDetails = (props) => {
       bookings: [],
     },
     availableResults: [],
+    comment: ""
   };
 
   const [state, setState] = useState(initialState);
@@ -80,7 +81,14 @@ const PropertyDetails = (props) => {
       });
   }, [2]);
 
-  let property = state.property;
+  const handleFavourite = () => {
+    axios
+      .get("http://localhost:5000/api/property/love/" + state.property._id, { withCredentials: true })
+      .then((response) => {
+        console.log("Favorito añadido", response.data);
+      });
+  }
+
   console.log(state.availableResults);
 
   let availableTimes = <></>;
@@ -94,6 +102,12 @@ const PropertyDetails = (props) => {
     );
   }
 
+  let heartKokomo = "far fa-heart fa-stack-1x fa-inverse";
+    if (props.getTheUser && props.getTheUser.favourites.includes(state.property._id)) {
+      heartKokomo = "fas fa-heart fa-stack-1x fa-inverse";
+    }
+
+
   let showProperty = (
     <div
       className="home-bg image-background"
@@ -105,12 +119,14 @@ const PropertyDetails = (props) => {
 
       <div className="white-card">
         <div className="title-heart">
+        <a onClick={handleFavourite}>
           <div>
             <span className="fa-stack fa-2x mr-4">
               <i className="fas fa-circle fa-stack-2x orange"></i>
-              <i className="far fa-heart fa-stack-1x fa-inverse"></i>
+              <i className={heartKokomo}></i>
             </span>
           </div>
+          </a>
           <div>
             <h2 className="title-search">{state.property.name}</h2>
           </div>
@@ -267,12 +283,15 @@ const PropertyDetails = (props) => {
       <div className="container-left"></div>
       <div className="white-card">
         <div className="title-heart">
-          <div>
+        <a href="/signup">
+        <div>
             <span className="fa-stack fa-2x mr-4">
               <i className="fas fa-circle fa-stack-2x orange"></i>
               <i className="far fa-heart fa-stack-1x fa-inverse"></i>
             </span>
           </div>
+        </a>
+          
           <div>
             <h2 className="title-search">{state.property.name}</h2>
           </div>
