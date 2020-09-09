@@ -38,7 +38,7 @@ export class Login extends Component {
       <div>
         <div
           className="row align-middle  justify-content-center p-4"
-          style={{ "min-height": "100vh" }}
+          style={{ "minHeight": "100vh" }}
         >
           <div className="col-sm-12 col-md-4 align-self-center">
             <h2 className="hero-title text-center mb-4">Iniciar sesión</h2>
@@ -68,7 +68,7 @@ export class Login extends Component {
 
               <button
                 type="submit"
-                class="btn-kokomo btn-kokomo-success btn-block p-3"
+                className="btn-kokomo btn-kokomo-success btn-block p-3"
               >
                 Iniciar sesión
               </button>
@@ -76,7 +76,7 @@ export class Login extends Component {
 
             <a
               href={process.env.REACT_APP_API_URL + "/auth/google"}
-              class="btn-kokomo btn-kokomo-google btn-block p-3 mt-4"
+              className="btn-kokomo btn-kokomo-google btn-block p-3 mt-4"
             >
               {" "}
               <img
