@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import GoogleMapReact from "google-map-react";
 
 const DetailedMap = (props) => {
@@ -15,7 +15,7 @@ const DetailedMap = (props) => {
   };
 
   const zoom = 11;
-  const [state, setState] = useState(initialState);
+
 
   center = {
     lat: props.lat,
