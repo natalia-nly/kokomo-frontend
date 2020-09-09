@@ -107,7 +107,7 @@ const DetailedMap = (props) => {
 
   console.log(props.property);
   return (
-    <div className="container mt-4 mapa">
+    <div className="container mapa">
       <GoogleMapReact
         bootstrapURLKeys={{
           key: process.env.REACT_APP_GOOGLE_API_KEY,

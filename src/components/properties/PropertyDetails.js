@@ -6,6 +6,8 @@ import AvailableTimes from "./availableTimes";
 import DetailedMap from "../search/DetailedMap";
 import { Link } from "react-router-dom";
 import ReactStars from "react-rating-stars-component";
+import dateFormat from "dateformat";
+import SearchIcon from "@material-ui/icons/Search";
 
 const PropertyDetails = (props) => {
   const initialState = {
@@ -53,12 +55,14 @@ const PropertyDetails = (props) => {
   let actualRating = {
     size: 12,
     count: 5,
-    color: "#ffba69",
-    activeColor: "#ffba69",
+    color: "#174e67",
+    activeColor: "#174e67",
     a11y: true,
     isHalf: true,
     emptyIcon: <i className="far fa-star" />,
-    halfIcon: <i className="fa fa-star-half-alt" />,
+    halfIcon: (
+      <i className="fa fa-star-half-alt" style={{ color: "#174e67" }} />
+    ),
     filledIcon: <i className="fa fa-star" />,
     edit: false,
     value: state.actualRating,
@@ -183,7 +187,6 @@ const PropertyDetails = (props) => {
 
   var heartKokomo = "far fa-heart fa-stack-1x fa-inverse";
   if (state.favourites && state.favourites.includes(state.property._id)) {
-    console.log("yes?");
     heartKokomo = "fas fa-heart fa-stack-1x fa-inverse";
   }
 
@@ -256,9 +259,9 @@ const PropertyDetails = (props) => {
     showProperty = (
       <>
         <div className="row d-flex align-items-center justify-content-center">
-          <form className="form-row mb-5" onSubmit={handleSubmit}>
-            <div className="row">
-              <div className="col-md-6">
+          <form className="form-row flotante-kokomo" onSubmit={handleSubmit}>
+            <div className="row w-100">
+              <div className="col-40">
                 <div className="form-group">
                   <label htmlFor="bookingDate" className="label active">
                     ¿Qué día quieres venir?
@@ -272,7 +275,7 @@ const PropertyDetails = (props) => {
                   />
                 </div>
               </div>
-              <div className="col-md-6">
+              <div className="col-40">
                 <div className="form-group">
                   <label htmlFor="numberGuests" className="label active">
                     ¿Cuántos seréis?
@@ -287,12 +290,15 @@ const PropertyDetails = (props) => {
                   />
                 </div>
               </div>
+              <div className="col-20">
+                <button
+                  type="submit"
+                  className="kokomo-btn-form"
+                >
+                  <SearchIcon />
+                </button>
+              </div>
             </div>
-            <input
-              type="submit"
-              value="Ver disponibildad"
-              className="kokomo-btn-form p-3"
-            />
           </form>
         </div>
 
@@ -303,8 +309,64 @@ const PropertyDetails = (props) => {
 
   let ratingProperty = <></>;
   if (state.actualRating) {
-    ratingProperty = <ReactStars {...actualRating} />;
+    ratingProperty = (
+      <div className="d-flex">
+        <ReactStars {...actualRating} />
+        <p className="text-review">
+          {state.property.rating.counter.length} reseñas
+        </p>
+      </div>
+    );
   }
+
+  const formatOpening = dateFormat(
+    state.property.openingHours[0].openingDays.openingDay,
+    "dd/mm/yyyy"
+  );
+  const formatClosing = dateFormat(
+    state.property.openingHours[0].openingDays.closingDay,
+    "dd/mm/yyyy"
+  );
+  let weekDaysFormat = [];
+  state.property.openingHours[0].weekDays.forEach((day) => {
+    switch (day) {
+      case 1:
+        weekDaysFormat.push("Lunes");
+        break;
+      case 2:
+        weekDaysFormat.push("Martes");
+        break;
+      case 3:
+        weekDaysFormat.push("Miércoles");
+        break;
+      case 4:
+        weekDaysFormat.push("Jueves");
+        break;
+      case 5:
+        weekDaysFormat.push("Viernes");
+        break;
+      case 6:
+        weekDaysFormat.push("Sábado");
+        break;
+      case 7:
+        weekDaysFormat.push("Domingo");
+    }
+  });
+
+  let daysInTable = weekDaysFormat.map((day, index) => (
+    <tr>
+      <td>
+        <p>{day}</p>
+      </td>
+      <td>
+        <p>
+          {state.property.openingHours[0].openingTimes[0].openingTime}:00 -{" "}
+          {state.property.openingHours[0].openingTimes[0].closingTime}:00
+        </p>
+      </td>
+    </tr>
+  ));
+
   return (
     <div
       className="home-bg image-background"
@@ -364,37 +426,32 @@ const PropertyDetails = (props) => {
             title="Horarios"
             className="nav-item nav-link"
           >
-            <h3 className="subtitle-search mb-4">Días de apertura</h3>
+            <div className="row">
+              <div className="col-md-6">
+                <DetailedMap
+                  lat={state.property.location.lat}
+                  lng={state.property.location.long}
+                  property={state.property}
+                />
+              </div>
+              <div className="col-md-6">
+                {/* 
+                LO DEJO COMENTADO PORQUE NO SÉ SI VALE LA PENA PONER ESTOS DATOS
+                <p>
+                  Día de apertura:
+                  <span id="openingDay1"> {formatOpening}</span>
+                </p>
 
-            <p>
-              Día de apertura:
-              <span id="openingDay1">
-                {state.property.openingHours[0].openingDays.openingDay}
-              </span>
-            </p>
+                <p>
+                  Día de cierre:
+                  <span id="closingDay1"> {formatClosing}</span>
+                </p> */}
 
-            <p>
-              Día de cierre:
-              <span id="closingDay1">
-                {state.property.openingHours[0].openingDays.closingDay}
-              </span>
-            </p>
-
-            <p>Días de la semana: {state.property.openingHours[0].weekDays}</p>
-
-            <p>
-              Hora de apertura:{" "}
-              {state.property.openingHours[0].openingTimes[0].openingTime}
-            </p>
-            <p>
-              Hora de cierre:{" "}
-              {state.property.openingHours[0].openingTimes[0].closingTime}
-            </p>
-            <DetailedMap
-              lat={state.property.location.lat}
-              lng={state.property.location.long}
-              property={state.property}
-            />
+                <table class="table">
+                  <tbody>{daysInTable}</tbody>
+                </table>
+              </div>
+            </div>
           </Tab>
         </Tabs>
         {showProperty}

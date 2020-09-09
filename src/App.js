@@ -19,6 +19,8 @@ import Home from "./components/Home";
 import Favourites from "./components/Favourites";
 import MyBookings from "./components/profile/MyBookings";
 import PropertyCategory from "./components/properties/PropertyCategory";
+import Error404 from "./components/error/Error404";
+import Error500 from "./components/error/Error500";
 
 function App() {
   const initialState = {
@@ -66,6 +68,7 @@ function App() {
     <div>
       <Navbar getTheUser={state.loggedInUser} key={state.loggedInUser} />
       <Switch>
+
         <Route exact path="/">
           {state.loggedInUser === null ? <LandingPage /> : <Home />}
         </Route>
@@ -141,6 +144,9 @@ function App() {
             <Logout {...props} reset={reset} callback={getTheUser} />
           )}
         />
+
+        <Route path="*" component={Error404}  status={404} />
+        <Route path="*" component={Error500}  status={500} />
       </Switch>
     </div>
   );
