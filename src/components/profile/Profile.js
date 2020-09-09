@@ -55,7 +55,7 @@ const Profile = (props) => {
         console.log(state.bookings)
         reservas = state
             .bookings
-            .map((booking,index) => <Booking key ={index} booking={booking} delete={deleteBooking}/>)
+            .map((booking,index) => <Booking key={index} booking={booking} delete={deleteBooking}/>)
     }
 
     return (
