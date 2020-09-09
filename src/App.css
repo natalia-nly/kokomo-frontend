@@ -218,7 +218,12 @@ p {
 }
 .navbar-kokomo ul li a {
   font-size: 24px;
-  color: #fbf7f3;
+  color: #7eb9d0;
+}
+
+.navbar-active-login {
+  font-size: 24px;
+  color: #fbf7f3 !important;
 }
 
 .navbar-active-logout {
@@ -763,7 +768,7 @@ h4.section-title {
 .banner-orange h2 {
   color: white;
   font-family: bely-display, sans-serif;
-  font-size: 70px;
+  font-size: 40px;
 }
 
 .banner-orange h3 {
@@ -774,7 +779,7 @@ h4.section-title {
   color: white;
   background-color: #3294bb;
   border-color: #3294bb;
-  font-size: 24px;
+  font-size: 16px;
   padding: 10px 40px !important;
 }
 
@@ -1070,6 +1075,16 @@ h4.section-title {
     width: 560px;
     overflow: hidden;
   }
+
+  .banner-orange h2 {
+    color: white;
+    font-family: bely-display, sans-serif;
+    font-size: 70px;
+  }
+
+  .btn-kokomo-banner {
+    font-size: 24px;
+}
 
   .mapa {
     width: 100%;

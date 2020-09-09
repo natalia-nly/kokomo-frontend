@@ -7,6 +7,9 @@ const AvailableTimes = (props) => {
     availableResults: props.results,
     guests: props.guests,
     bookingFinished: false,
+    bookingId: 0,
+    day: "",
+    hour: "",
   };
 
   const [state, setState] = useState(initialState);
@@ -28,13 +31,21 @@ const AvailableTimes = (props) => {
     };
     axios
       .post(
-        process.env.REACT_APP_API_URL + "/booking/create-booking/" + params.scheduleId,
+        process.env.REACT_APP_API_URL +
+          "/booking/create-booking/" +
+          params.scheduleId,
         body,
         { withCredentials: true }
       )
       .then((response) => {
         console.log(response.data);
-        setState({ ...state, bookingFinished: true });
+        setState({
+          ...state,
+          bookingFinished: true,
+          bookingId: response.data._id,
+          day: response.data.day,
+          hour: response.data.time,
+        });
       });
   };
 
@@ -57,6 +68,8 @@ const AvailableTimes = (props) => {
     ));
   }
 
+  let whatsAppLink = `whatsapp://send?text=¡Te espera una reserva de Kokomo! 😎 Aquí tienes los detalles: http://kokomo-react.herokuapp.com/booking/details/${state.bookingId}`;
+
   let bookingDetails = (
     <div class="text-center d-flex align-items-center justify-content-center kokomo-popup">
       <div>
@@ -66,22 +79,16 @@ const AvailableTimes = (props) => {
           ¡Reserva creada con éxito!
         </h2>
         <p>
-          <i class="far fa-calendar-alt"></i> Día:{""}
+          <i class="far fa-calendar-alt"></i> Día: {state.day}
         </p>
         <p>
-          <i class="far fa-clock"></i> Hora:{" "}
+          <i class="far fa-clock"></i> Hora: {state.hour}
         </p>
         <p>
           <i class="fas fa-users"></i> Número de personas: {state.guests}
         </p>
-        <p>
-          <i class="fas fa-users"></i> A nombre de:{" "}
-        </p>
 
-        <a
-          href="whatsapp://send?text=¡Te espera una reserva de Kokomo! 😎 Aquí tienes los detalles: http://kokomo-app.herokuapp.com/booking/details/{{booking._id}}"
-          class="btn-kokomo btn-kokomo-grey mt-4 mr-2 p-3"
-        >
+        <a href={whatsAppLink} class="btn-kokomo btn-kokomo-grey mt-4 mr-2 p-3">
           Compartir reserva por WhatsApp
         </a>
         <Link to="/" class="btn-kokomo btn-kokomo-grey mt-4 ml-2 p-3">

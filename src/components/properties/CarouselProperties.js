@@ -124,7 +124,7 @@ const CarouselProperties = (props) => {
       };
 
       ratingProperty = (
-        <div className="ml-3">
+        <div className="ml-md-3">
           <ReactStars {...actualRating} />
         </div>
       );
@@ -147,7 +147,7 @@ const CarouselProperties = (props) => {
           <img src={property.mainImage} className="blur-image" />
         </Link>
         <Link to={"/property/" + property._id}>
-        <div className="d-flex justify-content-between align-items-baseline">
+        <div className="flex-md-row justify-content-between align-items-baseline">
         <h3>{property.name}</h3>
           {ratingProperty}
         </div>

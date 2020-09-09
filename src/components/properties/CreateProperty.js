@@ -255,7 +255,16 @@ function CreateProperty() {
   };
 
   const handleFile = (e) => {
-    setState({ ...state, file: e.target.files[0] });
+    // setState({ ...state, file: e.target.files[0] });
+    e.preventDefault();
+    const uploadData = new FormData();
+    uploadData.append("mainImage", e.target.files[0]);
+    axios
+      .post(process.env.REACT_APP_API_URL + "/property/upload", uploadData)
+      .then((response) => {
+        console.log("File upload successful:", response.data);
+        setState({ ...state, mainImage: response.data.path });
+      });
   };
 
   const handleSave = (e) => {
@@ -366,17 +375,12 @@ function CreateProperty() {
                   />
                 </div>
 
-                <form onSubmit={handleSave} className="d-flex">
-                  <div className="form-group" style={{width: "80%"}}>
-                    <label htmlFor="imageUrl" className="label active">
-                      Imagen
-                    </label>
-                    <input type="file" name="imageUrl" onChange={handleFile} />
-                  </div>
-                  <div style={{width: "20%"}}>
-                  <input type="submit" value="Guardar" className="btn-kokomo-flex" />
-                  </div>
-                </form>
+                <div className="form-group">
+                  <label htmlFor="imageUrl" className="label active">
+                    Imagen
+                  </label>
+                  <input type="file" name="imageUrl" onChange={handleFile} />
+                </div>
               </div>
               <div className="col-sm-12 col-md-6">
                 <div className="form-group">
@@ -613,22 +617,31 @@ function CreateProperty() {
                 </div>
               </div>
               <div className="col-sm-12 col-md-6">
-              <form onSubmit={handleGoogleSearch} className="d-flex">
-                  <div className="form-group" style={{width: "80%"}}>
+                <form onSubmit={handleGoogleSearch} className="d-flex">
+                  <div className="form-group" style={{ width: "80%" }}>
                     <label htmlFor="search" className="label active">
-                    Dirección
+                      Dirección
                     </label>
-                    <input type="text" name="search" value={state.search}
-                      onChange={handleChange} />
+                    <input
+                      type="text"
+                      name="search"
+                      value={state.search}
+                      onChange={handleChange}
+                    />
                   </div>
-                  <div style={{width: "20%"}}>
-                  <input type="submit" value="Buscar" className="btn-kokomo-flex" style={{padding: "19px"}}/>
+                  <div style={{ width: "20%" }}>
+                    <input
+                      type="submit"
+                      value="Buscar"
+                      className="btn-kokomo-flex"
+                      style={{ padding: "19px" }}
+                    />
                   </div>
                 </form>
                 <p>Candidato: {state.search}</p>
-                  <p>Dirección:{state.location.name}</p>
-                  <p>Latitud:{state.location.lat}</p>
-                  <p>Longitud:{state.location.long}</p>
+                <p>Dirección:{state.location.name}</p>
+                <p>Latitud:{state.location.lat}</p>
+                <p>Longitud:{state.location.long}</p>
               </div>
             </div>
           </div>

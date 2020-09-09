@@ -56,11 +56,11 @@ const Navbar = (props) => {
       <ul>
         {/* eslint-disable-next-line */}
         <li>
-          <NavLink to="/" className="mdi mdi-home" ></NavLink>
+          <NavLink to="/" className="mdi mdi-home" exact activeClassName="navbar-active-login" ></NavLink>
         </li>
         {/* eslint-disable-next-line */}
         <li>
-          <NavLink to="/my-favourites" className="mdi mdi-heart-outline"></NavLink>
+          <NavLink to="/my-favourites" className="mdi mdi-heart-outline" activeClassName="navbar-active-login"></NavLink>
         </li>
         {/* eslint-disable-next-line */}
         <li className="search-icon-menu">
@@ -68,11 +68,11 @@ const Navbar = (props) => {
         </li>
         {/* eslint-disable-next-line */}
         <li>
-          <NavLink to="/my-bookings" className="mdi mdi-calendar"></NavLink>
+          <NavLink to="/my-bookings" className="mdi mdi-calendar" activeClassName="navbar-active-login"></NavLink>
         </li>
         {/* eslint-disable-next-line */}
         <li>
-          <NavLink to="/profile" className="mdi mdi-account-circle"></NavLink>
+          <NavLink to="/profile" className="mdi mdi-account-circle" activeClassName="navbar-active-login"></NavLink>
         </li>
       </ul>
     </nav>
