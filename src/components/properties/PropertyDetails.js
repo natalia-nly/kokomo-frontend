@@ -6,37 +6,6 @@ import AvailableTimes from "./availableTimes";
 import DetailedMap from "../search/DetailedMap";
 import { Link } from "react-router-dom";
 import ReactStars from "react-rating-stars-component";
-import SendIcon from '@material-ui/icons/Send';
-
-const actualRating = {
-  size: 12,
-  count: 5,
-  color: "#ffba69",
-  activeColor: "#ffba69",
-  value: 4.53,
-  a11y: true,
-  isHalf: true,
-  emptyIcon: <i className="far fa-star" />,
-  halfIcon: <i className="fa fa-star-half-alt" />,
-  filledIcon: <i className="fa fa-star" />,
-  edit: false,
-};
-
-const ownRating = {
-  size: 12,
-  count: 5,
-  color: "#ffba69",
-  activeColor: "#ffba69",
-  value: 4.5,
-  a11y: true,
-  isHalf: true,
-  emptyIcon: <i className="far fa-star" />,
-  halfIcon: <i className="fa fa-star-half-alt" />,
-  filledIcon: <i className="fa fa-star" />,
-  onChange: (newValue) => {
-    console.log(`Example 2: new value is ${newValue}`);
-  },
-};
 
 const PropertyDetails = (props) => {
   const initialState = {
@@ -46,6 +15,9 @@ const PropertyDetails = (props) => {
         name: "",
         lat: 41.393542,
         lng: 2.203153,
+      },
+      rating: {
+        counter: [4],
       },
       openingHours: [
         {
@@ -73,9 +45,40 @@ const PropertyDetails = (props) => {
     availableResults: [],
     comment: "",
     favourites: [],
+    ratingComment: 4,
   };
 
   const [state, setState] = useState(initialState);
+
+  let actualRating = {
+    size: 12,
+    count: 5,
+    color: "#ffba69",
+    activeColor: "#ffba69",
+    a11y: true,
+    isHalf: true,
+    emptyIcon: <i className="far fa-star" />,
+    halfIcon: <i className="fa fa-star-half-alt" />,
+    filledIcon: <i className="fa fa-star" />,
+    edit: false,
+    value: state.actualRating,
+  };
+
+  let ownRating = {
+    size: 12,
+    count: 5,
+    color: "#ffba69",
+    activeColor: "#ffba69",
+    value: state.ratingComment,
+    a11y: true,
+    isHalf: true,
+    emptyIcon: <i className="far fa-star" />,
+    halfIcon: <i className="fa fa-star-half-alt" />,
+    filledIcon: <i className="fa fa-star" />,
+    onChange: (newValue) => {
+      setState({ ...state, ratingComment: newValue });
+    },
+  };
 
   const handleChange = (event) => {
     setState({
@@ -132,6 +135,7 @@ const PropertyDetails = (props) => {
       username: props.getTheUser.username,
       comment: state.comment,
       avatar: props.getTheUser.avatar,
+      rating: state.ratingComment,
     };
     axios
       .post(
@@ -160,9 +164,19 @@ const PropertyDetails = (props) => {
       )
       .then((response) => {
         console.log("CONSOLE LOG DESDE AXIOS GET", response);
+        let counter = response.data.rating.counter;
+        let reduceFunc = (a, b) => a + b;
+
+        let rateNumber = parseFloat(
+          (counter.reduce(reduceFunc, 0) / counter.length).toFixed(2)
+        );
+
+        console.log("rate number", rateNumber);
+
         setState({
           ...state,
           property: response.data,
+          actualRating: rateNumber,
         });
       });
   }, []);
@@ -209,29 +223,33 @@ const PropertyDetails = (props) => {
     </div>
   );
 
-
   var addComment = <></>;
 
   if (props.getTheUser) {
     addComment = (
       <>
-      <ReactStars {...ownRating} />
-      <form onSubmit={handleComment} className="d-flex mt-2">
-        <div className="form-group" style={{ width: "70%" }}>
-          <label htmlFor="comment" className="label active">
-            Deja tu comentario
-          </label>
-          <input
-            type="text"
-            name="comment"
-            value={state.comment}
-            onChange={handleChange}
-          />
-        </div>
-        <div style={{ width: "30%" }}>
-          <input type="submit" value="Enviar" className="btn-kokomo-flex" style={{padding: "19px"}} />
-        </div>
-      </form>
+        <ReactStars {...ownRating} />
+        <form onSubmit={handleComment} className="d-flex mt-2">
+          <div className="form-group" style={{ width: "70%" }}>
+            <label htmlFor="comment" className="label active">
+              Deja tu comentario
+            </label>
+            <input
+              type="text"
+              name="comment"
+              value={state.comment}
+              onChange={handleChange}
+            />
+          </div>
+          <div style={{ width: "30%" }}>
+            <input
+              type="submit"
+              value="Enviar"
+              className="btn-kokomo-flex"
+              style={{ padding: "19px" }}
+            />
+          </div>
+        </form>
       </>
     );
 
@@ -283,6 +301,10 @@ const PropertyDetails = (props) => {
     );
   }
 
+  let ratingProperty = <></>;
+  if (state.actualRating) {
+    ratingProperty = <ReactStars {...actualRating} />;
+  }
   return (
     <div
       className="home-bg image-background"
@@ -304,7 +326,7 @@ const PropertyDetails = (props) => {
           </a>
           <div>
             <h2 className="title-search">{state.property.name}</h2>
-            <ReactStars {...actualRating} />
+            {ratingProperty}
           </div>
         </div>
         <Tabs
