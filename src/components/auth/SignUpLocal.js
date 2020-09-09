@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import TextField from "@material-ui/core/TextField";
 import AuthService from '../../auth/auth-service';
 
 export class SignUp extends Component {
@@ -111,7 +110,7 @@ export class SignUp extends Component {
               href="/auth/google"
               class="btn-kokomo btn-kokomo-google btn-block p-3 mt-4"
             >
-              <img src="/images/google.svg" style={{"width": "20px", "marginRight" : "8px"}}/> Registrarme con Google
+              <img src="/images/google.svg" alt="Google logo" style={{"width": "20px", "marginRight" : "8px"}}/> Registrarme con Google
             </a>
           </div>
         </div>

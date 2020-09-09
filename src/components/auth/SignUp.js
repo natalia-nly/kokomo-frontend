@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import TextField from "@material-ui/core/TextField";
 import AuthService from "../../auth/auth-service";
 
 export class SignUp extends Component {
@@ -107,6 +106,7 @@ export class SignUp extends Component {
             >
               <img
                 src="/images/google.svg"
+                alt="Google logo"
                 style={{ width: "20px", marginRight: "8px" }}
               />{" "}
               Registrarme con Google

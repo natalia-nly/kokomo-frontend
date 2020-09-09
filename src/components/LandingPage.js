@@ -1,11 +1,10 @@
 import React from "react";
 import CarouselProperties from "./properties/CarouselProperties";
-import axios from "axios";
 import GeneralMap from "./search/GeneralMap";
 import { Link } from "react-router-dom";
 
 const LandingPage = () => {
-  console.log('LANDING')
+
   return (
     <div>
       <div className="hero-landing" style={{ padding: "50px 10px" }}>

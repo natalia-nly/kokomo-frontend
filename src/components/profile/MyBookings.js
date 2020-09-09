@@ -1,11 +1,15 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Booking from "./Booking";
+
 const initialState = {
   bookings: [],
 };
+
 let reservas = <p>Todavía no tienes reservas</p>;
+
 const MyBookings = (props) => {
+  
   const [state, setState] = useState(initialState);
 
   useEffect(() => {
