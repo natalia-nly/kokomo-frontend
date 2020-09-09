@@ -10,6 +10,7 @@ let reservas = <p>Todavía no tienes reservas</p>
 
 const Profile = (props) => {
     console.log("estamos en profile");
+    console.log(props.loggedInUser)
 
     const [state,
         setState] = useState(initialState);
@@ -27,10 +28,10 @@ const Profile = (props) => {
             axios
             .get(process.env.REACT_APP_API_URL + "/booking/my-properties-bookings", {withCredentials: true})
             .then((response) => {
-                console.log("CONSOLE LOG DESDE AXIOS GET bookings en mis props:", response.data.bookings);
+                console.log("CONSOLE LOG DESDE AXIOS GET bookings en mis props:", response.data.ownProperties);
                 setState({
                     ...state,
-                    properties: response.data.bookings
+                    properties:  response.data.ownProperties
                 });
             }); 
     }, []);
@@ -57,6 +58,13 @@ const Profile = (props) => {
             .bookings
             .map((booking,index) => <Booking key ={index} booking={booking} delete={deleteBooking}/>)
     }
+
+    if(state.properties.length){
+        console.log(state.properties)
+        reservasProperties = state.properties.map()
+    }
+
+
 
     return (
         <div>
