@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import axios from "axios";
-import { useHistory } from "react-router-dom";
 import { Link } from "react-router-dom";
 
 const AvailableTimes = (props) => {
@@ -11,8 +10,6 @@ const AvailableTimes = (props) => {
   };
 
   const [state, setState] = useState(initialState);
-
-  let history = useHistory();
 
   let available = "No results";
   console.log(state.availableResults);

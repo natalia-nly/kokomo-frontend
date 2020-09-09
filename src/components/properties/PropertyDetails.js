@@ -4,9 +4,41 @@ import Tabs from "react-bootstrap/Tabs";
 import Tab from "react-bootstrap/Tab";
 import AvailableTimes from "./availableTimes";
 import DetailedMap from "../search/DetailedMap";
-import AuthService from "../../auth/auth-service";
-import Rating from "./Rating";
 import { Link } from "react-router-dom";
+import ReactStars from "react-rating-stars-component";
+
+
+const actualRating = {
+  size: 50,
+  count: 5,
+  color: "#ffba69",
+  activeColor: "#ffba69",
+  value: 4.53,
+  a11y: true,
+  isHalf: true,
+  emptyIcon: <i className="far fa-star" />,
+  halfIcon: <i className="fa fa-star-half-alt" />,
+  filledIcon: <i className="fa fa-star" />,
+ edit: false
+};
+
+const ownRating = {
+  size: 50,
+  count: 5,
+  color: "#ffba69",
+  activeColor: "#ffba69",
+  value: 4.5,
+  a11y: true,
+  isHalf: true,
+  emptyIcon: <i className="far fa-star" />,
+  halfIcon: <i className="fa fa-star-half-alt" />,
+  filledIcon: <i className="fa fa-star" />,
+  onChange: newValue => {
+    console.log(`Example 2: new value is ${newValue}`);
+  }
+};
+
+
 
 const PropertyDetails = (props) => {
   const initialState = {
@@ -45,12 +77,7 @@ const PropertyDetails = (props) => {
     favourites: [],
   };
 
-  const service = new AuthService();
-  var saveData = JSON.parse(localStorage.saveData || null) || {};
-  function saveStuff(obj) {
-    saveData.obj = obj;
-    localStorage.saveData = JSON.stringify(saveData);
-  }
+  
 
   const [state, setState] = useState(initialState);
 
@@ -136,14 +163,6 @@ const PropertyDetails = (props) => {
           property: response.data,
         });
       });
-    // service.loggedin().then((response) => {
-    //   saveStuff(response);
-    //   console.log("RESPUESTA DEL SERVICE: ", response.favourites);
-    //   setState({
-    //     ...state,
-    //     favourites: response.favourites,
-    //   });
-    // });
   }, []);
 
   var heartKokomo = "far fa-heart fa-stack-1x fa-inverse";
@@ -152,7 +171,6 @@ const PropertyDetails = (props) => {
     heartKokomo = "fas fa-heart fa-stack-1x fa-inverse";
   }
 
-  var property = state.property;
   console.log(state.availableResults);
 
   var availableTimes = <></>;
@@ -193,6 +211,7 @@ const PropertyDetails = (props) => {
   if (props.getTheUser) {
     addComment = (
       <form onSubmit={handleComment}>
+      <ReactStars {...ownRating} />
         <div className="form-group">
           <label htmlFor="comment" className="label active">
             Deja tu comentario
@@ -283,7 +302,9 @@ const PropertyDetails = (props) => {
           </a>
           <div>
             <h2 className="title-search">{state.property.name}</h2>
+            <ReactStars {...actualRating} />
           </div>
+          
         </div>
         <Tabs
           defaultActiveKey="nav-description"
@@ -304,12 +325,6 @@ const PropertyDetails = (props) => {
             </p>
             <p>Duración de la reserva: {state.property.bookingDuration}</p>
             <p>Plazas disponibles: {state.property.availablePlaces}</p>
-            {/* <Rating>0</Rating>
-      <Rating>1.49</Rating>
-      <Rating>1.5</Rating>
-      <Rating>3</Rating>
-      <Rating>4</Rating>
-      <Rating>5</Rating> */}
           </Tab>
           <Tab
             eventKey="nav-comments"

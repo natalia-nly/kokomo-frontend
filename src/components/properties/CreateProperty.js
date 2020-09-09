@@ -14,12 +14,9 @@ import StepConnector from "@material-ui/core/StepConnector";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 import { useHistory } from "react-router-dom";
-import { Link } from "react-router-dom";
 
 function CreateProperty() {
   let history = useHistory();
-
-  
 
   const useQontoStepIconStyles = makeStyles({
     root: {
@@ -203,7 +200,7 @@ function CreateProperty() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(state)
+    console.log(state);
     const uploadData = new FormData();
     uploadData.append("mainImage", state.file);
     const body = {
@@ -232,16 +229,19 @@ function CreateProperty() {
       ],
       bookingDuration: state.bookingDuration,
       availablePlaces: state.availablePlaces,
-      mainImage: state.mainImage
-    }
-    
+      mainImage: state.mainImage,
+    };
 
     axios
-      .post(process.env.REACT_APP_API_URL + "/property/create-property",{body,uploadData}, {
-        withCredentials: true,
-      })
+      .post(
+        process.env.REACT_APP_API_URL + "/property/create-property",
+        { body, uploadData },
+        {
+          withCredentials: true,
+        }
+      )
       .then((response) => {
-        console.log("file uploaded", response.data)
+        console.log("file uploaded", response.data);
         history.push("/");
       })
       .catch((error) => console.log(error));
@@ -255,21 +255,20 @@ function CreateProperty() {
   };
 
   const handleFile = (e) => {
-    setState({ ...state, file: e.target.files[0]});
+    setState({ ...state, file: e.target.files[0] });
   };
 
-  const handleSave = (e)=>{
-    e.preventDefault()
-    const uploadData = new FormData()
-    uploadData.append('mainImage',state.file)
-    axios.post(process.env.REACT_APP_API_URL + '/property/upload', uploadData).then(
-        response=>{
-            console.log('File upload successful:', response.data)
-            setState({ ...state, mainImage: response.data.path});
-        }
-    )
-}
-
+  const handleSave = (e) => {
+    e.preventDefault();
+    const uploadData = new FormData();
+    uploadData.append("mainImage", state.file);
+    axios
+      .post(process.env.REACT_APP_API_URL + "/property/upload", uploadData)
+      .then((response) => {
+        console.log("File upload successful:", response.data);
+        setState({ ...state, mainImage: response.data.path });
+      });
+  };
 
   const handleOpeningDay = (e) => {
     let openingHours = [...state.openingHours];
@@ -322,24 +321,27 @@ function CreateProperty() {
   };
 
   const handleGoogleSearch = (e) => {
-    e.preventDefault()
+    e.preventDefault();
     // buscar la direccion y mostrar un PIN en el mapa con la dirección
-    axios.get(process.env.REACT_APP_API_URL + "/search/maps?search=" + state.search)
-    .then(response => {
-        console.log(response.data)
-        console.log(state)
+    axios
+      .get(
+        process.env.REACT_APP_API_URL + "/search/maps?search=" + state.search
+      )
+      .then((response) => {
+        console.log(response.data);
+        console.log(state);
         // volver a renderizar el mapa con CENTER = lat, lng y un PIN =  lat, lng
-       setState({
-         ...state,
-         search:response.data.candidates[0].name,
-          location:{
+        setState({
+          ...state,
+          search: response.data.candidates[0].name,
+          location: {
             lat: response.data.candidates[0].geometry.location.lat,
             long: response.data.candidates[0].geometry.location.lng,
-            name: response.data.candidates[0].formatted_address
-          }
-        })
-        
-    })}
+            name: response.data.candidates[0].formatted_address,
+          },
+        });
+      });
+  };
 
   function getSteps() {
     return [<p>Datos principales</p>, <p>Horarios</p>, <p>El local</p>];
@@ -363,13 +365,18 @@ function CreateProperty() {
                     onChange={handleChange}
                   />
                 </div>
-                <div className="form-group">
-                <form onSubmit={handleSave}>
-                    <label>Imagen</label>
-                    <input type='file' name='imageUrl' onChange={handleFile}/>
-                    <input type='submit' value='Save'/>
+
+                <form onSubmit={handleSave} className="d-flex">
+                  <div className="form-group" style={{width: "80%"}}>
+                    <label htmlFor="imageUrl" className="label active">
+                      Imagen
+                    </label>
+                    <input type="file" name="imageUrl" onChange={handleFile} />
+                  </div>
+                  <div style={{width: "20%"}}>
+                  <input type="submit" value="Guardar" className="btn-kokomo-flex" />
+                  </div>
                 </form>
-                </div>
               </div>
               <div className="col-sm-12 col-md-6">
                 <div className="form-group">
@@ -383,35 +390,24 @@ function CreateProperty() {
                     onChange={handleChange}
                   />
                 </div>
-                <div className="col-sm-12 col-md-6">
                 <div className="form-group">
                   <label htmlFor="categories" className="label active">
                     Categoría
                   </label>
-                  <input list="categories" type="categories" id="input-categories" name="categories" onChange={handleChange}></input>
+                  <input
+                    list="categories"
+                    type="categories"
+                    id="input-categories"
+                    name="categories"
+                    onChange={handleChange}
+                  ></input>
                   <datalist id="categories">
-                        <option value="Chillout"/>
-                        <option value="Surfer"/>
-                        <option value="Restaurante"/>
-                        <option value="Discoteca"/>
-                        <option value="Bar"/>
-                    </datalist>
-                </div>
-                </div>
-                <div className="form-group">
-                <form  onSubmit={handleGoogleSearch}>
-                    <label>Dirección</label>
-                    <input type="text"
-                        name="search"
-                        value={state.search}
-                        onChange={handleChange}
-                        />
-                    <input type="submit" value="Buscar" />
-                </form>
-                <p>Candidato: {state.search}</p>
-                <p>Dirección:{state.location.name}</p>
-                <p>Latitud:{state.location.lat}</p>
-                <p>Longitud:{state.location.long}</p>
+                    <option value="Chillout" />
+                    <option value="Surfer" />
+                    <option value="Restaurante" />
+                    <option value="Discoteca" />
+                    <option value="Bar" />
+                  </datalist>
                 </div>
               </div>
             </div>
@@ -583,6 +579,15 @@ function CreateProperty() {
                     onChange={handleClosingTime}
                   />
                 </div>
+              </div>
+            </div>
+          </div>
+        );
+      case 2:
+        return (
+          <div>
+            <div className="row">
+              <div className="col-sm-12 col-md-6">
                 <div className="form-group">
                   <label htmlFor="bookingDuration" className="label active">
                     Duración de la reserva (en minutos)
@@ -607,11 +612,27 @@ function CreateProperty() {
                   />
                 </div>
               </div>
+              <div className="col-sm-12 col-md-6">
+              <form onSubmit={handleGoogleSearch} className="d-flex">
+                  <div className="form-group" style={{width: "80%"}}>
+                    <label htmlFor="search" className="label active">
+                    Dirección
+                    </label>
+                    <input type="text" name="search" value={state.search}
+                      onChange={handleChange} />
+                  </div>
+                  <div style={{width: "20%"}}>
+                  <input type="submit" value="Buscar" className="btn-kokomo-flex" style={{padding: "19px"}}/>
+                  </div>
+                </form>
+                <p>Candidato: {state.search}</p>
+                  <p>Dirección:{state.location.name}</p>
+                  <p>Latitud:{state.location.lat}</p>
+                  <p>Longitud:{state.location.long}</p>
+              </div>
             </div>
           </div>
         );
-      case 2:
-        return "This is the bit I really care about!";
       default:
         return "Unknown step";
     }
@@ -636,12 +657,7 @@ function CreateProperty() {
   return (
     <div className="body-container">
       <div className="hero">
-        <h2 className="hero-title">Crea tu local</h2>
-        <h2 className="hero-subtitle">
-          Rellena los datos de tu local y consigue reservas
-        </h2>
-        <h2 className="hero-arrow-phone mdi mdi-arrow-down"></h2>
-        <h2 className="hero-arrow-desktop mdi mdi-arrow-down"></h2>
+        <h2 className="hero-title text-center">Crea tu local</h2>
       </div>
       <div className={classes.root}>
         <Stepper
@@ -672,7 +688,7 @@ function CreateProperty() {
               <Typography className={classes.instructions} component="div">
                 {getStepContent(activeStep)}
               </Typography>
-              <div>
+              <div className="text-center mt-5">
                 <Button
                   disabled={activeStep === 0}
                   onClick={handleBack}
