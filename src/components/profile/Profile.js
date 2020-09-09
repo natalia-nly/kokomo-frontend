@@ -18,7 +18,7 @@ const Profile = (props) => {
         axios
             .get(process.env.REACT_APP_API_URL + "/booking/my-bookings", {withCredentials: true})
             .then((response) => {
-                console.log("CONSOLE LOG DESDE AXIOS GET", response.data.bookings);
+                console.log("CONSOLE LOG DESDE AXIOS GET mis reservas", response.data.bookings);
                 setState({
                     ...state,
                     bookings: response.data.bookings
@@ -27,7 +27,7 @@ const Profile = (props) => {
             axios
             .get(process.env.REACT_APP_API_URL + "/booking/my-properties-bookings", {withCredentials: true})
             .then((response) => {
-                console.log("CONSOLE LOG DESDE AXIOS GET", response.data.bookings);
+                console.log("CONSOLE LOG DESDE AXIOS GET bookings en mis props:", response.data.bookings);
                 setState({
                     ...state,
                     properties: response.data.bookings
