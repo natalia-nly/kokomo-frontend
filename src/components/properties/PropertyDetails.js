@@ -6,10 +6,10 @@ import AvailableTimes from "./availableTimes";
 import DetailedMap from "../search/DetailedMap";
 import { Link } from "react-router-dom";
 import ReactStars from "react-rating-stars-component";
-
+import SendIcon from '@material-ui/icons/Send';
 
 const actualRating = {
-  size: 50,
+  size: 12,
   count: 5,
   color: "#ffba69",
   activeColor: "#ffba69",
@@ -19,11 +19,11 @@ const actualRating = {
   emptyIcon: <i className="far fa-star" />,
   halfIcon: <i className="fa fa-star-half-alt" />,
   filledIcon: <i className="fa fa-star" />,
- edit: false
+  edit: false,
 };
 
 const ownRating = {
-  size: 50,
+  size: 12,
   count: 5,
   color: "#ffba69",
   activeColor: "#ffba69",
@@ -33,12 +33,10 @@ const ownRating = {
   emptyIcon: <i className="far fa-star" />,
   halfIcon: <i className="fa fa-star-half-alt" />,
   filledIcon: <i className="fa fa-star" />,
-  onChange: newValue => {
+  onChange: (newValue) => {
     console.log(`Example 2: new value is ${newValue}`);
-  }
+  },
 };
-
-
 
 const PropertyDetails = (props) => {
   const initialState = {
@@ -47,7 +45,7 @@ const PropertyDetails = (props) => {
       location: {
         name: "",
         lat: 41.393542,
-        lng: 2.203153
+        lng: 2.203153,
       },
       openingHours: [
         {
@@ -77,8 +75,6 @@ const PropertyDetails = (props) => {
     favourites: [],
   };
 
-  
-
   const [state, setState] = useState(initialState);
 
   const handleChange = (event) => {
@@ -95,7 +91,8 @@ const PropertyDetails = (props) => {
     };
     axios
       .post(
-        process.env.REACT_APP_API_URL + "/search/property/" +
+        process.env.REACT_APP_API_URL +
+          "/search/property/" +
           props.match.params.propertyId,
         body,
         { withCredentials: true }
@@ -111,32 +108,35 @@ const PropertyDetails = (props) => {
 
   const handleFavourite = () => {
     axios
-      .get(process.env.REACT_APP_API_URL + "/property/love/" + state.property._id, {
-        withCredentials: true,
-      })
+      .get(
+        process.env.REACT_APP_API_URL + "/property/love/" + state.property._id,
+        {
+          withCredentials: true,
+        }
+      )
       .then((response) => {
         console.log("Favorito añadido", response.data);
-        const newFavs = [...state.favourites]
-        newFavs.push(state.property._id)
+        const newFavs = [...state.favourites];
+        newFavs.push(state.property._id);
 
         setState({
           ...state,
-          favourites: newFavs
+          favourites: newFavs,
         });
       });
   };
-
-  
 
   const handleComment = (e) => {
     e.preventDefault();
     let body = {
       username: props.getTheUser.username,
       comment: state.comment,
+      avatar: props.getTheUser.avatar,
     };
     axios
       .post(
-        process.env.REACT_APP_API_URL + "/property/add-comment/" +
+        process.env.REACT_APP_API_URL +
+          "/property/add-comment/" +
           props.match.params.propertyId,
         body,
         {
@@ -153,7 +153,9 @@ const PropertyDetails = (props) => {
     console.log(props);
     axios
       .get(
-        process.env.REACT_APP_API_URL + "/property/" + props.match.params.propertyId,
+        process.env.REACT_APP_API_URL +
+          "/property/" +
+          props.match.params.propertyId,
         { withCredentials: true }
       )
       .then((response) => {
@@ -167,7 +169,7 @@ const PropertyDetails = (props) => {
 
   var heartKokomo = "far fa-heart fa-stack-1x fa-inverse";
   if (state.favourites && state.favourites.includes(state.property._id)) {
-    console.log('yes?')
+    console.log("yes?");
     heartKokomo = "fas fa-heart fa-stack-1x fa-inverse";
   }
 
@@ -185,15 +187,16 @@ const PropertyDetails = (props) => {
   }
 
   var allComments = state.property.comments.map((comment, index) => (
-    <div className="border-bottom pb-4 pt-4" key={index}>
+    <div className="comment-kokomo pb-4 pt-4" key={index}>
       <h5>
-        <i className="fas fa-user-circle"></i>
+        <img
+          src={comment.avatar}
+          alt="Avatar"
+          style={{ width: "30px", borderRadius: "100px", marginRight: "10px" }}
+        />
         {comment.username}
       </h5>
-      <p>
-        <i className="far fa-comment-dots"></i>
-        {comment.comment}
-      </p>
+      <p>{comment.comment}</p>
     </div>
   ));
 
@@ -206,31 +209,30 @@ const PropertyDetails = (props) => {
     </div>
   );
 
+
   var addComment = <></>;
 
   if (props.getTheUser) {
     addComment = (
-      <form onSubmit={handleComment}>
+      <>
       <ReactStars {...ownRating} />
-        <div className="form-group">
+      <form onSubmit={handleComment} className="d-flex mt-2">
+        <div className="form-group" style={{ width: "70%" }}>
           <label htmlFor="comment" className="label active">
             Deja tu comentario
           </label>
-          <textarea
+          <input
+            type="text"
             name="comment"
-            cols="30"
-            rows="3"
             value={state.comment}
             onChange={handleChange}
-          ></textarea>
+          />
         </div>
-
-        <input
-          type="submit"
-          value="Enviar"
-          className="btn-kokomo btn-kokomo-grey btn-block"
-        />
+        <div style={{ width: "30%" }}>
+          <input type="submit" value="Enviar" className="btn-kokomo-flex" style={{padding: "19px"}} />
+        </div>
       </form>
+      </>
     );
 
     showProperty = (
@@ -304,7 +306,6 @@ const PropertyDetails = (props) => {
             <h2 className="title-search">{state.property.name}</h2>
             <ReactStars {...actualRating} />
           </div>
-          
         </div>
         <Tabs
           defaultActiveKey="nav-description"
