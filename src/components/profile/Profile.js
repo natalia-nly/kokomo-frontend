@@ -35,24 +35,27 @@ const Profile = (props) => {
             }); 
     }, []);
 
-    const deleteBooking = () => {
-        axios
-            .get(process.env.REACT_APP_API_URL + "/booking/my-bookings", {withCredentials: true})
-            .then((response) => {
-                console.log("CONSOLE LOG DESDE AXIOS GET", response.data.bookings);
-                setState({
-                    ...state,
-                    bookings: response.data.bookings
-                });
+    const refreshPage = () => {
+        window
+            .location
+            .reload(false);
+    }
 
-            });
+    const deleteBooking = (event) => {
+        event.preventDefault();
+        axios.post(process.env.REACT_APP_API_URL + "/booking/delete/" + event.target.bookingId.value, {}, {withCredentials: true}).then((response) => {
+            console.log(response.data)
+            refreshPage()
+
+        });
     };
+   
 
     if (state.bookings.length) {
         console.log(state.bookings)
         reservas = state
             .bookings
-            .map((booking,index) => <Booking key ={index} booking={booking} callback={deleteBooking}/>)
+            .map((booking,index) => <Booking key ={index} booking={booking} delete={deleteBooking}/>)
     }
 
     return (

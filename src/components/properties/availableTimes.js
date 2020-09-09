@@ -66,7 +66,7 @@ const AvailableTimes = (props) => {
           ¡Reserva creada con éxito!
         </h2>
         <p>
-          <i class="far fa-calendar-alt"></i> Día:{" "}
+          <i class="far fa-calendar-alt"></i> Día:{""}
         </p>
         <p>
           <i class="far fa-clock"></i> Hora:{" "}
