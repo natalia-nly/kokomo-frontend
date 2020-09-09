@@ -10,7 +10,7 @@ const MyBookings = (props) => {
 
   useEffect(() => {
     axios
-      .get("http://localhost:5000/api/booking/my-bookings", {
+      .get(process.env.REACT_APP_API_URL + "/booking/my-bookings", {
         withCredentials: true,
       })
       .then((response) => {

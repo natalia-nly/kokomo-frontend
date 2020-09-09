@@ -76,7 +76,7 @@ export class Login extends Component {
             </form>
 
             <a
-              href="http://localhost:5000/api/auth/google"
+              href={process.env.REACT_APP_API_URL + "/auth/google"}
               class="btn-kokomo btn-kokomo-google btn-block p-3 mt-4"
             >
               {" "}

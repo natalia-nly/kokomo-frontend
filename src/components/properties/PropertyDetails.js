@@ -4,13 +4,18 @@ import Tabs from "react-bootstrap/Tabs";
 import Tab from "react-bootstrap/Tab";
 import AvailableTimes from "./availableTimes";
 import DetailedMap from "../search/DetailedMap";
+import AuthService from "../../auth/auth-service";
+import Rating from "./Rating";
+import { Link } from "react-router-dom";
 
 const PropertyDetails = (props) => {
   const initialState = {
     property: {
       name: "",
       location: {
-        name: "Test",
+        name: "",
+        lat: 41.393542,
+        lng: 2.203153
       },
       openingHours: [
         {
@@ -37,7 +42,15 @@ const PropertyDetails = (props) => {
     },
     availableResults: [],
     comment: "",
+    favourites: [],
   };
+
+  const service = new AuthService();
+  var saveData = JSON.parse(localStorage.saveData || null) || {};
+  function saveStuff(obj) {
+    saveData.obj = obj;
+    localStorage.saveData = JSON.stringify(saveData);
+  }
 
   const [state, setState] = useState(initialState);
 
@@ -55,7 +68,7 @@ const PropertyDetails = (props) => {
     };
     axios
       .post(
-        "http://localhost:5000/api/search/property/" +
+        process.env.REACT_APP_API_URL + "/search/property/" +
           props.match.params.propertyId,
         body,
         { withCredentials: true }
@@ -71,13 +84,22 @@ const PropertyDetails = (props) => {
 
   const handleFavourite = () => {
     axios
-      .get("http://localhost:5000/api/property/love/" + state.property._id, {
+      .get(process.env.REACT_APP_API_URL + "/property/love/" + state.property._id, {
         withCredentials: true,
       })
       .then((response) => {
         console.log("Favorito añadido", response.data);
+        const newFavs = [...state.favourites]
+        newFavs.push(state.property._id)
+
+        setState({
+          ...state,
+          favourites: newFavs
+        });
       });
   };
+
+  
 
   const handleComment = (e) => {
     e.preventDefault();
@@ -87,7 +109,7 @@ const PropertyDetails = (props) => {
     };
     axios
       .post(
-        "http://localhost:5000/api/property/add-comment/" +
+        process.env.REACT_APP_API_URL + "/property/add-comment/" +
           props.match.params.propertyId,
         body,
         {
@@ -104,7 +126,7 @@ const PropertyDetails = (props) => {
     console.log(props);
     axios
       .get(
-        "http://localhost:5000/api/property/" + props.match.params.propertyId,
+        process.env.REACT_APP_API_URL + "/property/" + props.match.params.propertyId,
         { withCredentials: true }
       )
       .then((response) => {
@@ -114,20 +136,26 @@ const PropertyDetails = (props) => {
           property: response.data,
         });
       });
-  }, [2]);
+    // service.loggedin().then((response) => {
+    //   saveStuff(response);
+    //   console.log("RESPUESTA DEL SERVICE: ", response.favourites);
+    //   setState({
+    //     ...state,
+    //     favourites: response.favourites,
+    //   });
+    // });
+  }, []);
 
-  let heartKokomo = "far fa-heart fa-stack-1x fa-inverse";
-  if (
-    props.getTheUser &&
-    props.getTheUser.favourites.includes(state.property._id)
-  ) {
+  var heartKokomo = "far fa-heart fa-stack-1x fa-inverse";
+  if (state.favourites && state.favourites.includes(state.property._id)) {
+    console.log('yes?')
     heartKokomo = "fas fa-heart fa-stack-1x fa-inverse";
   }
 
   var property = state.property;
   console.log(state.availableResults);
 
-  let availableTimes = <></>;
+  var availableTimes = <></>;
 
   if (state.availableResults.length) {
     availableTimes = (
@@ -138,29 +166,54 @@ const PropertyDetails = (props) => {
     );
   }
 
-  let allComments = state.property.comments.map((comment, index) => (
-    <div class="border-bottom pb-4 pt-4" key={index}>
+  var allComments = state.property.comments.map((comment, index) => (
+    <div className="border-bottom pb-4 pt-4" key={index}>
       <h5>
-        <i class="fas fa-user-circle"></i>
+        <i className="fas fa-user-circle"></i>
         {comment.username}
       </h5>
       <p>
-        <i class="far fa-comment-dots"></i>
+        <i className="far fa-comment-dots"></i>
         {comment.comment}
       </p>
-    </div>));
-  
+    </div>
+  ));
 
   var showProperty = (
     <div className="mt-4 border-top">
       <p>Necesitas una cuenta para poder hacer reservas.</p>
-      <a href="/signup" className="btn btn-success mt-3">
+      <Link to="/signup" className="btn btn-success mt-3">
         Regístrate ahora
-      </a>
+      </Link>
     </div>
   );
 
+  var addComment = <></>;
+
   if (props.getTheUser) {
+    addComment = (
+      <form onSubmit={handleComment}>
+        <div className="form-group">
+          <label htmlFor="comment" className="label active">
+            Deja tu comentario
+          </label>
+          <textarea
+            name="comment"
+            cols="30"
+            rows="3"
+            value={state.comment}
+            onChange={handleChange}
+          ></textarea>
+        </div>
+
+        <input
+          type="submit"
+          value="Enviar"
+          className="btn-kokomo btn-kokomo-grey btn-block"
+        />
+      </form>
+    );
+
     showProperty = (
       <>
         <div className="row d-flex align-items-center justify-content-center">
@@ -251,36 +304,21 @@ const PropertyDetails = (props) => {
             </p>
             <p>Duración de la reserva: {state.property.bookingDuration}</p>
             <p>Plazas disponibles: {state.property.availablePlaces}</p>
+            {/* <Rating>0</Rating>
+      <Rating>1.49</Rating>
+      <Rating>1.5</Rating>
+      <Rating>3</Rating>
+      <Rating>4</Rating>
+      <Rating>5</Rating> */}
           </Tab>
           <Tab
             eventKey="nav-comments"
             title="Comentarios"
             className="nav-item nav-link"
           >
-            <div class="row">
-              <div class="col-md-6">
-                <form onSubmit={handleComment}>
-                  <div class="form-group">
-                    <label for="comment" class="label active">
-                      Deja tu comentario
-                    </label>
-                    <textarea
-                      name="comment"
-                      cols="30"
-                      rows="3"
-                      value={state.comment}
-                      onChange={handleChange}
-                    ></textarea>
-                  </div>
-
-                  <input
-                    type="submit"
-                    value="Enviar"
-                    class="btn-kokomo btn-kokomo-grey btn-block"
-                  />
-                </form>
-              </div>
-              <div class="col-md-6">{allComments}</div>
+            <div className="row">
+              <div className="col-md-6">{addComment}</div>
+              <div className="col-md-6">{allComments}</div>
             </div>
           </Tab>
           <Tab
@@ -314,7 +352,11 @@ const PropertyDetails = (props) => {
               Hora de cierre:{" "}
               {state.property.openingHours[0].openingTimes[0].closingTime}
             </p>
-            <DetailedMap lat={state.property.location.lat} lng={state.property.location.long} property={state.property} />
+            <DetailedMap
+              lat={state.property.location.lat}
+              lng={state.property.location.long}
+              property={state.property}
+            />
           </Tab>
         </Tabs>
         {showProperty}

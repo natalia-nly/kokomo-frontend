@@ -29,7 +29,7 @@ const Search = (props) => {
       numberGuests: state.numberGuests,
     };
     axios
-      .post("http://localhost:5000/api/search/getAvailability", body, {
+      .post(process.env.REACT_APP_API_URL + "/search/getAvailability", body, {
         withCredentials: true,
       })
       .then((response) => {

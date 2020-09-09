@@ -14,7 +14,7 @@ const PropertyCategory = (props) => {
     console.log(props);
     axios
       .get(
-        "http://localhost:5000/api/search/category/" + state.title
+        process.env.REACT_APP_API_URL + "/search/category/" + state.title
       )
       .then((response) => {
         console.log("CONSOLE LOG DESDE AXIOS GET", response.data[0]);

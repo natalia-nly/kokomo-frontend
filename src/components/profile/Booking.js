@@ -25,7 +25,7 @@ const Booking = (props) => {
     const deleteBooking = (event) => {
         event.preventDefault();
         console.log(state.bookingId);
-        axios.post("http://localhost:5000/api/booking/delete/" + event.target.bookingId.value, {}, {withCredentials: true}).then((response) => {
+        axios.post(process.env.REACT_APP_API_URL + "/booking/delete/" + event.target.bookingId.value, {}, {withCredentials: true}).then((response) => {
             console.log(response.data);
             props.callback();
         });
