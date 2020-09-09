@@ -37,11 +37,11 @@ export class Login extends Component {
     return (
       <div>
         <div
-          class="row align-middle  justify-content-center p-4"
+          className="row align-middle  justify-content-center p-4"
           style={{ "min-height": "100vh" }}
         >
-          <div class="col-sm-12 col-md-4 align-self-center">
-            <h2 class="hero-title text-center mb-4">Iniciar sesión</h2>
+          <div className="col-sm-12 col-md-4 align-self-center">
+            <h2 className="hero-title text-center mb-4">Iniciar sesión</h2>
             <form onSubmit={this.handleSubmit}>
               <div className="form-group">
                 <label htmlFor="user" className="label active">

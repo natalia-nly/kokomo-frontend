@@ -9,32 +9,64 @@ const initialState = {
 let reservas = <p>Todavía no tienes reservas</p>;
 
 const MyBookings = (props) => {
-  
   const [state, setState] = useState(initialState);
 
   useEffect(() => {
-    axios
-      .get(process.env.REACT_APP_API_URL + "/booking/my-bookings", {
-        withCredentials: true,
-      })
-      .then((response) => {
-        console.log("CONSOLE LOG DESDE AXIOS GET", response.data.bookings);
-        setState({
-          ...state,
-          bookings: response.data.bookings,
-        });
-      });
+    const CancelToken = axios.CancelToken;
+    const source = CancelToken.source();
+    const loadData = () => {
+      try {
+        axios
+          .get(process.env.REACT_APP_API_URL + "/booking/my-bookings", {
+            withCredentials: true,
+          })
+          .then((response) => {
+            console.log("CONSOLE LOG DESDE AXIOS GET", response.data.bookings);
+            setState({
+              ...state,
+              bookings: response.data.bookings,
+            });
+          });
+      } catch (error) {
+        if (axios.isCancel(error)) {
+          console.log("cancelled");
+        } else {
+          throw error;
+        }
+      }
+    };
+    loadData();
+    return () => {
+      source.cancel();
+    };
   }, []);
+
+
+  const refreshPage = () => {
+    window
+        .location
+        .reload(false);
+}
+
+const deleteBooking = (event) => {
+    event.preventDefault();
+    axios.post(process.env.REACT_APP_API_URL + "/booking/delete/" + event.target.bookingId.value, {}, {withCredentials: true}).then((response) => {
+        console.log(response.data)
+        refreshPage()
+
+    });
+};
+
 
   if (state.bookings.length) {
     console.log(state.bookings);
-    reservas = state.bookings.map((booking) => <Booking booking={booking} />);
+    reservas = state.bookings.map((booking, index) => <Booking key ={index} booking={booking} delete={deleteBooking} />);
   }
 
   return (
     <div>
       <div className="body-container">
-        <h3 className="section-title mt-4 mdi mdi-calendar"> Tus reservas</h3>
+        <h3 className="section-title mt-4 mdi mdi-calendar">Tus reservas</h3>
         <div className="row mb-5">
           <div className="col-md-6"></div>
         </div>
@@ -57,7 +89,6 @@ const MyBookings = (props) => {
           </nav>
           <div className="tab-content" id="nav-tabContent">
             <div
-              div
               className="tab-pane fade show active"
               id="nav-next-bookings"
               role="tabpanel"
