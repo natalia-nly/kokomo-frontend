@@ -4,9 +4,10 @@ import Booking from "./Booking"
 import axios from "axios";
 const initialState = {
     bookings: [],
-    properties:[]
+    properties: []
 }
 let reservas = <p>Todavía no tienes reservas</p>
+let reservasProperties = <p>Todavía no tienes reservas</p>
 
 const Profile = (props) => {
     console.log("estamos en profile");
@@ -24,16 +25,16 @@ const Profile = (props) => {
                     ...state,
                     bookings: response.data.bookings
                 });
-            }); 
-            axios
+            });
+        axios
             .get(process.env.REACT_APP_API_URL + "/booking/my-properties-bookings", {withCredentials: true})
             .then((response) => {
                 console.log("CONSOLE LOG DESDE AXIOS GET bookings en mis props:", response.data.ownProperties);
                 setState({
                     ...state,
-                    properties:  response.data.ownProperties
+                    properties: response.data.ownProperties
                 });
-            }); 
+            });
     }, []);
 
     const refreshPage = () => {
@@ -50,21 +51,92 @@ const Profile = (props) => {
 
         });
     };
-   
 
     if (state.bookings.length) {
         console.log(state.bookings)
         reservas = state
             .bookings
-            .map((booking,index) => <Booking key={index} booking={booking} delete={deleteBooking}/>)
+            .map((booking, index) => <Booking key={index} booking={booking} delete={deleteBooking}/>)
     }
 
-    if(state.properties.length){
+    if (state.properties.length) {
         console.log(state.properties)
-        reservasProperties = state.properties.map()
+        reservasProperties = state
+            .properties
+            .map((property, index) => (
+                <div key={index}>
+                      <Link to={"/property/" + property._id}>
+            <h3>{property.name}</h3>
+            <p className="mdi mdi-map-marker-radius">
+              {" "}
+              {property.name}
+            </p>
+            </Link>
+                    {property
+                        .bookings
+                        .map((booking, index) => (
+                            <div className="group-booking" key={index}>
+                                <div className="row">
+                                    <div className="column-xs">
+                                        <div>
+                                            <p className="mb-4">
+                                                <span className="booking-ref">{booking.bookingRef}</span>
+                                            </p>
+                                        </div>
+                                        <div>
+                                            <p>
+                                                <span className="fa-stack fa-lg">
+                                                    <i className="fas fa-square fa-stack-2x orange-20"></i>
+                                                    <i className="far fa-calendar-check fa-stack-1x orange"></i>
+                                                </span>
+                                                {booking.day}
+                                            </p>
+                                            <p>
+                                                <span className="fa-stack fa-lg">
+                                                    <i className="fas fa-square fa-stack-2x orange-20"></i>
+                                                    <i className="far fa-clock fa-stack-1x orange"></i>
+                                                </span>
+                                                {booking.time}
+                                            </p>
+                                        </div>
+                                        <div>
+                                            <p>
+                                                <span className="fa-stack fa-lg">
+                                                    <i className="fas fa-square fa-stack-2x orange-20"></i>
+                                                    <i className="fas fa-users fa-stack-1x orange"></i>
+                                                </span>
+                                                {booking.guests}
+                                                persona(s)
+                                            </p>
+                                            <p>
+                                                <span className="fa-stack fa-lg">
+                                                    <i className="fas fa-square fa-stack-2x orange-20"></i>
+                                                    <i className="fas fa-user fa-stack-1x orange"></i>
+                                                </span>
+                                                {booking.customer.username}
+                                            </p>
+                                            <p>
+                                                <span className="fa-stack fa-lg">
+                                                    <i className="fas fa-square fa-stack-2x orange-20"></i>
+                                                    <i className="fas fa-at fa-stack-1x orange"></i>
+                                                </span>
+                                                {booking.customer.email}
+                                            </p>
+                                            <p>
+                                                <span className="fa-stack fa-lg">
+                                                    <i className="fas fa-square fa-stack-2x orange-20"></i>
+                                                    <i className="fas fa-phone fa-stack-1x orange"></i>
+                                                </span>
+                                                {booking.customer.telNumber}
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        ))}
+                </div>
+            ))
     }
-
-
 
     return (
         <div>
@@ -100,12 +172,12 @@ const Profile = (props) => {
                             Crear una nueva reserva
                         </Link>
                         <div className="col">
-                        <Link
-                            to="/property/create-property"
-                            className="btn-kokomo btn-kokomo-success float-right">
-                            Crear un nuevo local
-                        </Link>
-                    </div>
+                            <Link
+                                to="/property/create-property"
+                                className="btn-kokomo btn-kokomo-success float-right">
+                                Crear un nuevo local
+                            </Link>
+                        </div>
                     </div>
                 </div>
                 <h4 className="section-title">
@@ -124,9 +196,9 @@ const Profile = (props) => {
                 </div>
                 <h4 className="section-title">
                     Tus Locales</h4>
+                {reservasProperties}
             </div>
-        </div>
-    );
-};
+        </div>)
+}
 
 export default Profile;
