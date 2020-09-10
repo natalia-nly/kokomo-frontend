@@ -101,7 +101,7 @@ export class SignUp extends Component {
               </button>
             </form>
             <a
-              href="/auth/google"
+              href={process.env.REACT_APP_API_URL + "/auth/google"}
               class="btn-kokomo btn-kokomo-google btn-block p-3 mt-4"
             >
               <img

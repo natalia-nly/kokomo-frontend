@@ -3,14 +3,15 @@ import { Link } from "react-router-dom";
 import Booking from "./Booking";
 import axios from "axios";
 
+let reservas = <p>Todavía no tienes reservas</p>
+let reservasProperties = <p>Todavía no tienes reservas</p>
 
 const Profile = (props) => {
     const initialState = {
         bookings: [],
         properties: []
     }
-    let reservas = <p>Todavía no tienes reservas</p>
-    let reservasProperties = <p>Todavía no tienes reservas</p>
+    
     console.log("estamos en profile");
     console.log(props.loggedInUser)
 
@@ -36,6 +37,7 @@ const Profile = (props) => {
                     properties: response.data.ownProperties
                 });
             });
+
     }, []);
 
   const refreshPage = () => {

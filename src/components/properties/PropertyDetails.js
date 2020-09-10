@@ -435,8 +435,8 @@ const PropertyDetails = (props) => {
                 />
               </div>
               <div className="col-md-6">
-                {/* 
-                LO DEJO COMENTADO PORQUE NO SÉ SI VALE LA PENA PONER ESTOS DATOS
+                
+    
                 <p>
                   Día de apertura:
                   <span id="openingDay1"> {formatOpening}</span>
@@ -445,7 +445,7 @@ const PropertyDetails = (props) => {
                 <p>
                   Día de cierre:
                   <span id="closingDay1"> {formatClosing}</span>
-                </p> */}
+                </p>
 
                 <table class="table">
                   <tbody>{daysInTable}</tbody>
