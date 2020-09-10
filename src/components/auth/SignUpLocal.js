@@ -47,11 +47,11 @@ export class SignUp extends Component {
     return (
       <div>
         <div
-          class="row align-middle  justify-content-center p-4"
+          className="row align-middle  justify-content-center p-4"
           style={{ "min-height": "100vh" }}
         >
-          <div class="col-sm-12 col-md-4 align-self-center">
-          <h2 class="hero-title text-center mb-4">Crea tus locales</h2>
+          <div className="col-sm-12 col-md-4 align-self-center">
+          <h2 className="hero-title text-center mb-4">Crea tus locales</h2>
             <form onSubmit={this.handleSubmit}>
             <div className="form-group">
                 <label htmlFor="user" className="label active">
@@ -101,14 +101,14 @@ export class SignUp extends Component {
 
               <button
                 type="submit"
-                class="btn-kokomo btn-kokomo-success btn-block p-3"
+                className="btn-kokomo btn-kokomo-success btn-block p-3"
               >
                 Registrarme
               </button>
             </form>
             <a
               href="/auth/google"
-              class="btn-kokomo btn-kokomo-google btn-block p-3 mt-4"
+              className="btn-kokomo btn-kokomo-google btn-block p-3 mt-4"
             >
               <img src="/images/google.svg" alt="Google logo" style={{"width": "20px", "marginRight" : "8px"}}/> Registrarme con Google
             </a>

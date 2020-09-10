@@ -2,14 +2,15 @@ import React, {useState, useEffect} from "react";
 import {Link} from "react-router-dom";
 import Booking from "./Booking"
 import axios from "axios";
-const initialState = {
-    bookings: [],
-    properties: []
-}
-let reservas = <p>Todavía no tienes reservas</p>
-let reservasProperties = <p>Todavía no tienes reservas</p>
+
 
 const Profile = (props) => {
+    const initialState = {
+        bookings: [],
+        properties: []
+    }
+    let reservas = <p>Todavía no tienes reservas</p>
+    let reservasProperties = <p>Todavía no tienes reservas</p>
     console.log("estamos en profile");
     console.log(props.loggedInUser)
 
@@ -20,6 +21,7 @@ const Profile = (props) => {
         axios
             .get(process.env.REACT_APP_API_URL + "/booking/my-bookings", {withCredentials: true})
             .then((response) => {
+                console.log('data', response.data)
                 console.log("CONSOLE LOG DESDE AXIOS GET mis reservas", response.data.bookings);
                 setState({
                     ...state,
