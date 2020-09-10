@@ -1,16 +1,20 @@
 import React, {useState, useEffect} from "react";
 import {Link} from "react-router-dom";
 import Booking from "./Booking"
+import OwnerLocal from "./OwnerLocal"
+import OwnerAgenda from "./OwnerAgenda"
 import axios from "axios";
-
+var reservas = <p>Todavía no tienes reservas</p>
+var reservasProperties = <p>Todavía no tienes reservas</p>
+var owner=<></>
+const initialState = {
+    bookings: [],
+    properties: []
+}
 
 const Profile = (props) => {
-    const initialState = {
-        bookings: [],
-        properties: []
-    }
-    let reservas = <p>Todavía no tienes reservas</p>
-    let reservasProperties = <p>Todavía no tienes reservas</p>
+
+  
     console.log("estamos en profile");
     console.log(props.loggedInUser)
 
@@ -28,6 +32,9 @@ const Profile = (props) => {
                     bookings: response.data.bookings
                 });
             });
+    }, []);
+
+    useEffect(() => {
         axios
             .get(process.env.REACT_APP_API_URL + "/booking/my-properties-bookings", {withCredentials: true})
             .then((response) => {
@@ -55,89 +62,19 @@ const Profile = (props) => {
     };
 
     if (state.bookings.length) {
-        console.log(state.bookings)
+        console.log('state.bookings',state.bookings)
         reservas = state
             .bookings
             .map((booking, index) => <Booking key={index} booking={booking} delete={deleteBooking}/>)
+            console.log('reservas',reservas)
     }
 
+    
     if (state.properties.length) {
         console.log(state.properties)
         reservasProperties = state
             .properties
-            .map((property, index) => (
-                <div key={index}>
-                      <Link to={"/property/" + property._id}>
-            <h3>{property.name}</h3>
-            <p className="mdi mdi-map-marker-radius">
-              {" "}
-              {property.name}
-            </p>
-            </Link>
-                    {property
-                        .bookings
-                        .map((booking, index) => (
-                            <div className="group-booking" key={index}>
-                                <div className="row">
-                                    <div className="column-xs">
-                                        <div>
-                                            <p className="mb-4">
-                                                <span className="booking-ref">{booking.bookingRef}</span>
-                                            </p>
-                                        </div>
-                                        <div>
-                                            <p>
-                                                <span className="fa-stack fa-lg">
-                                                    <i className="fas fa-square fa-stack-2x orange-20"></i>
-                                                    <i className="far fa-calendar-check fa-stack-1x orange"></i>
-                                                </span>
-                                                {booking.day}
-                                            </p>
-                                            <p>
-                                                <span className="fa-stack fa-lg">
-                                                    <i className="fas fa-square fa-stack-2x orange-20"></i>
-                                                    <i className="far fa-clock fa-stack-1x orange"></i>
-                                                </span>
-                                                {booking.time}
-                                            </p>
-                                        </div>
-                                        <div>
-                                            <p>
-                                                <span className="fa-stack fa-lg">
-                                                    <i className="fas fa-square fa-stack-2x orange-20"></i>
-                                                    <i className="fas fa-users fa-stack-1x orange"></i>
-                                                </span>
-                                                {booking.guests}
-                                                persona(s)
-                                            </p>
-                                            <p>
-                                                <span className="fa-stack fa-lg">
-                                                    <i className="fas fa-square fa-stack-2x orange-20"></i>
-                                                    <i className="fas fa-user fa-stack-1x orange"></i>
-                                                </span>
-                                                {booking.customer.username}
-                                            </p>
-                                            <p>
-                                                <span className="fa-stack fa-lg">
-                                                    <i className="fas fa-square fa-stack-2x orange-20"></i>
-                                                    <i className="fas fa-at fa-stack-1x orange"></i>
-                                                </span>
-                                                {booking.customer.email}
-                                            </p>
-                                            <p>
-                                                <span className="fa-stack fa-lg">
-                                                    <i className="fas fa-square fa-stack-2x orange-20"></i>
-                                                    <i className="fas fa-phone fa-stack-1x orange"></i>
-                                                </span>
-                                                {booking.customer.telNumber}
-                                            </p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        ))}
-                </div>
-            ))
+            .map((property, index) => <OwnerLocal key={index} property={property}/>)
     }
 
     return (
@@ -184,7 +121,9 @@ const Profile = (props) => {
                 </div>
                 <h4 className="section-title">
                     Tus Reservas</h4>
+                    <div>
                 {reservas}
+                </div>
             </div>
             <div className="body-container">
                 <div className="row">
@@ -199,6 +138,9 @@ const Profile = (props) => {
                 <h4 className="section-title">
                     Tus Locales</h4>
                 {reservasProperties}
+            </div>
+            <div className="body-container"> 
+            <OwnerAgenda properties={state.properties}/>
             </div>
         </div>)
 }

@@ -1,39 +1,38 @@
 import React from 'react'
-//
-import useChartConfig from 'hooks/useChartConfig'
-import Box from 'components/Box'
-import SyntaxHighlighter from 'components/SyntaxHighlighter'
-import { Chart } from 'react-charts'
+
+import {Chart } from 'react-charts'
 
 const OwnerChart = (props)  => {
-  const { data} = useChartConfig({
-    series: 10,
-    dataType: 'ordinal'
-  })
-  const series = React.useMemo(
-    () => ({
-      type: 'bar'
-    }),
+  const data = React.useMemo(
+    () => [
+      {
+        label: 'Series 1',
+        data: [[0, 1], [1, 2], [2, 4], [3, 2], [4, 7]]
+      },
+      {
+        label: 'Series 2',
+        data: [[0, 3], [1, 1], [2, 5], [3, 6], [4, 4]]
+      }
+    ],
     []
   )
+ 
   const axes = React.useMemo(
     () => [
-      { primary: true, type: 'ordinal', position: 'left' },
-      { position: 'bottom', type: 'linear', stacked: true }
+      { primary: true, type: 'linear', position: 'bottom' },
+      { type: 'linear', position: 'left' }
     ],
     []
   )
   return (
-    <>
-      <button onClick={randomizeData}>Randomize Data</button>
-      <br />
-      <br />
-      <Box>
-        <Chart data={data} series={series} axes={axes} tooltip />
-      </Box>
-      <br />
-      <SyntaxHighlighter code={sourceCode} />
-    </>
+    <div
+      style={{
+        width: '400px',
+        height: '300px'
+      }}
+    >
+      <Chart data={data} axes={axes} />
+    </div>
   )
 }
 
