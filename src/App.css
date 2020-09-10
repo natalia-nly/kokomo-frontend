@@ -204,6 +204,7 @@ p {
   left: 0;
   right: 0;
   margin: 10px;
+  z-index: 1000;
 }
 .navbar-kokomo ul {
   display: flex;
@@ -230,8 +231,18 @@ p {
   color: #fbf7f3 !important;
 }
 
+.navbar-active-login .dot-kokomo {
+  color: #ffbb69;
+    font-size: 6px;
+    display: block;
+    text-align: center;
+}
+
+.dot-kokomo {
+    display: none;
+}
+
 .navbar-active-logout {
-  border-bottom: 4px solid #3294bb;
   color: #3294bb !important;
 }
 
@@ -1137,6 +1148,10 @@ h4.section-title {
     background-color: #f5941c;
     padding: 20px;
     border-radius: 8px;
+  }
+
+  .navbar-active-logout {
+    border-bottom: 4px solid #3294bb;
   }
 }
 

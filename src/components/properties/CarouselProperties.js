@@ -124,7 +124,7 @@ const CarouselProperties = (props) => {
       };
 
       ratingProperty = (
-        <div className="ml-md-3">
+        <div>
           <ReactStars {...actualRating} />
         </div>
       );

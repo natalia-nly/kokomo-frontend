@@ -3,7 +3,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
 import { Switch, Route } from "react-router-dom";
 import LandingPage from "./components/LandingPage";
-import Navbar from "./components/Navbar";
+import NavbarKokomo from "./components/NavbarKokomo";
 import Login from "./components/auth/Login";
 import Logout from "./components/auth/Logout";
 import SignUp from "./components/auth/SignUp";
@@ -21,6 +21,7 @@ import MyBookings from "./components/profile/MyBookings";
 import PropertyCategory from "./components/properties/PropertyCategory";
 import Error404 from "./components/error/Error404";
 import Error500 from "./components/error/Error500";
+import EditProperty from "./components/properties/EditProperty";
 
 function App() {
   const initialState = {
@@ -66,13 +67,12 @@ function App() {
 
   return (
     <div>
-      <Navbar getTheUser={state.loggedInUser} key={state.loggedInUser} />
+      <NavbarKokomo getTheUser={state.loggedInUser} key={state.loggedInUser} />
       <Switch>
-
         <Route exact path="/">
           {state.loggedInUser === null ? <LandingPage /> : <Home />}
         </Route>
-        
+
         <Route
           path="/category/:name"
           render={(props) => (
@@ -131,6 +131,13 @@ function App() {
         />
 
         <Route
+          path="/property/edit/:propertyId"
+          render={(props) => (
+            <EditProperty {...props} getTheUser={state.loggedInUser} />
+          )}
+        />
+
+        <Route
           path="/property/:propertyId"
           render={(props) => (
             <PropertyDetails {...props} getTheUser={state.loggedInUser} />
@@ -145,8 +152,8 @@ function App() {
           )}
         />
 
-        <Route path="*" component={Error404}  status={404} />
-        <Route path="*" component={Error500}  status={500} />
+        <Route path="*" component={Error404} status={404} />
+        <Route path="*" component={Error500} status={500} />
       </Switch>
     </div>
   );
