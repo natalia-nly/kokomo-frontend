@@ -3,11 +3,13 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 import ReactStars from "react-rating-stars-component";
 
+
+const initialState = {
+  properties: [],
+  favourites: [],
+};
 const CarouselProperties = (props) => {
-  const initialState = {
-    properties: [],
-    favourites: [],
-  };
+
 
   const [state, setState] = useState(initialState);
 
@@ -79,7 +81,7 @@ const CarouselProperties = (props) => {
           });
         });
     }
-  }, [1]);
+  }, []);
 
   const handleFavourite = (propertyId) => {
     console.log("ID desde favs: ", propertyId);
