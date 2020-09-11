@@ -629,6 +629,25 @@ h1 {
   color: #ffba69 !important;
 }
 
+nav .nav-tabs {
+  border-bottom: 2px solid rgba(255, 186, 105, 0.2) !important;
+}
+#nav-tab .nav-link {
+  font-size: 18px;
+}
+.nav-tabs .nav-link {
+  color: #8d8883 !important;
+  background-color: transparent !important;
+  border-color: transparent !important;
+}
+.nav-tabs .nav-link.active {
+  border-color: transparent;
+  border-bottom: 2px solid #ffba69 !important;
+  background-color: transparent;
+  color: #ffba69 !important;
+  font-weight: bold;
+}
+
 .tab-content {
   padding: 20px 0;
   overflow: scroll;
@@ -790,13 +809,31 @@ h4.section-title {
   top: 0;
   left: 0;
   width: 100vw;
+  z-index: 100;
 }
 
 .kokomo-popup .fondo-kokomo {
   background-color: white;
   padding: 30px;
   border-radius: 20px;
+  margin: 20px;
   box-shadow: 1px 1px 20px rgba(87, 98, 107, 0.5);
+}
+
+.kokomo-popup .emoji-img {
+  margin-top: -60px
+}
+
+.close-btn {
+  position: absolute;
+  right: 20px;
+  top: 20px;
+  cursor: pointer;
+  color: #3294bb
+}
+
+.close-btn:hover {
+  color: #174e67
 }
 
 .avatar {
@@ -813,7 +850,7 @@ h4.section-title {
   padding: 20px;
   border-radius: 20px;
   margin-bottom: 20px;
-  background-color: rgba(255, 186, 105, 0.5);
+  background-color: #ffdcb4;
 }
 
 .shadow-blue {
@@ -885,6 +922,26 @@ h4.section-title {
 .col-20 {
   width: 100%;
   margin: 10px;
+}
+
+.flotante-kokomo {
+  display: none;
+}
+
+.btn-floating {
+  background-color: #ffbb69;
+    color: white;
+    border: none;
+    width: 90%;
+    border-radius: 8px;
+    padding: 16px;
+    font-size: 18px;
+    position: absolute;
+    bottom: 14px;
+}
+
+.btn-floating:hover {
+  background-color: #e89f46
 }
 
 /* # 01. MEDIA QUERIES
@@ -1178,6 +1235,7 @@ h4.section-title {
   }
 
   .flotante-kokomo {
+    display:block;
     position: absolute;
     right: 0;
     bottom: 10vh;
@@ -1200,6 +1258,10 @@ h4.section-title {
     background-color: #f5941c;
     padding: 20px;
     border-radius: 8px;
+  }
+
+  .btn-floating {
+    display: none;
   }
 
   .navbar-active-logout {
