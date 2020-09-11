@@ -65,97 +65,123 @@ function App() {
     }
   }, [1]);
 
+  const DefaultRoutes = () => {
+    return (
+      <div>
+        <NavbarKokomo
+          getTheUser={state.loggedInUser}
+          key={state.loggedInUser}
+        />
+        <Switch>
+          <Route exact path="/">
+            {state.loggedInUser === null ? <LandingPage /> : <Home />}
+          </Route>
+
+          <Route
+            path="/category/:name"
+            render={(props) => (
+              <>
+                <PropertyCategory {...props} getTheUser={state.loggedInUser} />
+              </>
+            )}
+          />
+
+          <Route
+            path="/login"
+            render={(props) => (
+              <>
+                <Login {...props} callback={getTheUser} />
+              </>
+            )}
+          />
+          <Route
+            path="/signup"
+            render={(props) => (
+              <>
+                <SignUp {...props} callback={getTheUser} />
+              </>
+            )}
+          />
+          <Route
+            path="/signup-local"
+            render={(props) => (
+              <>
+                <SignUpLocal {...props} callback={getTheUser} />
+              </>
+            )}
+          />
+          <ProtectedRoute
+            key={state.loggedInUser}
+            user={state.loggedInUser}
+            callback={getTheUser}
+            path="/profile"
+            component={Profile}
+          />
+
+          <ProtectedRoute
+            key={state.loggedInUser}
+            user={state.loggedInUser}
+            callback={getTheUser}
+            path="/my-favourites"
+            component={Favourites}
+          />
+          <ProtectedRoute
+            key={state.loggedInUser}
+            user={state.loggedInUser}
+            callback={getTheUser}
+            path="/my-bookings"
+            component={MyBookings}
+          />
+          <ProtectedRoute
+            user={state.loggedInUser}
+            exact
+            callback={getTheUser}
+            path="/property/create-property"
+            component={CreateProperty}
+          />
+          <ProtectedRoute
+            user={state.loggedInUser}
+            path="/search"
+            component={Search}
+          />
+
+          <Route
+            exact
+            path="/logout"
+            render={(props) => (
+              <Logout {...props} reset={reset} callback={getTheUser} />
+            )}
+          />
+        </Switch>
+      </div>
+    );
+  };
+
   return (
-    <div>
-      <NavbarKokomo getTheUser={state.loggedInUser} key={state.loggedInUser} />
-      <Switch>
-        <Route exact path="/">
-          {state.loggedInUser === null ? <LandingPage /> : <Home />}
-        </Route>
-
-        <Route
-          path="/category/:name"
-          render={(props) => (
-            <PropertyCategory {...props} getTheUser={state.loggedInUser} />
-          )}
-        />
-
-        <Route exact path="/carousel-properties">
-          <CarouselProperties getTheUser={state.loggedInUser} filter="all" />
-        </Route>
-
-        <Route
-          path="/login"
-          render={(props) => <Login {...props} callback={getTheUser} />}
-        />
-        <Route
-          path="/signup"
-          render={(props) => <SignUp {...props} callback={getTheUser} />}
-        />
-        <Route
-          path="/signup-local"
-          render={(props) => <SignUpLocal {...props} callback={getTheUser} />}
-        />
-        <ProtectedRoute
-          key={state.loggedInUser}
-          user={state.loggedInUser}
-          callback={getTheUser}
-          path="/profile"
-          component={Profile}
-        />
-        <ProtectedRoute
-          key={state.loggedInUser}
-          user={state.loggedInUser}
-          callback={getTheUser}
-          path="/my-favourites"
-          component={Favourites}
-        />
-        <ProtectedRoute
-          key={state.loggedInUser}
-          user={state.loggedInUser}
-          callback={getTheUser}
-          path="/my-bookings"
-          component={MyBookings}
-        />
-        <ProtectedRoute
-          user={state.loggedInUser}
-          exact
-          callback={getTheUser}
-          path="/property/create-property"
-          component={CreateProperty}
-        />
-        <ProtectedRoute
-          user={state.loggedInUser}
-          path="/search"
-          component={Search}
-        />
-
-        <Route
-          path="/property/edit/:propertyId"
-          render={(props) => (
+    <Switch>
+      <Route
+        path="/property/edit/:propertyId"
+        render={(props) => (
+          <>
+            <NavbarKokomo
+              getTheUser={state.loggedInUser}
+              key={state.loggedInUser}
+            />
             <EditProperty {...props} getTheUser={state.loggedInUser} />
-          )}
-        />
+          </>
+        )}
+      />
 
-        <Route
-          path="/property/:propertyId"
-          render={(props) => (
-            <PropertyDetails {...props} getTheUser={state.loggedInUser} />
-          )}
-        />
-
-        <Route
-          exact
-          path="/logout"
-          render={(props) => (
-            <Logout {...props} reset={reset} callback={getTheUser} />
-          )}
-        />
-
-        <Route path="*" component={Error404} status={404} />
-        <Route path="*" component={Error500} status={500} />
-      </Switch>
-    </div>
+      <Route
+        path="/property/:propertyId"
+        render={(props) => (
+          <PropertyDetails {...props} getTheUser={state.loggedInUser} />
+        )}
+      />
+      <Route component={DefaultRoutes} />
+      <Route path="*" component={Error404} status={404} />
+      <Route path="*" component={Error500} status={500} />
+    </Switch>
   );
 }
 

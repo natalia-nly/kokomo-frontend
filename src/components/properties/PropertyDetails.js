@@ -291,18 +291,13 @@ const PropertyDetails = (props) => {
                 </div>
               </div>
               <div className="col-20">
-                <button
-                  type="submit"
-                  className="kokomo-btn-form"
-                >
+                <button type="submit" className="kokomo-btn-form">
                   <SearchIcon />
                 </button>
               </div>
             </div>
           </form>
         </div>
-
-        {availableTimes}
       </>
     );
   }
@@ -368,95 +363,104 @@ const PropertyDetails = (props) => {
   ));
 
   return (
-    <div
-      className="home-bg image-background"
-      style={{
-        backgroundImage: `url(${state.property.mainImage})`,
-      }}
-    >
-      <div className="container-left"></div>
-
-      <div className="white-card">
-        <div className="title-heart">
-          <a onClick={handleFavourite}>
-            <div>
-              <span className="fa-stack fa-2x mr-4">
-                <i className="fas fa-circle fa-stack-2x orange"></i>
-                <i className={heartKokomo}></i>
-              </span>
-            </div>
-          </a>
-          <div>
-            <h2 className="title-search">{state.property.name}</h2>
-            {ratingProperty}
-          </div>
+    <>
+      <Link to="/">
+        <div>
+          <span className="fa-stack fa-2x kokomo-back-button">
+            <i className="fas fa-circle fa-stack-2x circle-back"></i>
+            <i class="fas fa-arrow-left fa-stack-1x fa-inverse arrow-back"></i>
+          </span>
         </div>
-        <Tabs
-          defaultActiveKey="nav-description"
-          id="nav-tab"
-          className="nav nav-tabs nav-fill"
-        >
-          <Tab
-            eventKey="nav-description"
-            title="Descripción"
-            className="nav-item nav-link"
-          >
-            <h3 className="subtitle-search mb-4">
-              {state.property.description}
-            </h3>
-            <p>
-              <i className="fas fa-map-marker-alt"></i>
-              {state.property.location.name}
-            </p>
-            <p>Duración de la reserva: {state.property.bookingDuration}</p>
-            <p>Plazas disponibles: {state.property.availablePlaces}</p>
-          </Tab>
-          <Tab
-            eventKey="nav-comments"
-            title="Comentarios"
-            className="nav-item nav-link"
-          >
-            <div className="row">
-              <div className="col-md-6">{addComment}</div>
-              <div className="col-md-6">{allComments}</div>
-            </div>
-          </Tab>
-          <Tab
-            eventKey="nav-openings"
-            title="Horarios"
-            className="nav-item nav-link"
-          >
-            <div className="row">
-              <div className="col-md-6">
-                <DetailedMap
-                  lat={state.property.location.lat}
-                  lng={state.property.location.long}
-                  property={state.property}
-                />
-              </div>
-              <div className="col-md-6">
-                
-    
-                <p>
-                  Día de apertura:
-                  <span id="openingDay1"> {formatOpening}</span>
-                </p>
+      </Link>
+      <div
+        className="home-bg image-background"
+        style={{
+          backgroundImage: `url(${state.property.mainImage})`,
+        }}
+      >
+        <div className="container-left"></div>
 
-                <p>
-                  Día de cierre:
-                  <span id="closingDay1"> {formatClosing}</span>
-                </p>
-
-                <table class="table">
-                  <tbody>{daysInTable}</tbody>
-                </table>
-              </div>
+        <div className="white-card">
+          <div className="title-heart">
+            <div>
+              <a onClick={handleFavourite}>
+                <span className="fa-stack fa-2x mr-4">
+                  <i className="fas fa-circle fa-stack-2x orange"></i>
+                  <i className={heartKokomo}></i>
+                </span>
+              </a>
             </div>
-          </Tab>
-        </Tabs>
-        {showProperty}
+            <div>
+              <h2 className="title-search">{state.property.name}</h2>
+              {ratingProperty}
+            </div>
+          </div>
+          <Tabs
+            defaultActiveKey="nav-description"
+            id="nav-tab"
+            className="nav nav-tabs nav-fill tab-details"
+          >
+            <Tab
+              eventKey="nav-description"
+              title="Descripción"
+              className="nav-item nav-link"
+            >
+              <h3 className="subtitle-search mb-4">
+                {state.property.description}
+              </h3>
+              <p>
+                <i className="fas fa-map-marker-alt"></i>
+                {state.property.location.name}
+              </p>
+              <p>Duración de la reserva: {state.property.bookingDuration}</p>
+              <p>Plazas disponibles: {state.property.availablePlaces}</p>
+            </Tab>
+            <Tab
+              eventKey="nav-comments"
+              title="Comentarios"
+              className="nav-item nav-link"
+            >
+              <div className="row">
+                <div className="col-md-6">{addComment}</div>
+                <div className="col-md-6">{allComments}</div>
+              </div>
+            </Tab>
+            <Tab
+              eventKey="nav-openings"
+              title="Horarios"
+              className="nav-item nav-link"
+            >
+              <div className="row">
+                <div className="col-md-6">
+                  <DetailedMap
+                    lat={state.property.location.lat}
+                    lng={state.property.location.long}
+                    property={state.property}
+                  />
+                </div>
+                <div className="col-md-6">
+                  <p>
+                    Día de apertura:
+                    <span id="openingDay1"> {formatOpening}</span>
+                  </p>
+
+                  <p>
+                    Día de cierre:
+                    <span id="closingDay1"> {formatClosing}</span>
+                  </p>
+
+                  <table class="table">
+                    <tbody>{daysInTable}</tbody>
+                  </table>
+                </div>
+              </div>
+            </Tab>
+          </Tabs>
+          {showProperty}
+        </div>
       </div>
-    </div>
+      {availableTimes}
+    </>
   );
 };
 

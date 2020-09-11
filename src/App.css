@@ -18,6 +18,10 @@
 --------------------------------------------- */
 /* ## Fonts
 --------------------------------------------- */
+
+@import '~react-agenda/build/styles.css';
+@import '~react-datetime/css/react-datetime.css';
+
 body {
   padding: 0px;
 }
@@ -234,12 +238,34 @@ p {
     text-align: center;
 }
 
+.tab-content {
+  padding-bottom: 200px !important;
+}
+
 .dot-kokomo {
     display: none;
 }
 
 .navbar-active-logout {
   color: #3294bb !important;
+}
+
+.kokomo-back-button {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+}
+
+.kokomo-back-button .circle-back {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.kokomo-back-button .circle-back:hover {
+  color: white;
+}
+
+.kokomo-back-button .arrow-back {
+  color: #423e3e;
 }
 
 .search-icon-menu {
@@ -560,7 +586,7 @@ h1 {
   display: flex;
   flex-direction: column;
   margin-left: 0px !important;
-  margin-top: 10vh;
+  margin-top: -60px;
   margin-bottom: 30px
 }
 
@@ -743,10 +769,17 @@ h4.section-title {
 .kokomo-popup {
   height: 100vh;
     position: absolute;
-    background-color: white;
+    background-color: rgba(104, 134, 146, 0.8);;
     top: 0;
     left: 0;
     width: 100vw;
+}
+
+.kokomo-popup .fondo-kokomo {
+  background-color: white;
+  padding: 30px;
+    border-radius: 20px;
+    box-shadow: 1px 1px 20px rgba(87, 98, 107, 0.5);
 }
 
 .avatar {
@@ -983,8 +1016,14 @@ h4.section-title {
   .title-heart {
     display: flex;
     flex-direction: row;
+    margin-top: 10vh;
     margin-left: -90px !important;
   }
+
+  .title-heart div:first-child {
+    align-self: flex-start;
+  }
+
   h2.display-cream {
     font-size: 40px;
   }

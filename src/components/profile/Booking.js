@@ -75,13 +75,6 @@ const Booking = (props) => {
                 <DetailedMap lat={state.lat} lng={state.lng} property={state.property}/>
             </div>
         </div>
-        {/* <div className="row">
-        <div>
-          <form onSubmit={props.delete}>
-            <input type="hidden" name="bookingId" value={state.bookingId} />
-            <button className="kokomo-btn-form p-2">Cancelar reserva</button>
-          </form>
-        </div> */}
         <DropdownButton
             id="dropdown-item-button"
             variant="warning"

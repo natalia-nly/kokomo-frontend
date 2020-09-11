@@ -1,17 +1,21 @@
-import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
-import Booking from "./Booking";
+import React, {useState, useEffect} from "react";
+import {Link} from "react-router-dom";
+import Booking from "./Booking"
+import OwnerLocal from "./OwnerLocal"
+import OwnerAgenda from "./OwnerAgenda"
 import axios from "axios";
 
-let reservas = <p>Todavía no tienes reservas</p>
-let reservasProperties = <p>Todavía no tienes reservas</p>
+var reservas = <p>Todavía no tienes reservas</p>
+var reservasProperties = <p>Todavía no tienes reservas</p>
+var owner=<></>
+const initialState = {
+    bookings: [],
+    properties: []
+}
 
 const Profile = (props) => {
-    const initialState = {
-        bookings: [],
-        properties: []
-    }
-    
+
+  
     console.log("estamos en profile");
     console.log(props.loggedInUser)
 
@@ -28,6 +32,9 @@ const Profile = (props) => {
                     bookings: response.data.bookings
                 });
             });
+    }, []);
+
+    useEffect(() => {
         axios
             .get(process.env.REACT_APP_API_URL + "/booking/my-properties-bookings", {withCredentials: true})
             .then((response) => {

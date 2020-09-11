@@ -11,9 +11,6 @@ const Favourites = () => {
                     Tus favoritos</h3>
 
                     <CarouselProperties filter="Favourites"/>
-
-                <p>Todavía no tienes favoritos</p>
-
             </div>
         </div>
     )

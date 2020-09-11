@@ -71,45 +71,57 @@ const AvailableTimes = (props) => {
   let whatsAppLink = `whatsapp://send?text=¡Te espera una reserva de Kokomo! 😎 Aquí tienes los detalles: http://kokomo-react.herokuapp.com/booking/details/${state.bookingId}`;
 
   let bookingDetails = (
-    <div class="text-center d-flex align-items-center justify-content-center kokomo-popup">
-      <div>
-        <img src="/images/3.png" class="emoji-img" />
+    <>
+      <img src="/images/3.png" className="emoji-img" />
 
-        <h2 class="subtitle-landing text-center mb-3">
-          ¡Reserva creada con éxito!
-        </h2>
-        <p>
-          <i class="far fa-calendar-alt"></i> Día: {state.day}
-        </p>
-        <p>
-          <i class="far fa-clock"></i> Hora: {state.hour}
-        </p>
-        <p>
-          <i class="fas fa-users"></i> Número de personas: {state.guests}
-        </p>
+      <h2 className="subtitle-landing text-center mb-3">
+        ¡Reserva creada con éxito!
+      </h2>
+      <p>
+        <i className="far fa-calendar-alt"></i> Día: {state.day}
+      </p>
+      <p>
+        <i className="far fa-clock"></i> Hora: {state.hour}
+      </p>
+      <p>
+        <i className="fas fa-users"></i> Número de personas: {state.guests}
+      </p>
 
-        <a href={whatsAppLink} class="btn-kokomo btn-kokomo-grey mt-4 mr-2 p-3">
-          Compartir reserva por WhatsApp
-        </a>
-        <Link to="/" class="btn-kokomo btn-kokomo-grey mt-4 ml-2 p-3">
-          Volver a inicio
-        </Link>
-      </div>
-    </div>
+      <a
+        href={whatsAppLink}
+        className="btn-kokomo btn-kokomo-grey mt-4 mr-2 p-3"
+      >
+        Compartir reserva por WhatsApp
+      </a>
+      <Link to="/" className="btn-kokomo btn-kokomo-grey mt-4 ml-2 p-3">
+        Volver a inicio
+      </Link>
+    </>
   );
 
   let finalResult = (
-    <div className="row">
-      <h3 className="mt-4 mb-4 section-title">Resultados de tu búsqueda</h3>
+    <>
+      <img src="/images/calendar.png" className="emoji-img" />
+      <h2 className="subtitle-landing text-center mb-3">Horas disponibles</h2>
       <div className="row">{available}</div>
-    </div>
+    </>
   );
 
   if (state.bookingFinished) {
     finalResult = bookingDetails;
   }
 
-  return <>{finalResult}</>;
+  return (
+    <>
+      <div className="text-center d-flex align-items-center justify-content-center kokomo-popup">
+        <div className="row align-middle justify-content-center w-100">
+          <div className="col-md-4 align-self-center fondo-kokomo">
+            {finalResult}
+          </div>
+        </div>
+      </div>
+    </>
+  );
 };
 
 export default AvailableTimes;
