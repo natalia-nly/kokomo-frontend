@@ -2,6 +2,7 @@ import React, {useState, useEffect} from "react";
 import DetailedMap from "../search/DetailedMap";
 import DropdownButton from "react-bootstrap/DropdownButton";
 import Dropdown from "react-bootstrap/Dropdown";
+import {Link} from "react-router-dom";
 
 const initialState = {
     bookingId: ""
@@ -24,72 +25,75 @@ const Booking = (props) => {
             lat: props.booking.property.location.lat,
             lng: props.booking.property.location.long,
             property: props.booking.property,
-            name: props.booking.property.name
+            name: props.booking.property.name,
+            propertyId: props.booking.property._id
         });
     }, []);
 
     return (
         <div className="group-booking">
-        <div className="row">
-            <div className="column-xs">
-                <div>
-                    <p className="mb-4">
-                        <span className="booking-ref">{state.bookingRef}</span>
-                    </p>
-                </div>
-                <div>
-                    <p>
-                        <span className="fa-stack fa-lg">
-                            <i className="fas fa-square fa-stack-2x orange-20"></i>
-                            <i className="far fa-calendar-check fa-stack-1x orange"></i>
-                        </span>
-                        {state.day}
-                    </p>
-                    <p>
-                        <span className="fa-stack fa-lg">
-                            <i className="fas fa-square fa-stack-2x orange-20"></i>
-                            <i className="far fa-clock fa-stack-1x orange"></i>
-                        </span>
-                        {state.time}
-                    </p>
-                </div>
-                <div>
-                    <p>
-                        <span className="fa-stack fa-lg">
-                            <i className="fas fa-square fa-stack-2x orange-20"></i>
-                            <i className="fas fa-users fa-stack-1x orange"></i>
-                        </span>
-                        {state.guests}
-                        persona(s)
-                    </p>
-                    <p>
-                        <span className="fa-stack fa-lg">
-                            <i className="fas fa-square fa-stack-2x orange-20"></i>
-                            <i className="fas fa-map-marker-alt fa-stack-1x orange"></i>
-                        </span>
-                        {state.name}
-                    </p>
+            <div className="row">
+                <div className="column-xs">
+                    <div>
+                        <p className="mb-4">
+                            <span className="booking-ref">{state.bookingRef}</span>
+                        </p>
+                    </div>
+                    <div>
+                        <p>
+                            <span className="fa-stack fa-lg">
+                                <i className="fas fa-square fa-stack-2x orange-20"></i>
+                                <i className="far fa-calendar-check fa-stack-1x orange"></i>
+                            </span>
+                            {state.day}
+                        </p>
+                        <p>
+                            <span className="fa-stack fa-lg">
+                                <i className="fas fa-square fa-stack-2x orange-20"></i>
+                                <i className="far fa-clock fa-stack-1x orange"></i>
+                            </span>
+                            {state.time}
+                        </p>
+                    </div>
+                    <div>
+                        <p>
+                            <span className="fa-stack fa-lg">
+                                <i className="fas fa-square fa-stack-2x orange-20"></i>
+                                <i className="fas fa-users fa-stack-1x orange"></i>
+                            </span>
+                            {state.guests}
+                            persona(s)
+                        </p>
+
+                        <p>
+                            <Link to={"/property/" + state.propertyId}>
+                                <span className="fa-stack fa-lg">
+                                    <i className="fas fa-square fa-stack-2x orange-20"></i>
+                                    <i className="fas fa-map-marker-alt fa-stack-1x orange"></i>
+
+                                </span>
+                                {state.name}
+                            </Link>
+                        </p>
+
+                    </div>
                 </div>
             </div>
-            <div className="column-m">
-                <DetailedMap lat={state.lat} lng={state.lng} property={state.property}/>
-            </div>
+            <DropdownButton
+                id="dropdown-item-button"
+                variant="warning"
+                title="Acciones"
+                className="float-right">
+                <form onSubmit={props.delete}>
+                    <input type="hidden" name="bookingId" value={state.bookingId}/>
+                    <button className="kokomo-btn-form p-2">Cancelar reserva</button>
+                </form>
+                <Dropdown.Item
+                    variant="success"
+                    href="whatsapp://send?text=¡Te espera una reserva de Kokomo! 😎 Aquí tienes los detalles: http://kokomo-app.herokuapp.com/booking/details/{{_id}}">Compartir reserva</Dropdown.Item>
+            </DropdownButton>
         </div>
-        <DropdownButton
-            id="dropdown-item-button"
-            variant="warning"
-            title="Acciones"
-            className="float-right">
-            <form onSubmit={props.delete}>
-                <input type="hidden" name="bookingId" value={state.bookingId}/>
-                <button className="kokomo-btn-form p-2">Cancelar reserva</button>
-            </form>
-            <Dropdown.Item
-                variant="success"
-                href="whatsapp://send?text=¡Te espera una reserva de Kokomo! 😎 Aquí tienes los detalles: http://kokomo-app.herokuapp.com/booking/details/{{_id}}">Compartir reserva</Dropdown.Item>
-        </DropdownButton>
-    </div> 
-  );
+    );
 };
 
 export default Booking;
