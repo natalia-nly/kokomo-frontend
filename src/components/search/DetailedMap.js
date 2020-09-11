@@ -4,11 +4,8 @@ import GoogleMapReact from "google-map-react";
 const DetailedMap = (props) => {
   var curr = new Date();
   curr.setDate(curr.getDate());
-  var date = curr.toISOString().substr(0, 10);
-  const initialState = {
-    bookingDate: date,
-    numberGuests: 0,
-  };
+  // var date = curr.toISOString().substr(0, 10);
+
   var center = {
     lat: 41.35,
     lng: 2.1,

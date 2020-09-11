@@ -50,7 +50,7 @@ const AvailablePlaces = (props) => {
               <i className="fas fa-heart fa-stack-1x fa-inverse"></i>
             </span>
             <div>
-            <img src={result.property.mainImage} style={{"zIndex": "1"}}></img>
+            <img src={result.property.mainImage} style={{"zIndex": "1"}} alt={result.property.name}></img>
               <img src={result.property.mainImage} className="blur-image" alt={result.property.name} />
             </div>
           </div>

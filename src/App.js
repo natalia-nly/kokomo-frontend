@@ -13,7 +13,6 @@ import ProtectedRoute from "./auth/protected-route.js";
 import CreateProperty from "./components/properties/CreateProperty";
 import AuthService from "./auth/auth-service";
 import Search from "./components/search/Search";
-import CarouselProperties from "./components/properties/CarouselProperties";
 import PropertyDetails from "./components/properties/PropertyDetails";
 import Home from "./components/Home";
 import Favourites from "./components/Favourites";

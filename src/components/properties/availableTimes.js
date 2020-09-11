@@ -72,7 +72,7 @@ const AvailableTimes = (props) => {
 
   let bookingDetails = (
     <>
-      <img src="/images/3.png" className="emoji-img" />
+      <img src="/images/3.png" className="emoji-img" alt="Reserva creada con éxito"/>
 
       <h2 className="subtitle-landing text-center mb-3">
         ¡Reserva creada con éxito!
@@ -101,7 +101,7 @@ const AvailableTimes = (props) => {
 
   let finalResult = (
     <>
-      <img src="/images/calendar.png" className="emoji-img" />
+      <img src="/images/calendar.png" className="emoji-img" alt="Horas disponibles"/>
       <h2 className="subtitle-landing text-center mb-3">Horas disponibles</h2>
       <div className="row">{available}</div>
     </>

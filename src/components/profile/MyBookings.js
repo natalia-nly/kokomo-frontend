@@ -89,7 +89,7 @@ const MyBookings = (props) => {
         reservasProperties = state.properties.map((property, index) => (
           <OwnerLocal key={index} property={property} />
             ))
-          ownerTab=( <Tab eventKey="owner" title="Tus Locales" className="nav-item nav-link">
+          ownerTab=( <Tab eventKey="owner" title="Reservas en tus Locales" className="nav-item nav-link">
           <div >
               <div
                   className="tab-pane fade show active"
@@ -127,7 +127,8 @@ const MyBookings = (props) => {
                 <h3 className="section-title mt-4 mdi mdi-calendar">Gestión de reservas</h3>
                 <Tabs  defaultActiveKey={active}
             id="nav-tab"
-            className="nav nav-tabs nav-fill">
+            className="nav nav-tabs">
+            {ownerTab}
                     <Tab eventKey="client" title="Tus reservas" className="nav-item nav-link">
                         <div >
                             <div
@@ -139,7 +140,7 @@ const MyBookings = (props) => {
                             </div>
                         </div>
                     </Tab>
-                   {ownerTab}
+                   
                 </Tabs>
             </div>
 

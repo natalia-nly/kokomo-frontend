@@ -19,8 +19,8 @@
 /* ## Fonts
 --------------------------------------------- */
 
-@import '~react-agenda/build/styles.css';
-@import '~react-datetime/css/react-datetime.css';
+@import "~react-agenda/build/styles.css";
+@import "~react-datetime/css/react-datetime.css";
 
 body {
   padding: 0px;
@@ -185,10 +185,10 @@ p {
 
 .comment-kokomo {
   background-color: white;
-    padding: 10px 20px;
-    border-radius: 8px;
-    box-shadow: 1px 1px 10px rgba(185, 185, 185, 0.4);
-    margin-bottom: 20px;
+  padding: 10px 20px;
+  border-radius: 8px;
+  box-shadow: 1px 1px 10px rgba(185, 185, 185, 0.4);
+  margin-bottom: 20px;
 }
 
 .comment-kokomo p {
@@ -233,9 +233,9 @@ p {
 
 .navbar-active-login .dot-kokomo {
   color: #ffbb69;
-    font-size: 6px;
-    display: block;
-    text-align: center;
+  font-size: 6px;
+  display: block;
+  text-align: center;
 }
 
 .tab-content {
@@ -243,7 +243,7 @@ p {
 }
 
 .dot-kokomo {
-    display: none;
+  display: none;
 }
 
 .navbar-active-logout {
@@ -334,6 +334,24 @@ nav i {
   font-size: 12px;
   line-height: 0.75rem;
   color: #809eaa;
+}
+
+.dropdown-toggle::after {
+  display: none;
+}
+
+#dropdown-kokomo-button {
+  color: #fff;
+  background-color: #c9c0b6;
+  border-color: #c9c0b6;
+  padding: 8px 16px;
+  border-radius: 100px;
+}
+
+.link-danger {
+  background-color: transparent;
+    border: none;
+    color: #ff8d69;
 }
 
 /* # 02. HOME
@@ -587,7 +605,7 @@ h1 {
   flex-direction: column;
   margin-left: 0px !important;
   margin-top: -60px;
-  margin-bottom: 30px
+  margin-bottom: 30px;
 }
 
 .title-heart div:first-child {
@@ -610,7 +628,6 @@ h1 {
   border-bottom: 2px solid #ffba69 !important;
   color: #ffba69 !important;
 }
-
 
 .tab-content {
   padding: 20px 0;
@@ -768,18 +785,18 @@ h4.section-title {
 
 .kokomo-popup {
   height: 100vh;
-    position: absolute;
-    background-color: rgba(104, 134, 146, 0.8);;
-    top: 0;
-    left: 0;
-    width: 100vw;
+  position: absolute;
+  background-color: rgba(104, 134, 146, 0.8);
+  top: 0;
+  left: 0;
+  width: 100vw;
 }
 
 .kokomo-popup .fondo-kokomo {
   background-color: white;
   padding: 30px;
-    border-radius: 20px;
-    box-shadow: 1px 1px 20px rgba(87, 98, 107, 0.5);
+  border-radius: 20px;
+  box-shadow: 1px 1px 20px rgba(87, 98, 107, 0.5);
 }
 
 .avatar {
@@ -1134,7 +1151,7 @@ h4.section-title {
 
   .btn-kokomo-banner {
     font-size: 24px;
-}
+  }
 
   .mapa {
     width: 100%;
@@ -1189,4 +1206,3 @@ h4.section-title {
     border-bottom: 4px solid #3294bb;
   }
 }
-
