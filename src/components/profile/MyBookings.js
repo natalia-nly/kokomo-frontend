@@ -108,19 +108,7 @@ const MyBookings = (props) => {
      
 
     }
-    const deleteProperty = (propertyId) => {
-      axios
-        .get(
-          process.env.REACT_APP_API_URL +
-            "/property/delete/" +
-            propertyId,
-          
-          { withCredentials: true }
-        )
-        .then((response) => {
-          refreshPage();
-        });
-    }
+
   console.log(active)
 
     return (
