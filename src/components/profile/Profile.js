@@ -1,14 +1,9 @@
-<<<<<<< HEAD
+
 import React, {useState, useEffect} from "react";
 import {Link} from "react-router-dom";
 import Booking from "./Booking"
 import OwnerLocal from "./OwnerLocal"
 import OwnerAgenda from "./OwnerAgenda"
-=======
-import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
-import Booking from "./Booking";
->>>>>>> 62a7452af62f8c30d70861ec04268662bcdc9a3c
 import axios from "axios";
 var reservas = <p>Todavía no tienes reservas</p>
 var reservasProperties = <p>Todavía no tienes reservas</p>
@@ -85,34 +80,6 @@ const Profile = (props) => {
       });
   }
 
-<<<<<<< HEAD
-    if (state.bookings.length) {
-        console.log('state.bookings',state.bookings)
-        reservas = state
-            .bookings
-            .map((booking, index) => <Booking key={index} booking={booking} delete={deleteBooking}/>)
-            console.log('reservas',reservas)
-    }
-
-    
-    if (state.properties.length) {
-        console.log(state.properties)
-        reservasProperties = state
-            .properties
-            .map((property, index) => <OwnerLocal key={index} property={property}/>)
-    }
-
-    return (
-        <div>
-            <div className="beach-background">
-                <div className="text-right">
-                    <Link to="/profile/edit" className="btn-kokomo btn-kokomo-grey mr-3">
-                        Configuración
-                    </Link>
-                    <Link to="/logout" className="btn-kokomo btn-kokomo-danger">
-                        Cerrar sesión
-                    </Link>
-=======
   if (state.bookings.length) {
     console.log(state.bookings);
     reservas = state.bookings.map((booking, index) => (
@@ -195,7 +162,6 @@ const Profile = (props) => {
                     </span>
                     {booking.customer.telNumber}
                   </p>
->>>>>>> 62a7452af62f8c30d70861ec04268662bcdc9a3c
                 </div>
               </div>
             </div>
@@ -218,52 +184,6 @@ const Profile = (props) => {
         </div>
       </div>
 
-<<<<<<< HEAD
-                <h2>Hola {props.loggedInUser.username}!</h2>
-                <p>email: {props.loggedInUser.email}</p>
-                <p>Número de teléfono: {props.loggedInUser.telNumber}</p>
-            </div>
-            <div className="body-container">
-                <div className="row">
-                    <div className="col">
-                        <Link to="/search" className="btn-kokomo btn-kokomo-success float-right">
-                            Crear una nueva reserva
-                        </Link>
-                        <div className="col">
-                            <Link
-                                to="/property/create-property"
-                                className="btn-kokomo btn-kokomo-success float-right">
-                                Crear un nuevo local
-                            </Link>
-                        </div>
-                    </div>
-                </div>
-                <h4 className="section-title">
-                    Tus Reservas</h4>
-                    <div>
-                {reservas}
-                </div>
-            </div>
-            <div className="body-container">
-                <div className="row">
-                    <div className="col">
-                        <Link
-                            to="/property/create-property"
-                            className="btn-kokomo btn-kokomo-success float-right">
-                            Crear un nuevo local
-                        </Link>
-                    </div>
-                </div>
-                <h4 className="section-title">
-                    Tus Locales</h4>
-                {reservasProperties}
-            </div>
-            <div className="body-container"> 
-            <OwnerAgenda properties={state.properties}/>
-            </div>
-        </div>)
-}
-=======
       <div
         className="text-center"
         style={{
@@ -318,6 +238,5 @@ const Profile = (props) => {
     </div>
   );
 };
->>>>>>> 62a7452af62f8c30d70861ec04268662bcdc9a3c
 
 export default Profile;
