@@ -2,6 +2,7 @@ import React, {useState, useEffect} from "react";
 import axios from "axios";
 import Booking from "./Booking";
 import OwnerLocal from "./OwnerLocal"
+import Messages from "./Messages";
 import Tabs from "react-bootstrap/Tabs";
 import Tab from "react-bootstrap/Tab";
 var reservas = <p>Todavía no tienes reservas</p>
@@ -66,13 +67,14 @@ const MyBookings = (props) => {
             .reload(false);
     };
 
-    const deleteBooking = (event) => {
-        event.preventDefault();
-        axios.post(process.env.REACT_APP_API_URL + "/booking/delete/" + event.target.bookingId.value, {}, {withCredentials: true}).then((response) => {
+    const deleteBooking = (booking) => {
+        console.log(booking)
+        axios.post(process.env.REACT_APP_API_URL + "/booking/delete/" + booking, {}, {withCredentials: true}).then((response) => {
             console.log(response.data);
             refreshPage();
         });
     };
+
     if (state.bookings.length) {
         console.log(state.bookings);
         reservas = state
@@ -87,7 +89,7 @@ const MyBookings = (props) => {
       if (state.properties.length) {
         console.log(state.properties);
         reservasProperties = state.properties.map((property, index) => (
-          <OwnerLocal key={index} property={property} />
+          <OwnerLocal key={index} property={property} user={props.loggedInUser} delete={deleteBooking} />
             ))
           ownerTab=( <Tab eventKey="owner" title="Reservas en tus Locales" className="nav-item nav-link">
           <div >
@@ -140,7 +142,9 @@ const MyBookings = (props) => {
                             </div>
                         </div>
                     </Tab>
-                   
+                    <Tab eventKey="messages" title="Tus mensajes" className="nav-item nav-link">
+                        <Messages/>
+                    </Tab>
                 </Tabs>
             </div>
 
