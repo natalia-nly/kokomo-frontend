@@ -2,8 +2,44 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import DropdownButton from "react-bootstrap/DropdownButton";
 import Dropdown from "react-bootstrap/Dropdown";
+import SendMessages from "./SendMessages"
+var initialState = {
+    messages: [],
+  };
+
+var writeMessage=<></>
 
 const OwnerLocal = (props) => {
+    const [state, setState] = useState(initialState);
+
+    useEffect(() => {
+      
+          setState({
+              ...state,
+              message:false
+          });
+    }, []);
+
+    const handleSubmit = (event) =>{
+        event.preventDefault();
+        console.log('enviar mensaje');
+        const client = event.target.customer.value;
+        const booking ={
+            bookingId : event.target.bookingId.value,
+        bookingRef : event.target.bookingRef.value
+        }
+        
+
+        writeMessage=
+         <SendMessages  booking={booking}  customer={client} user={props.user} delete={props.delete}/>
+        setState({
+            ...state,
+            message:true
+        });
+    
+        
+       
+    }
   return (
     <div>
       <Link to={"/property/" + props.property._id}>
@@ -15,6 +51,7 @@ const OwnerLocal = (props) => {
       </Link>
       {props.property.bookings.map((booking, index) => (
         <>
+        <div key={index}>
           <div className="div-booking">
             <div className="column-xs">
               <p className="mb-4">
@@ -92,10 +129,23 @@ const OwnerLocal = (props) => {
                     <i className="far fa-trash-alt"></i> Cancelar reserva
                   </button>
                 </form>
+                <Dropdown.Divider />
+                <form onSubmit={handleSubmit}>
+                <input type="hidden" name="booking" value={booking}/>
+                    <input type="hidden" name="bookingId" value={booking._id}/>
+                    <input type="hidden" name="bookingRef" value={booking.bookingRef}/>
+                    <input type="hidden" name="customer" value={booking.customer._id}/>
+                    <button className="kokomo-btn-form p-2">Enviar mensaje</button>
+                </form>
               </DropdownButton>
             </div>
           </div>
+          <div >
+          {writeMessage}
+          </div>
+          </div>
         </>
+
       ))}
     </div>
   );
