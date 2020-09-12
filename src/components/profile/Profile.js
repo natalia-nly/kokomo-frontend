@@ -10,7 +10,7 @@ let properties = <></>;
 const initialState = {};
 
 const Profile = (props) => {
-  console.log("estamos en profile");
+  console.log("estamos en profile!!");
   console.log(props.loggedInUser);
 
   const [state, setState] = useState(initialState);

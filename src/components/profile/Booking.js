@@ -31,7 +31,6 @@ const Booking = (props) => {
 
   return (
     <>
-
       <div className="div-booking">
         <div className="column-xs">
           <p className="mb-4">
@@ -79,32 +78,31 @@ const Booking = (props) => {
             title={<i className="fas fa-ellipsis-v"></i>}
             className="float-right"
           >
-          <Dropdown.Item
-              variant="success"
-              className="dropdown-item"
-              href={"/booking/details/" + state.bookingId}
-            >
-              <i class="mdi mdi-eye"></i> Ver detalles
+            <Dropdown.Item variant="success" className="dropdown-item">
+              <Link to={"/booking/details/" + state.bookingId}>
+                <i class="mdi mdi-eye"></i> Ver detalles
+              </Link>
             </Dropdown.Item>
-         
+
             <Dropdown.Item
               variant="success"
               className="dropdown-item"
-              href={"whatsapp://send?text=¡Te espera una reserva de Kokomo! 😎 Aquí tienes los detalles: http://kokomo-react.herokuapp.com/booking/details/" + state.bookingId}
+              href={
+                "whatsapp://send?text=¡Te espera una reserva de Kokomo! 😎 Aquí tienes los detalles: http://kokomo-react.herokuapp.com/booking/details/" +
+                state.bookingId
+              }
             >
               <i className="mdi mdi-share-variant"></i> Compartir reserva
             </Dropdown.Item>
             <Dropdown.Divider />
             <form onSubmit={props.delete} className="dropdown-item danger">
-                <input type="hidden" name="bookingId" value={state.bookingId} />
-                <button className="link-danger">
-                      <i className="far fa-trash-alt"></i> Cancelar reserva
-                    </button>
-              </form>
+              <input type="hidden" name="bookingId" value={state.bookingId} />
+              <button className="link-danger">
+                <i className="far fa-trash-alt"></i> Cancelar reserva
+              </button>
+            </form>
           </DropdownButton>
-
-          </div>
-
+        </div>
       </div>
     </>
   );
