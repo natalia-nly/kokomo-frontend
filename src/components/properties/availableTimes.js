@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import axios from "axios";
-import { useHistory } from "react-router-dom";
 import { Link } from "react-router-dom";
 
 const AvailableTimes = (props) => {
@@ -8,11 +7,12 @@ const AvailableTimes = (props) => {
     availableResults: props.results,
     guests: props.guests,
     bookingFinished: false,
+    bookingId: 0,
+    day: "",
+    hour: "",
   };
 
   const [state, setState] = useState(initialState);
-
-  let history = useHistory();
 
   let available = "No results";
   console.log(state.availableResults);
@@ -31,13 +31,21 @@ const AvailableTimes = (props) => {
     };
     axios
       .post(
-        process.env.REACT_APP_API_URL + "/booking/create-booking/" + params.scheduleId,
+        process.env.REACT_APP_API_URL +
+          "/booking/create-booking/" +
+          params.scheduleId,
         body,
         { withCredentials: true }
       )
       .then((response) => {
         console.log(response.data);
-        setState({ ...state, bookingFinished: true });
+        setState({
+          ...state,
+          bookingFinished: true,
+          bookingId: response.data._id,
+          day: response.data.day,
+          hour: response.data.time,
+        });
       });
   };
 
@@ -60,52 +68,61 @@ const AvailableTimes = (props) => {
     ));
   }
 
+  let whatsAppLink = `whatsapp://send?text=¡Te espera una reserva de Kokomo! 😎 Aquí tienes los detalles: http://kokomo-react.herokuapp.com/booking/details/${state.bookingId}`;
+
   let bookingDetails = (
-    <div class="text-center d-flex align-items-center justify-content-center kokomo-popup">
-      <div>
-        <img src="/images/3.png" class="emoji-img" />
+    <>
+      <img src="/images/3.png" className="emoji-img" alt="Reserva creada con éxito"/>
 
-        <h2 class="subtitle-landing text-center mb-3">
-          ¡Reserva creada con éxito!
-        </h2>
-        <p>
-          <i class="far fa-calendar-alt"></i> Día:{" "}
-        </p>
-        <p>
-          <i class="far fa-clock"></i> Hora:{" "}
-        </p>
-        <p>
-          <i class="fas fa-users"></i> Número de personas: {state.guests}
-        </p>
-        <p>
-          <i class="fas fa-users"></i> A nombre de:{" "}
-        </p>
+      <h2 className="subtitle-landing text-center mb-3">
+        ¡Reserva creada con éxito!
+      </h2>
+      <p>
+        <i className="far fa-calendar-alt"></i> Día: {state.day}
+      </p>
+      <p>
+        <i className="far fa-clock"></i> Hora: {state.hour}
+      </p>
+      <p>
+        <i className="fas fa-users"></i> Número de personas: {state.guests}
+      </p>
 
-        <a
-          href="whatsapp://send?text=¡Te espera una reserva de Kokomo! 😎 Aquí tienes los detalles: http://kokomo-app.herokuapp.com/booking/details/{{booking._id}}"
-          class="btn-kokomo btn-kokomo-grey mt-4 mr-2 p-3"
-        >
-          Compartir reserva por WhatsApp
-        </a>
-        <Link to="/" class="btn-kokomo btn-kokomo-grey mt-4 ml-2 p-3">
-          Volver a inicio
-        </Link>
-      </div>
-    </div>
+      <a
+        href={whatsAppLink}
+        className="btn-kokomo btn-kokomo-grey mt-4 mr-2 p-3"
+      >
+        Compartir reserva por WhatsApp
+      </a>
+      <Link to="/" className="btn-kokomo btn-kokomo-grey mt-4 ml-2 p-3">
+        Volver a inicio
+      </Link>
+    </>
   );
 
   let finalResult = (
-    <div className="row">
-      <h3 className="mt-4 mb-4 section-title">Resultados de tu búsqueda</h3>
-      <div className="row">{available}</div>
-    </div>
+    <>
+      <img src="/images/calendar.png" className="emoji-img" alt="Horas disponibles"/>
+      <a onClick={props.clearAvailableTimes} className="close-btn"><i className="fas fa-times"></i></a>
+      <h2 className="subtitle-landing text-center mb-3">Horas disponibles</h2>
+      <div className="row justify-content-center">{available}</div>
+    </>
   );
 
   if (state.bookingFinished) {
     finalResult = bookingDetails;
   }
 
-  return <>{finalResult}</>;
+  return (
+    <>
+      <div className="text-center d-flex align-items-center justify-content-center kokomo-popup">
+        <div className="row align-middle justify-content-center w-100">
+          <div className="col-md-4 align-self-center fondo-kokomo">
+            {finalResult}
+          </div>
+        </div>
+      </div>
+    </>
+  );
 };
 
 export default AvailableTimes;

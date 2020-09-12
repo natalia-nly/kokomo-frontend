@@ -18,6 +18,10 @@
 --------------------------------------------- */
 /* ## Fonts
 --------------------------------------------- */
+
+@import "~react-agenda/build/styles.css";
+@import "~react-datetime/css/react-datetime.css";
+
 body {
   padding: 0px;
 }
@@ -163,6 +167,34 @@ p {
   border: 1px solid #585353;
 }
 
+.btn-kokomo-flex {
+  width: 90%;
+  padding: 22px;
+  border-radius: 8px;
+  margin-left: 10%;
+  border-color: transparent;
+  background: #0ac5a3;
+  color: white;
+}
+
+.text-review {
+  padding-left: 10px;
+  line-height: 1em;
+  color: #174e67;
+}
+
+.comment-kokomo {
+  background-color: white;
+  padding: 10px 20px;
+  border-radius: 8px;
+  box-shadow: 1px 1px 10px rgba(185, 185, 185, 0.4);
+  margin-bottom: 20px;
+}
+
+.comment-kokomo p {
+  padding-left: 40px;
+}
+
 .navbar-kokomo {
   background-color: #3294bb;
   box-shadow: 0px 4px 40px rgba(141, 136, 131, 0.45);
@@ -172,6 +204,7 @@ p {
   left: 0;
   right: 0;
   margin: 10px;
+  z-index: 1000;
 }
 .navbar-kokomo ul {
   display: flex;
@@ -190,12 +223,49 @@ p {
 }
 .navbar-kokomo ul li a {
   font-size: 24px;
-  color: #fbf7f3;
+  color: #7eb9d0;
+}
+
+.navbar-active-login {
+  font-size: 24px;
+  color: #fbf7f3 !important;
+}
+
+.navbar-active-login .dot-kokomo {
+  color: #ffbb69;
+  font-size: 6px;
+  display: block;
+  text-align: center;
+}
+
+.tab-content {
+  padding-bottom: 200px !important;
+}
+
+.dot-kokomo {
+  display: none;
 }
 
 .navbar-active-logout {
-  border-bottom: 4px solid #3294bb;
   color: #3294bb !important;
+}
+
+.kokomo-back-button {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+}
+
+.kokomo-back-button .circle-back {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.kokomo-back-button .circle-back:hover {
+  color: white;
+}
+
+.kokomo-back-button .arrow-back {
+  color: #423e3e;
 }
 
 .search-icon-menu {
@@ -264,6 +334,24 @@ nav i {
   font-size: 12px;
   line-height: 0.75rem;
   color: #809eaa;
+}
+
+.dropdown-toggle::after {
+  display: none;
+}
+
+#dropdown-kokomo-button {
+  color: #fff;
+  background-color: #c9c0b6;
+  border-color: #c9c0b6;
+  padding: 8px 16px;
+  border-radius: 100px;
+}
+
+.link-danger {
+  background-color: transparent;
+  border: none;
+  color: #ff8d69;
 }
 
 /* # 02. HOME
@@ -454,7 +542,7 @@ h1 {
 .properties-group-2 .one-property p {
   color: #809eaa;
   font-weight: 200;
-  font-size: 13px;
+  font-size: 16px;
 }
 .properties-group-2 .property-card {
   width: 80vw;
@@ -516,7 +604,8 @@ h1 {
   display: flex;
   flex-direction: column;
   margin-left: 0px !important;
-  margin-top: -50px;
+  margin-top: -60px;
+  margin-bottom: 30px;
 }
 
 .title-heart div:first-child {
@@ -538,6 +627,25 @@ h1 {
 #nav-tab .nav-link.active {
   border-bottom: 2px solid #ffba69 !important;
   color: #ffba69 !important;
+}
+
+nav .nav-tabs {
+  border-bottom: 2px solid rgba(255, 186, 105, 0.2) !important;
+}
+#nav-tab .nav-link {
+  font-size: 18px;
+}
+.nav-tabs .nav-link {
+  color: #8d8883 !important;
+  background-color: transparent !important;
+  border-color: transparent !important;
+}
+.nav-tabs .nav-link.active {
+  border-color: transparent;
+  border-bottom: 2px solid #ffba69 !important;
+  background-color: transparent;
+  color: #ffba69 !important;
+  font-weight: bold;
 }
 
 .tab-content {
@@ -651,7 +759,6 @@ h4.section-title {
   grid-gap: 20px;
   overflow: scroll;
   padding: 0 0 50px 20px;
-  margin-top: -20px;
 }
 .category-group .one-category {
   display: flex;
@@ -696,11 +803,36 @@ h4.section-title {
 
 .kokomo-popup {
   height: 100vh;
-    position: absolute;
-    background-color: white;
-    top: 0;
-    left: 0;
-    width: 100vw;
+  position: absolute;
+  background-color: rgba(104, 134, 146, 0.8);
+  top: 0;
+  left: 0;
+  width: 100vw;
+  z-index: 100;
+}
+
+.kokomo-popup .fondo-kokomo {
+  background-color: white;
+  padding: 30px;
+  border-radius: 20px;
+  margin: 20px;
+  box-shadow: 1px 1px 20px rgba(87, 98, 107, 0.5);
+}
+
+.kokomo-popup .emoji-img {
+  margin-top: -60px;
+}
+
+.close-btn {
+  position: absolute;
+  right: 20px;
+  top: 20px;
+  cursor: pointer;
+  color: #3294bb;
+}
+
+.close-btn:hover {
+  color: #174e67;
 }
 
 .avatar {
@@ -717,7 +849,7 @@ h4.section-title {
   padding: 20px;
   border-radius: 20px;
   margin-bottom: 20px;
-  background-color: rgba(255, 186, 105, 0.5);
+  background-color: #ffdcb4;
 }
 
 .shadow-blue {
@@ -733,7 +865,7 @@ h4.section-title {
 .banner-orange h2 {
   color: white;
   font-family: bely-display, sans-serif;
-  font-size: 70px;
+  font-size: 40px;
 }
 
 .banner-orange h3 {
@@ -744,7 +876,7 @@ h4.section-title {
   color: white;
   background-color: #3294bb;
   border-color: #3294bb;
-  font-size: 24px;
+  font-size: 16px;
   padding: 10px 40px !important;
 }
 
@@ -779,6 +911,60 @@ h4.section-title {
 
 .column-m {
   width: 80%;
+}
+
+.col-40 {
+  width: 100%;
+  margin: 10px;
+}
+
+.col-20 {
+  width: 100%;
+  margin: 10px;
+}
+
+.flotante-kokomo {
+  display: none;
+}
+
+.flotante-kokomo-search {
+  display: block;
+  bottom: 10vh;
+  background-color: #ffbb69;
+  padding: 20px 40px;
+  width: 80vw;
+  border-radius: 20px;
+  box-shadow: 1px 1px 20px rgba(162, 106, 38, 0.36);
+}
+
+.flotante-kokomo-search .form-group {
+  margin-bottom: 0;
+}
+
+.flotante-kokomo-search .form-group input {
+  border: none;
+}
+
+.flotante-kokomo-search .kokomo-btn-form {
+  background-color: #f5941c;
+  padding: 20px;
+  border-radius: 8px;
+}
+
+.btn-floating {
+  background-color: #ffbb69;
+  color: white;
+  border: none;
+  width: 90%;
+  border-radius: 8px;
+  padding: 16px;
+  font-size: 18px;
+  position: absolute;
+  bottom: 14px;
+}
+
+.btn-floating:hover {
+  background-color: #e89f46;
 }
 
 /* # 01. MEDIA QUERIES
@@ -907,7 +1093,6 @@ h4.section-title {
     border-radius: 50px 0 0 50px;
     display: flex;
     flex-direction: column;
-    justify-content: center;
     margin-top: 0px;
   }
   .input-form {
@@ -928,8 +1113,14 @@ h4.section-title {
   .title-heart {
     display: flex;
     flex-direction: row;
+    margin-top: 10vh;
     margin-left: -90px !important;
   }
+
+  .title-heart div:first-child {
+    align-self: flex-start;
+  }
+
   h2.display-cream {
     font-size: 40px;
   }
@@ -1032,6 +1223,16 @@ h4.section-title {
     overflow: hidden;
   }
 
+  .banner-orange h2 {
+    color: white;
+    font-family: bely-display, sans-serif;
+    font-size: 70px;
+  }
+
+  .btn-kokomo-banner {
+    font-size: 24px;
+  }
+
   .mapa {
     width: 100%;
     height: 40vh;
@@ -1044,5 +1245,62 @@ h4.section-title {
 
   .row {
     justify-content: space-between;
+  }
+
+  .col-40 {
+    width: 40%;
+    margin-bottom: 0;
+  }
+
+  .col-20 {
+    width: 10%;
+    margin-bottom: 0;
+  }
+
+  .flotante-kokomo {
+    display: block;
+    position: absolute;
+    right: 0;
+    bottom: 10vh;
+    background-color: #ffbb69;
+    padding: 20px 40px;
+    width: 80vw;
+    border-radius: 20px 0 0 20px;
+    box-shadow: 1px 1px 20px rgba(162, 106, 38, 0.36);
+  }
+
+  .flotante-kokomo-search {
+    display: block;
+    bottom: 10vh;
+    background-color: #ffbb69;
+    padding: 20px 40px;
+    width: 80vw;
+    border-radius: 20px;
+    box-shadow: 1px 1px 20px rgba(162, 106, 38, 0.36);
+  }
+
+  .flotante-kokomo .form-group,
+  .flotante-kokomo-search .form-group {
+    margin-bottom: 0;
+  }
+
+  .flotante-kokomo .form-group input,
+  .flotante-kokomo-search .form-group input {
+    border: none;
+  }
+
+  .flotante-kokomo .kokomo-btn-form,
+  .flotante-kokomo-search .kokomo-btn-form {
+    background-color: #f5941c;
+    padding: 20px;
+    border-radius: 8px;
+  }
+
+  .btn-floating {
+    display: none;
+  }
+
+  .navbar-active-logout {
+    border-bottom: 4px solid #3294bb;
   }
 }

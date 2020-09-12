@@ -1,6 +1,5 @@
 import React, { Component } from "react";
-import TextField from "@material-ui/core/TextField";
-import AuthService from "../../auth/auth-service";
+import AuthService from "../../services/auth/auth-service";
 
 export class SignUp extends Component {
   constructor(props) {
@@ -42,11 +41,11 @@ export class SignUp extends Component {
     return (
       <div>
         <div
-          class="row align-middle  justify-content-center p-4"
+          className="row align-middle  justify-content-center p-4"
           style={{ "min-height": "100vh" }}
         >
-          <div class="col-sm-12 col-md-4 align-self-center">
-            <h2 class="hero-title text-center mb-4">Crea tu cuenta</h2>
+          <div className="col-sm-12 col-md-4 align-self-center">
+            <h2 className="hero-title text-center mb-4">Crea tu cuenta</h2>
             <form onSubmit={this.handleSubmit}>
               <div className="form-group">
                 <label htmlFor="user" className="label active">
@@ -102,11 +101,12 @@ export class SignUp extends Component {
               </button>
             </form>
             <a
-              href="/auth/google"
+              href={process.env.REACT_APP_API_URL + "/auth/google"}
               class="btn-kokomo btn-kokomo-google btn-block p-3 mt-4"
             >
               <img
                 src="/images/google.svg"
+                alt="Google logo"
                 style={{ width: "20px", marginRight: "8px" }}
               />{" "}
               Registrarme con Google

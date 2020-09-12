@@ -1,15 +1,14 @@
 import React, { Component } from "react";
-import TextField from "@material-ui/core/TextField";
-import AuthService from '../../auth/auth-service';
+import AuthService from "../../services/auth/auth-service";
 
 export class SignUp extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      user: '',
-      email: '',
-      telNumber:'',
-      password: ''
+      user: "",
+      email: "",
+      telNumber: "",
+      password: "",
     };
     this.service = new AuthService();
   }
@@ -22,20 +21,14 @@ export class SignUp extends Component {
       telNumber: this.state.telNumber,
       email: this.state.email,
     };
-    this
-    .service
-    .signupLocal(body.user, body.password, body.telNumber, body.email)
-    .then(response => {
-        this.setState({user: '', password: '', telNumber: '', email: ''});
-        this
-            .props
-            .callback(response);
-        this
-            .props
-            .history
-            .push('/profile');
-    })
-    .catch(error => console.log(error))
+    this.service
+      .signupLocal(body.user, body.password, body.telNumber, body.email)
+      .then((response) => {
+        this.setState({ user: "", password: "", telNumber: "", email: "" });
+        this.props.callback(response);
+        this.props.history.push("/profile");
+      })
+      .catch((error) => console.log(error));
   };
 
   handleChange = (e) => {
@@ -48,13 +41,13 @@ export class SignUp extends Component {
     return (
       <div>
         <div
-          class="row align-middle  justify-content-center p-4"
+          className="row align-middle  justify-content-center p-4"
           style={{ "min-height": "100vh" }}
         >
-          <div class="col-sm-12 col-md-4 align-self-center">
-          <h2 class="hero-title text-center mb-4">Crea tus locales</h2>
+          <div className="col-sm-12 col-md-4 align-self-center">
+            <h2 className="hero-title text-center mb-4">Crea tus locales</h2>
             <form onSubmit={this.handleSubmit}>
-            <div className="form-group">
+              <div className="form-group">
                 <label htmlFor="user" className="label active">
                   Nombre de usuario
                 </label>
@@ -102,16 +95,21 @@ export class SignUp extends Component {
 
               <button
                 type="submit"
-                class="btn-kokomo btn-kokomo-success btn-block p-3"
+                className="btn-kokomo btn-kokomo-success btn-block p-3"
               >
                 Registrarme
               </button>
             </form>
             <a
               href="/auth/google"
-              class="btn-kokomo btn-kokomo-google btn-block p-3 mt-4"
+              className="btn-kokomo btn-kokomo-google btn-block p-3 mt-4"
             >
-              <img src="/images/google.svg" style={{"width": "20px", "marginRight" : "8px"}}/> Registrarme con Google
+              <img
+                src="/images/google.svg"
+                alt="Google logo"
+                style={{ width: "20px", marginRight: "8px" }}
+              />{" "}
+              Registrarme con Google
             </a>
           </div>
         </div>

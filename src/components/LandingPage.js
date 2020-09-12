@@ -1,11 +1,10 @@
 import React from "react";
 import CarouselProperties from "./properties/CarouselProperties";
-import axios from "axios";
 import GeneralMap from "./search/GeneralMap";
-import { Link } from "react-router-dom";
+import Categories from "./properties/Categories";
 
 const LandingPage = () => {
-  console.log('LANDING')
+
   return (
     <div>
       <div className="hero-landing" style={{ padding: "50px 10px" }}>
@@ -60,48 +59,9 @@ const LandingPage = () => {
           </div>
         </div>
       </div>
-      <div className="category-group" style={{ margin: "auto" }}>
-        <div className="one-category">
-          <Link to="/category/Surfer">
-            <div className="img-container">
-              <img src="/images/surf.png" alt="Surfer" />
-            </div>
-            <p>Surfer</p>
-          </Link>
-        </div>
-        <div className="one-category">
-          <Link to="/category/Chillout">
-            <div className="img-container">
-              <img src="/images/chillout.png" alt="Chillout" />
-            </div>
-            <p>Chillout</p>
-          </Link>
-        </div>
-        <div className="one-category">
-          <Link to="/category/Discoteca">
-            <div className="img-container">
-              <img src="/images/disco.png" alt="Disco" />
-            </div>
-            <p>Disco</p>
-          </Link>
-        </div>
-        <div className="one-category">
-          <Link to="/category/Bar">
-            <div className="img-container">
-              <img src="/images/bar.png" alt="Bar" />
-            </div>
-            <p>Bar</p>
-          </Link>
-        </div>
-        <div className="one-category">
-          <Link to="/category/Restaurante">
-            <div className="img-container">
-              <img src="/images/restaurant.png" alt="Bar" />
-            </div>
-            <p>Restaurant</p>
-          </Link>
-        </div>
-      </div>
+      
+      <Categories />
+
       <div className="landing-container" style={{ "paddingBottom": "80px" }}>
         <CarouselProperties filter="All"/>
       </div>

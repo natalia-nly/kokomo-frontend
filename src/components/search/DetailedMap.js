@@ -1,21 +1,18 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import GoogleMapReact from "google-map-react";
 
 const DetailedMap = (props) => {
-  var curr = new Date();
+  let curr = new Date();
   curr.setDate(curr.getDate());
-  var date = curr.toISOString().substr(0, 10);
-  const initialState = {
-    bookingDate: date,
-    numberGuests: 0,
-  };
-  var center = {
+  // let date = curr.toISOString().substr(0, 10);
+
+  let center = {
     lat: 41.35,
     lng: 2.1,
   };
 
   const zoom = 11;
-  const [state, setState] = useState(initialState);
+
 
   center = {
     lat: props.lat,
@@ -42,9 +39,9 @@ const DetailedMap = (props) => {
   };
 
   const getInfoWindowString = (place) => {
-    var today = new Date();
-    var openingDate = new Date(place.openingHours[0].openingDays.openingDay);
-    var closingDate = new Date(place.openingHours[0].openingDays.closingDay);
+    let today = new Date();
+    let openingDate = new Date(place.openingHours[0].openingDays.openingDay);
+    let closingDate = new Date(place.openingHours[0].openingDays.closingDay);
 
     return `
     <div>
@@ -107,7 +104,7 @@ const DetailedMap = (props) => {
 
   console.log(props.property);
   return (
-    <div className="container mt-4 mapa">
+    <div className="container mapa">
       <GoogleMapReact
         bootstrapURLKeys={{
           key: process.env.REACT_APP_GOOGLE_API_KEY,

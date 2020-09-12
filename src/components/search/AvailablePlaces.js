@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, { useState } from "react";
 import axios from "axios";
 import { useHistory } from "react-router-dom";
 
@@ -28,7 +28,9 @@ const AvailablePlaces = (props) => {
     };
     axios
       .post(
-        process.env.REACT_APP_API_URL + "/booking/create-booking/" + params.scheduleId,
+        process.env.REACT_APP_API_URL +
+          "/booking/create-booking/" +
+          params.scheduleId,
         body,
         { withCredentials: true }
       )
@@ -50,8 +52,16 @@ const AvailablePlaces = (props) => {
               <i className="fas fa-heart fa-stack-1x fa-inverse"></i>
             </span>
             <div>
-            <img src={result.property.mainImage} style={{"zIndex": "1"}}></img>
-              <img src={result.property.mainImage} className="blur-image" alt={result.property.name} />
+              <img
+                src={result.property.mainImage}
+                style={{ zIndex: "1" }}
+                alt={result.property.name}
+              ></img>
+              <img
+                src={result.property.mainImage}
+                className="blur-image"
+                alt={result.property.name}
+              />
             </div>
           </div>
         </a>
@@ -61,7 +71,7 @@ const AvailablePlaces = (props) => {
             {result.property.location.name}
           </p>
           <div className="row mt-3 ml-2 mb-4">
-            {result.timeboxes.map((timebox,index) => (
+            {result.timeboxes.map((timebox, index) => (
               <form onSubmit={handleSubmit} key={index}>
                 <input type="hidden" name="scheduleId" value={timebox._id} />
 
@@ -82,12 +92,9 @@ const AvailablePlaces = (props) => {
   }
 
   return (
-    <div className="body-container">
+    <div className="container">
       <h3 className="mt-4 mb-4 section-title">Resultados de tu búsqueda</h3>
-      <div className="properties-group-2">
-      {available}
-      </div>
-      
+      <div className="properties-group-2">{available}</div>
     </div>
   );
 };

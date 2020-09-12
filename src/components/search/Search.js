@@ -1,11 +1,12 @@
 import React, { useState } from "react";
-import axios from "axios";
 import AvailablePlaces from "./AvailablePlaces";
 import GeneralMap from "./GeneralMap";
+import SearchIcon from "@material-ui/icons/Search";
+import SearchService from "../../services/search/search-service";
 
-var curr = new Date();
+let curr = new Date();
 curr.setDate(curr.getDate());
-var date = curr.toISOString().substr(0, 10);
+let date = curr.toISOString().substr(0, 10);
 const initialState = {
   bookingDate: date,
   numberGuests: 0,
@@ -14,6 +15,7 @@ const initialState = {
 
 const Search = (props) => {
   const [state, setState] = useState(initialState);
+  const service = new SearchService();
 
   const handleChange = (event) => {
     setState({
@@ -28,17 +30,18 @@ const Search = (props) => {
       bookingDate: state.bookingDate,
       numberGuests: state.numberGuests,
     };
-    axios
-      .post(process.env.REACT_APP_API_URL + "/search/getAvailability", body, {
-        withCredentials: true,
-      })
-      .then((response) => {
-        console.log(response.data);
-        setState({
-          ...state,
-          availableResults: response.data,
-        });
+
+    service.getAvailability(body).then((response) => {
+      console.log(response);
+      setState({
+        ...state,
+        availableResults: response,
       });
+    });
+    // axios
+    //   .post(process.env.REACT_APP_API_URL + "/search/getAvailability", body, {
+    //     withCredentials: true,
+    //   })
   };
 
   let availablePlaces = <></>;
@@ -50,18 +53,19 @@ const Search = (props) => {
   return (
     <div className="body-container">
       <div>
-        <h1>Búsqueda de locales</h1>
-        <h2>Todos los locales</h2>
-        <GeneralMap/>
-      </div>
-      <div >
         <h3 className="section-title mt-4 mdi mdi-magnify">
           Busca el mejor sitio
         </h3>
-        <div className="row d-flex align-items-center justify-content-center">
-          <form className="form-row mb-5" onSubmit={handleSubmit}>
-            <div className="row">
-              <div className="col-md-6">
+        <GeneralMap />
+      </div>
+      <div>
+        <div className="row d-flex align-items-center justify-content-center mt-5">
+          <form
+            className="form-row flotante-kokomo-search"
+            onSubmit={handleSubmit}
+          >
+            <div className="row w-100">
+              <div className="col-40">
                 <div className="form-group">
                   <label htmlFor="bookingDate" className="label active">
                     ¿Qué día quieres venir?
@@ -75,7 +79,7 @@ const Search = (props) => {
                   />
                 </div>
               </div>
-              <div className="col-md-6">
+              <div className="col-40">
                 <div className="form-group">
                   <label htmlFor="numberGuests" className="label active">
                     ¿Cuántos seréis?
@@ -90,12 +94,12 @@ const Search = (props) => {
                   />
                 </div>
               </div>
+              <div className="col-20">
+                <button type="submit" className="kokomo-btn-form">
+                  <SearchIcon />
+                </button>
+              </div>
             </div>
-            <input
-              type="submit"
-              value="Ver disponibildad"
-              className="kokomo-btn-form p-3"
-            />
           </form>
         </div>
         <div>{availablePlaces}</div>

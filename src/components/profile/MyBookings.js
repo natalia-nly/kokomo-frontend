@@ -1,59 +1,146 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Booking from "./Booking";
+import OwnerLocal from "./OwnerLocal";
+import Tabs from "react-bootstrap/Tabs";
+import Tab from "react-bootstrap/Tab";
+let reservas = <p>Todavía no tienes reservas</p>;
+let reservasProperties = <p>Todavía no tienes reservas</p>;
+let active = "client";
+let ownerTab = <></>;
+
 const initialState = {
   bookings: [],
+  properties: [],
 };
-let reservas = <p>Todavía no tienes reservas</p>;
+
 const MyBookings = (props) => {
   const [state, setState] = useState(initialState);
 
   useEffect(() => {
+    const CancelToken = axios.CancelToken;
+    const source = CancelToken.source();
+    if (props.loggedInUser.owner) {
+      active = "owner";
+    }
+    const loadData = () => {
+      try {
+        axios
+          .get(process.env.REACT_APP_API_URL + "/booking/my-bookings", {
+            withCredentials: true,
+          })
+          .then((response) => {
+            console.log("CONSOLE LOG DESDE AXIOS GET", response.data.bookings);
+            setState({
+              ...state,
+              bookings: response.data.bookings,
+            });
+          });
+      } catch (error) {
+        if (axios.isCancel(error)) {
+          console.log("cancelled");
+        } else {
+          throw error;
+        }
+      }
+    };
+    loadData();
+    return () => {
+      source.cancel();
+    };
+  }, []);
+
+  useEffect(() => {
     axios
-      .get(process.env.REACT_APP_API_URL + "/booking/my-bookings", {
+      .get(process.env.REACT_APP_API_URL + "/booking/my-properties-bookings", {
         withCredentials: true,
       })
       .then((response) => {
-        console.log("CONSOLE LOG DESDE AXIOS GET", response.data.bookings);
+        console.log(
+          "CONSOLE LOG DESDE AXIOS GET bookings en mis props:",
+          response.data.ownProperties
+        );
         setState({
           ...state,
-          bookings: response.data.bookings,
+          properties: response.data.ownProperties,
         });
       });
   }, []);
 
+  const refreshPage = () => {
+    window.location.reload(false);
+  };
+
+  const deleteBooking = (booking) => {
+    console.log(booking);
+    axios
+      .post(
+        process.env.REACT_APP_API_URL + "/booking/delete/" + booking,
+        {},
+        { withCredentials: true }
+      )
+      .then((response) => {
+        console.log(response.data);
+        refreshPage();
+      });
+  };
+
   if (state.bookings.length) {
     console.log(state.bookings);
-    reservas = state.bookings.map((booking) => <Booking booking={booking} />);
+    reservas = state.bookings.map((booking, index) => (
+      <Booking key={index} booking={booking} delete={deleteBooking} />
+    ));
+  }
+
+  console.log(props);
+
+  if (props.loggedInUser.owner) {
+
+    if (state.properties.length) {
+      console.log(state.properties);
+      reservasProperties = state.properties.map((property, index) => (
+        <OwnerLocal
+          key={index}
+          property={property}
+          user={props.loggedInUser}
+          delete={deleteBooking}
+        />
+      ));
+      ownerTab = (
+        <Tab
+          eventKey="owner"
+          title="Reservas en tus Locales"
+          className="nav-item nav-link"
+        >
+          <div>
+            <div
+              className="tab-pane fade show active"
+              id="nav-next-bookings"
+              role="tabpanel"
+              aria-labelledby="nav-next-bookings-tab"
+            >
+              <div className="group-booking">{reservasProperties}</div>
+            </div>
+          </div>
+        </Tab>
+      );
+    }
   }
 
   return (
-    <div>
-      <div className="body-container">
-        <h3 className="section-title mt-4 mdi mdi-calendar"> Tus reservas</h3>
-        <div className="row mb-5">
-          <div className="col-md-6"></div>
-        </div>
-
-        <div>
-          <nav>
-            <div className="nav nav-tabs" id="nav-tab" role="tablist">
-              <a
-                className="nav-item nav-link active"
-                id="nav-next-bookings-tab"
-                data-toggle="tab"
-                href="#nav-next-bookings"
-                role="tab"
-                aria-controls="nav-next-bookings"
-                aria-selected="true"
-              >
-                Próximas reservas
-              </a>
-            </div>
-          </nav>
-          <div className="tab-content" id="nav-tabContent">
+    <div className="body-container">
+      <h3 className="section-title mt-4 mdi mdi-calendar">
+        Gestión de reservas
+      </h3>
+      <Tabs defaultActiveKey={active} id="nav-tab" className="nav nav-tabs">
+        {ownerTab}
+        <Tab
+          eventKey="client"
+          title="Tus reservas"
+          className="nav-item nav-link"
+        >
+          <div>
             <div
-              div
               className="tab-pane fade show active"
               id="nav-next-bookings"
               role="tabpanel"
@@ -62,8 +149,8 @@ const MyBookings = (props) => {
               <div className="group-booking">{reservas}</div>
             </div>
           </div>
-        </div>
-      </div>
+        </Tab>
+      </Tabs>
     </div>
   );
 };

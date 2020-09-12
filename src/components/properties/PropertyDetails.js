@@ -4,9 +4,11 @@ import Tabs from "react-bootstrap/Tabs";
 import Tab from "react-bootstrap/Tab";
 import AvailableTimes from "./availableTimes";
 import DetailedMap from "../search/DetailedMap";
-import AuthService from "../../auth/auth-service";
-import Rating from "./Rating";
 import { Link } from "react-router-dom";
+import dateFormat from "dateformat";
+import SearchIcon from "@material-ui/icons/Search";
+import ActualRating from "./ActualRating";
+import AddRating from "./AddRating";
 
 const PropertyDetails = (props) => {
   const initialState = {
@@ -15,7 +17,10 @@ const PropertyDetails = (props) => {
       location: {
         name: "",
         lat: 41.393542,
-        lng: 2.203153
+        lng: 2.203153,
+      },
+      rating: {
+        counter: [4],
       },
       openingHours: [
         {
@@ -43,16 +48,22 @@ const PropertyDetails = (props) => {
     availableResults: [],
     comment: "",
     favourites: [],
+    ratingComment: 0,
+    showFormMobile: false,
+
   };
 
-  const service = new AuthService();
-  var saveData = JSON.parse(localStorage.saveData || null) || {};
-  function saveStuff(obj) {
-    saveData.obj = obj;
-    localStorage.saveData = JSON.stringify(saveData);
-  }
-
   const [state, setState] = useState(initialState);
+
+  // const newRating = ()
+
+
+  const handleChangeRating = (newValue) => {
+    setState({
+      ...state,
+      ratingComment: newValue,
+    });
+  }
 
   const handleChange = (event) => {
     setState({
@@ -60,6 +71,7 @@ const PropertyDetails = (props) => {
       [event.target.name]: event.target.value,
     });
   };
+
   const handleSubmit = (event) => {
     event.preventDefault();
     const body = {
@@ -68,7 +80,8 @@ const PropertyDetails = (props) => {
     };
     axios
       .post(
-        process.env.REACT_APP_API_URL + "/search/property/" +
+        process.env.REACT_APP_API_URL +
+          "/search/property/" +
           props.match.params.propertyId,
         body,
         { withCredentials: true }
@@ -78,47 +91,62 @@ const PropertyDetails = (props) => {
         setState({
           ...state,
           availableResults: response.data,
+          showFormMobile: false,
         });
       });
   };
 
   const handleFavourite = () => {
     axios
-      .get(process.env.REACT_APP_API_URL + "/property/love/" + state.property._id, {
-        withCredentials: true,
-      })
+      .get(
+        process.env.REACT_APP_API_URL + "/property/love/" + state.property._id,
+        { withCredentials: true }
+      )
       .then((response) => {
         console.log("Favorito añadido", response.data);
-        const newFavs = [...state.favourites]
-        newFavs.push(state.property._id)
+        const newFavs = [...state.favourites];
+        newFavs.push(state.property._id);
 
         setState({
           ...state,
-          favourites: newFavs
+          favourites: newFavs,
         });
       });
   };
-
-  
 
   const handleComment = (e) => {
     e.preventDefault();
     let body = {
       username: props.getTheUser.username,
       comment: state.comment,
+      avatar: props.getTheUser.avatar,
+      rating: state.ratingComment,
     };
     axios
       .post(
-        process.env.REACT_APP_API_URL + "/property/add-comment/" +
+        process.env.REACT_APP_API_URL +
+          "/property/add-comment/" +
           props.match.params.propertyId,
         body,
-        {
-          withCredentials: true,
-        }
+        { withCredentials: true }
       )
       .then((response) => {
         console.log("Comentario añadido", response.data);
-        setState({ ...state, property: response.data, comment: "" });
+
+        let counter = response.data.rating.counter;
+        let reduceFunc = (a, b) => a + b;
+
+        let rateNumber = parseFloat(
+          (counter.reduce(reduceFunc, 0) / counter.length).toFixed(2)
+        );
+
+
+        setState({
+          ...state,
+          property: response.data,
+          comment: "",
+          actualRating: rateNumber
+        });
       });
   };
 
@@ -126,100 +154,145 @@ const PropertyDetails = (props) => {
     console.log(props);
     axios
       .get(
-        process.env.REACT_APP_API_URL + "/property/" + props.match.params.propertyId,
+        process.env.REACT_APP_API_URL +
+          "/property/" +
+          props.match.params.propertyId,
         { withCredentials: true }
       )
       .then((response) => {
         console.log("CONSOLE LOG DESDE AXIOS GET", response);
+        let counter = response.data.rating.counter;
+        let reduceFunc = (a, b) => a + b;
+
+        let rateNumber = parseFloat(
+          (counter.reduce(reduceFunc, 0) / counter.length).toFixed(2)
+        );
+
+        console.log("rate number", rateNumber);
+
         setState({
           ...state,
           property: response.data,
+          actualRating: rateNumber,
         });
       });
-    // service.loggedin().then((response) => {
-    //   saveStuff(response);
-    //   console.log("RESPUESTA DEL SERVICE: ", response.favourites);
-    //   setState({
-    //     ...state,
-    //     favourites: response.favourites,
-    //   });
-    // });
   }, []);
 
-  var heartKokomo = "far fa-heart fa-stack-1x fa-inverse";
+  let heartKokomo = "far fa-heart fa-stack-1x fa-inverse";
   if (state.favourites && state.favourites.includes(state.property._id)) {
-    console.log('yes?')
     heartKokomo = "fas fa-heart fa-stack-1x fa-inverse";
   }
 
-  var property = state.property;
   console.log(state.availableResults);
 
-  var availableTimes = <></>;
+  let availableTimes = <></>;
+
+  const clearAvailableTimes = () => {
+    setState({ ...state, availableResults: [] });
+  };
 
   if (state.availableResults.length) {
     availableTimes = (
       <AvailableTimes
         guests={state.numberGuests}
         results={state.availableResults}
+        clearAvailableTimes={clearAvailableTimes}
       />
     );
   }
 
-  var allComments = state.property.comments.map((comment, index) => (
-    <div className="border-bottom pb-4 pt-4" key={index}>
+  let allComments = state.property.comments.map((comment, index) => (
+    <div className="comment-kokomo pb-4 pt-4" key={index}>
       <h5>
-        <i className="fas fa-user-circle"></i>
+        <img
+          src={comment.avatar}
+          alt="Avatar"
+          style={{
+            width: "30px",
+            borderRadius: "100px",
+            marginRight: "10px",
+          }}
+        />{" "}
         {comment.username}
       </h5>
-      <p>
-        <i className="far fa-comment-dots"></i>
-        {comment.comment}
-      </p>
+      <p>{comment.comment}</p>
     </div>
   ));
 
-  var showProperty = (
-    <div className="mt-4 border-top">
-      <p>Necesitas una cuenta para poder hacer reservas.</p>
-      <Link to="/signup" className="btn btn-success mt-3">
-        Regístrate ahora
-      </Link>
-    </div>
+  let showProperty = (
+    <>
+      <div className="row d-flex align-items-center justify-content-center">
+        <div className=" flotante-kokomo">
+          <div className="row w-100 align-items-center">
+            <p className="text-white">
+              Necesitas una cuenta para poder hacer reservas.
+            </p>
+            <Link
+              to="/signup"
+              className="btn kokomo-btn-form"
+              style={{ width: "35%" }}
+            >
+              Regístrate ahora
+            </Link>
+          </div>
+        </div>
+        <Link to="/signup" className="btn btn-floating">
+          Regístrate ahora
+        </Link>
+      </div>
+    </>
   );
 
-  var addComment = <></>;
+  let addComment = <></>;
 
   if (props.getTheUser) {
     addComment = (
-      <form onSubmit={handleComment}>
-        <div className="form-group">
-          <label htmlFor="comment" className="label active">
-            Deja tu comentario
-          </label>
-          <textarea
-            name="comment"
-            cols="30"
-            rows="3"
-            value={state.comment}
-            onChange={handleChange}
-          ></textarea>
-        </div>
-
-        <input
-          type="submit"
-          value="Enviar"
-          className="btn-kokomo btn-kokomo-grey btn-block"
-        />
-      </form>
+      <>
+      <AddRating handleChangeRating={handleChangeRating} ratingComment={state.ratingComment}/>
+        
+        <form onSubmit={handleComment} className="d-flex mt-2">
+          <div
+            className="form-group"
+            style={{
+              width: "70%",
+            }}
+          >
+            <label htmlFor="comment" className="label active">
+              Deja tu comentario
+            </label>
+            <input
+              type="text"
+              name="comment"
+              value={state.comment}
+              onChange={handleChange}
+            />
+          </div>
+          <div
+            style={{
+              width: "30%",
+            }}
+          >
+            <button
+              type="submit"
+              value={<i className="fas fa-ellipsis-v"></i>}
+              className="btn-kokomo-flex"
+              style={{
+                padding: "19px",
+              }}
+            >
+              <i class="fas fa-paper-plane"></i>
+            </button>
+          </div>
+        </form>{" "}
+      </>
     );
 
     showProperty = (
       <>
         <div className="row d-flex align-items-center justify-content-center">
-          <form className="form-row mb-5" onSubmit={handleSubmit}>
-            <div className="row">
-              <div className="col-md-6">
+          <form className="form-row flotante-kokomo" onSubmit={handleSubmit}>
+            <div className="row w-100">
+              <div className="col-40">
                 <div className="form-group">
                   <label htmlFor="bookingDate" className="label active">
                     ¿Qué día quieres venir?
@@ -233,7 +306,7 @@ const PropertyDetails = (props) => {
                   />
                 </div>
               </div>
-              <div className="col-md-6">
+              <div className="col-40">
                 <div className="form-group">
                   <label htmlFor="numberGuests" className="label active">
                     ¿Cuántos seréis?
@@ -248,120 +321,247 @@ const PropertyDetails = (props) => {
                   />
                 </div>
               </div>
+              <div className="col-20">
+                <button type="submit" className="kokomo-btn-form">
+                  <SearchIcon />
+                </button>
+              </div>
             </div>
-            <input
-              type="submit"
-              value="Ver disponibildad"
-              className="kokomo-btn-form p-3"
-            />
           </form>
+          <button onClick={() => showForm()} className="btn-floating">
+            Hacer una reserva
+          </button>
         </div>
+      </>
+    );
+  }
 
-        {availableTimes}
+  let ratingProperty = <></>;
+  if (state.actualRating) {
+    ratingProperty = (
+      <ActualRating rate={state.actualRating} numberReviews={state.property.rating.counter.length}/>
+    );
+  }
+
+  const formatOpening = dateFormat(
+    state.property.openingHours[0].openingDays.openingDay,
+    "dd/mm / yyyy "
+  );
+  const formatClosing = dateFormat(
+    state.property.openingHours[0].openingDays.closingDay,
+    "dd/mm/yyyy"
+  );
+  let weekDaysFormat = [];
+  state.property.openingHours[0].weekDays.forEach((day) => {
+    switch (day) {
+      case 1:
+        weekDaysFormat.push("Lunes");
+        break;
+      case 2:
+        weekDaysFormat.push("Martes");
+        break;
+      case 3:
+        weekDaysFormat.push("Miércoles");
+        break;
+      case 4:
+        weekDaysFormat.push("Jueves");
+        break;
+      case 5:
+        weekDaysFormat.push("Viernes");
+        break;
+      case 6:
+        weekDaysFormat.push("Sábado");
+        break;
+      case 7:
+        weekDaysFormat.push("Domingo");
+    }
+  });
+
+  let daysInTable = weekDaysFormat.map((day, index) => (
+    <tr>
+      <td>
+        <p>{day}</p>
+      </td>
+      <td>
+        <p>
+          {state.property.openingHours[0].openingTimes[0].openingTime}:00 -{" "}
+          {state.property.openingHours[0].openingTimes[0].closingTime}:00
+        </p>
+      </td>
+    </tr>
+  ));
+
+  let showMobileForm = <></>;
+
+  let showForm = () => {
+    setState({ ...state, showFormMobile: true });
+  };
+
+  let hideForm = () => {
+    setState({ ...state, showFormMobile: false });
+  };
+
+  if (state.showFormMobile) {
+    showMobileForm = (
+      <>
+        <div className="text-center d-flex align-items-center justify-content-center kokomo-popup">
+          <div className="row align-middle justify-content-center w-100">
+            <div className="col-md-4 align-self-center fondo-kokomo">
+              <img
+                src="/images/calendar.png"
+                className="emoji-img"
+                alt="Horas disponibles"
+              />
+              <a onClick={hideForm} className="close-btn">
+                <i className="fas fa-times"></i>
+              </a>
+              <form onSubmit={handleSubmit}>
+                <div className="form-group">
+                  <label htmlFor="bookingDate" className="label active">
+                    ¿Qué día quieres venir?
+                  </label>
+                  <input
+                    type="date"
+                    name="bookingDate"
+                    onChange={handleChange}
+                    value={state.bookingDate}
+                    data-date-format="DD MMMM YYYY"
+                  />
+                </div>
+                <div className="form-group">
+                  <label htmlFor="numberGuests" className="label active">
+                    ¿Cuántos seréis?
+                  </label>
+                  <input
+                    type="number"
+                    name="numberGuests"
+                    min="1"
+                    onChange={handleChange}
+                    value={state.numberGuests}
+                    className="kokomo-input"
+                  />
+                </div>
+                <button type="submit" className="kokomo-btn-form">
+                  <SearchIcon />
+                </button>
+              </form>
+            </div>
+          </div>
+        </div>
       </>
     );
   }
 
   return (
-    <div
-      className="home-bg image-background"
-      style={{
-        backgroundImage: `url(${state.property.mainImage})`,
-      }}
-    >
-      <div className="container-left"></div>
-
-      <div className="white-card">
-        <div className="title-heart">
-          <a onClick={handleFavourite}>
-            <div>
-              <span className="fa-stack fa-2x mr-4">
-                <i className="fas fa-circle fa-stack-2x orange"></i>
-                <i className={heartKokomo}></i>
-              </span>
-            </div>
-          </a>
+    <>
+      {showMobileForm}
+      <div style={{ backgroundColor: "#fbf7f3", height: "100vh" }}>
+        <Link to="/">
           <div>
-            <h2 className="title-search">{state.property.name}</h2>
+            <span className="fa-stack fa-2x kokomo-back-button">
+              <i className="fas fa-circle fa-stack-2x circle-back"></i>
+              <i class="fas fa-arrow-left fa-stack-1x fa-inverse arrow-back"></i>
+            </span>
+          </div>
+        </Link>
+        <div
+          className="home-bg image-background"
+          style={{
+            backgroundImage: `url(${state.property.mainImage})`,
+          }}
+        >
+          <div className="container-left"></div>
+
+          <div className="white-card">
+            <div className="title-heart">
+              <div>
+                <a onClick={handleFavourite}>
+                  <span className="fa-stack fa-2x mr-4">
+                    <i className="fas fa-circle fa-stack-2x orange"></i>
+                    <i className={heartKokomo}></i>
+                  </span>
+                </a>
+              </div>
+              <div>
+                <h2 className="title-search">{state.property.name}</h2>
+                {ratingProperty}
+              </div>
+            </div>
+            <Tabs
+              defaultActiveKey="nav-description"
+              id="nav-tab"
+              className="nav nav-tabs nav-fill tab-details"
+            >
+              <Tab
+                eventKey="nav-description"
+                title="Info"
+                className="nav-item nav-link"
+              >
+                <div className="row">
+                  <div className="col-md-6">
+                    <h3 className="subtitle-search mb-4">
+                      {state.property.description}
+                    </h3>
+
+                    <p>
+                      Duración de la reserva: {state.property.bookingDuration}
+                    </p>
+                    <p>Plazas disponibles: {state.property.availablePlaces}</p>
+                    <p>
+                      <i className="fas fa-map-marker-alt"></i> Dirección:{" "}
+                      {state.property.location.name}
+                    </p>
+                  </div>
+                  <div className="col-md-6">
+                    <DetailedMap
+                      lat={state.property.location.lat}
+                      lng={state.property.location.long}
+                      property={state.property}
+                    />
+                  </div>
+                </div>
+              </Tab>
+              <Tab
+                eventKey="nav-comments"
+                title="Reseñas"
+                className="nav-item nav-link"
+              >
+                <div className="row">
+                  <div className="col-md-6">{addComment}</div>
+                  <div className="col-md-6">{allComments}</div>
+                </div>
+              </Tab>
+              <Tab
+                eventKey="nav-openings"
+                title="Horarios"
+                className="nav-item nav-link"
+              >
+                <div className="row">
+                  <div className="col-md-6"></div>
+                  <div className="col-md-6">
+                    <p>
+                      Día de apertura:
+                      <span id="openingDay1"> {formatOpening}</span>
+                    </p>
+
+                    <p>
+                      Día de cierre:
+                      <span id="closingDay1"> {formatClosing}</span>
+                    </p>
+
+                    <table class="table">
+                      <tbody>{daysInTable}</tbody>
+                    </table>
+                  </div>
+                </div>
+              </Tab>
+            </Tabs>
+            {showProperty}
           </div>
         </div>
-        <Tabs
-          defaultActiveKey="nav-description"
-          id="nav-tab"
-          className="nav nav-tabs nav-fill"
-        >
-          <Tab
-            eventKey="nav-description"
-            title="Descripción"
-            className="nav-item nav-link"
-          >
-            <h3 className="subtitle-search mb-4">
-              {state.property.description}
-            </h3>
-            <p>
-              <i className="fas fa-map-marker-alt"></i>
-              {state.property.location.name}
-            </p>
-            <p>Duración de la reserva: {state.property.bookingDuration}</p>
-            <p>Plazas disponibles: {state.property.availablePlaces}</p>
-            {/* <Rating>0</Rating>
-      <Rating>1.49</Rating>
-      <Rating>1.5</Rating>
-      <Rating>3</Rating>
-      <Rating>4</Rating>
-      <Rating>5</Rating> */}
-          </Tab>
-          <Tab
-            eventKey="nav-comments"
-            title="Comentarios"
-            className="nav-item nav-link"
-          >
-            <div className="row">
-              <div className="col-md-6">{addComment}</div>
-              <div className="col-md-6">{allComments}</div>
-            </div>
-          </Tab>
-          <Tab
-            eventKey="nav-openings"
-            title="Horarios"
-            className="nav-item nav-link"
-          >
-            <h3 className="subtitle-search mb-4">Días de apertura</h3>
-
-            <p>
-              Día de apertura:
-              <span id="openingDay1">
-                {state.property.openingHours[0].openingDays.openingDay}
-              </span>
-            </p>
-
-            <p>
-              Día de cierre:
-              <span id="closingDay1">
-                {state.property.openingHours[0].openingDays.closingDay}
-              </span>
-            </p>
-
-            <p>Días de la semana: {state.property.openingHours[0].weekDays}</p>
-
-            <p>
-              Hora de apertura:{" "}
-              {state.property.openingHours[0].openingTimes[0].openingTime}
-            </p>
-            <p>
-              Hora de cierre:{" "}
-              {state.property.openingHours[0].openingTimes[0].closingTime}
-            </p>
-            <DetailedMap
-              lat={state.property.location.lat}
-              lng={state.property.location.long}
-              property={state.property}
-            />
-          </Tab>
-        </Tabs>
-        {showProperty}
+        {availableTimes}
       </div>
-    </div>
+    </>
   );
 };
 

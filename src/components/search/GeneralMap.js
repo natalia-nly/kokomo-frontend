@@ -5,15 +5,15 @@ import axios from "axios";
 
 const GeneralMap = () => {
 
-  var curr = new Date();
+  let curr = new Date();
   curr.setDate(curr.getDate());
-  var date = curr.toISOString().substr(0, 10);
+  let date = curr.toISOString().substr(0, 10);
   const initialState = {
     allResults: [],
     bookingDate: date,
     numberGuests: 0,
   };
-  var center = {
+  let center = {
     lat: 41.35,
     lng: 2.1,
   };
@@ -53,9 +53,9 @@ const GeneralMap = () => {
   };
 
   const getInfoWindowString = (place) => {
-    var today = new Date();
-    var openingDate = new Date(place.openingHours[0].openingDays.openingDay);
-    var closingDate = new Date(place.openingHours[0].openingDays.closingDay);
+    let today = new Date();
+    let openingDate = new Date(place.openingHours[0].openingDays.openingDay);
+    let closingDate = new Date(place.openingHours[0].openingDays.closingDay);
 
     return `
     <div>
@@ -124,7 +124,7 @@ const GeneralMap = () => {
     });
   };
 
-  var mapa = <></>
+  let mapa = <></>
   if(state.allResults.length){
     mapa = ( <div className="container mt-4 mapa">
     <GoogleMapReact
