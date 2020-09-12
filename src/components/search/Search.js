@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import axios from "axios";
 import AvailablePlaces from "./AvailablePlaces";
 import GeneralMap from "./GeneralMap";
+import SearchIcon from "@material-ui/icons/Search";
+import Categories from "../properties/Categories";
 
 var curr = new Date();
 curr.setDate(curr.getDate());
@@ -50,18 +52,17 @@ const Search = (props) => {
   return (
     <div className="body-container">
       <div>
-        <h1>Búsqueda de locales</h1>
-        <h2>Todos los locales</h2>
-        <GeneralMap/>
-      </div>
-      <div >
         <h3 className="section-title mt-4 mdi mdi-magnify">
           Busca el mejor sitio
         </h3>
+        <GeneralMap />
+       
+      </div>
+      <div>
         <div className="row d-flex align-items-center justify-content-center">
-          <form className="form-row mb-5" onSubmit={handleSubmit}>
-            <div className="row">
-              <div className="col-md-6">
+          <form className="form-row flotante-kokomo" onSubmit={handleSubmit}>
+            <div className="row w-100">
+              <div className="col-40">
                 <div className="form-group">
                   <label htmlFor="bookingDate" className="label active">
                     ¿Qué día quieres venir?
@@ -75,7 +76,7 @@ const Search = (props) => {
                   />
                 </div>
               </div>
-              <div className="col-md-6">
+              <div className="col-40">
                 <div className="form-group">
                   <label htmlFor="numberGuests" className="label active">
                     ¿Cuántos seréis?
@@ -90,12 +91,12 @@ const Search = (props) => {
                   />
                 </div>
               </div>
+              <div className="col-20">
+                <button type="submit" className="kokomo-btn-form">
+                  <SearchIcon />
+                </button>
+              </div>
             </div>
-            <input
-              type="submit"
-              value="Ver disponibildad"
-              className="kokomo-btn-form p-3"
-            />
           </form>
         </div>
         <div>{availablePlaces}</div>

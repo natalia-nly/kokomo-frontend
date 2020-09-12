@@ -759,7 +759,6 @@ h4.section-title {
   grid-gap: 20px;
   overflow: scroll;
   padding: 0 0 50px 20px;
-  margin-top: -20px;
 }
 .category-group .one-category {
   display: flex;
