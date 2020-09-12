@@ -97,7 +97,9 @@ const Booking = (props) => {
             <Dropdown.Divider />
             <form onSubmit={props.delete} className="dropdown-item danger">
                 <input type="hidden" name="bookingId" value={state.bookingId} />
-                <button className="link-danger"><i className="far fa-trash-alt"></i> Cancelar reserva</button>
+                <button className="link-danger">
+                      <i className="far fa-trash-alt"></i> Cancelar reserva
+                    </button>
               </form>
           </DropdownButton>
 

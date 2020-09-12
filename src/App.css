@@ -350,8 +350,8 @@ nav i {
 
 .link-danger {
   background-color: transparent;
-    border: none;
-    color: #ff8d69;
+  border: none;
+  color: #ff8d69;
 }
 
 /* # 02. HOME
@@ -542,7 +542,7 @@ h1 {
 .properties-group-2 .one-property p {
   color: #809eaa;
   font-weight: 200;
-  font-size: 13px;
+  font-size: 16px;
 }
 .properties-group-2 .property-card {
   width: 80vw;
@@ -820,7 +820,7 @@ h4.section-title {
 }
 
 .kokomo-popup .emoji-img {
-  margin-top: -60px
+  margin-top: -60px;
 }
 
 .close-btn {
@@ -828,11 +828,11 @@ h4.section-title {
   right: 20px;
   top: 20px;
   cursor: pointer;
-  color: #3294bb
+  color: #3294bb;
 }
 
 .close-btn:hover {
-  color: #174e67
+  color: #174e67;
 }
 
 .avatar {
@@ -927,20 +927,44 @@ h4.section-title {
   display: none;
 }
 
+.flotante-kokomo-search {
+  display: block;
+  bottom: 10vh;
+  background-color: #ffbb69;
+  padding: 20px 40px;
+  width: 80vw;
+  border-radius: 20px;
+  box-shadow: 1px 1px 20px rgba(162, 106, 38, 0.36);
+}
+
+.flotante-kokomo-search .form-group {
+  margin-bottom: 0;
+}
+
+.flotante-kokomo-search .form-group input {
+  border: none;
+}
+
+.flotante-kokomo-search .kokomo-btn-form {
+  background-color: #f5941c;
+  padding: 20px;
+  border-radius: 8px;
+}
+
 .btn-floating {
   background-color: #ffbb69;
-    color: white;
-    border: none;
-    width: 90%;
-    border-radius: 8px;
-    padding: 16px;
-    font-size: 18px;
-    position: absolute;
-    bottom: 14px;
+  color: white;
+  border: none;
+  width: 90%;
+  border-radius: 8px;
+  padding: 16px;
+  font-size: 18px;
+  position: absolute;
+  bottom: 14px;
 }
 
 .btn-floating:hover {
-  background-color: #e89f46
+  background-color: #e89f46;
 }
 
 /* # 01. MEDIA QUERIES
@@ -1234,7 +1258,7 @@ h4.section-title {
   }
 
   .flotante-kokomo {
-    display:block;
+    display: block;
     position: absolute;
     right: 0;
     bottom: 10vh;
@@ -1245,15 +1269,28 @@ h4.section-title {
     box-shadow: 1px 1px 20px rgba(162, 106, 38, 0.36);
   }
 
-  .flotante-kokomo .form-group {
+  .flotante-kokomo-search {
+    display: block;
+    bottom: 10vh;
+    background-color: #ffbb69;
+    padding: 20px 40px;
+    width: 80vw;
+    border-radius: 20px;
+    box-shadow: 1px 1px 20px rgba(162, 106, 38, 0.36);
+  }
+
+  .flotante-kokomo .form-group,
+  .flotante-kokomo-search .form-group {
     margin-bottom: 0;
   }
 
-  .flotante-kokomo .form-group input {
+  .flotante-kokomo .form-group input,
+  .flotante-kokomo-search .form-group input {
     border: none;
   }
 
-  .flotante-kokomo .kokomo-btn-form {
+  .flotante-kokomo .kokomo-btn-form,
+  .flotante-kokomo-search .kokomo-btn-form {
     background-color: #f5941c;
     padding: 20px;
     border-radius: 8px;

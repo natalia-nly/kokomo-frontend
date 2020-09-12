@@ -5,10 +5,10 @@ import Tab from "react-bootstrap/Tab";
 import AvailableTimes from "./availableTimes";
 import DetailedMap from "../search/DetailedMap";
 import { Link } from "react-router-dom";
-import ReactStars from "react-rating-stars-component";
 import dateFormat from "dateformat";
 import SearchIcon from "@material-ui/icons/Search";
 import ActualRating from "./ActualRating";
+import AddRating from "./AddRating";
 
 const PropertyDetails = (props) => {
   const initialState = {
@@ -48,32 +48,22 @@ const PropertyDetails = (props) => {
     availableResults: [],
     comment: "",
     favourites: [],
-    ratingComment: 4,
+    ratingComment: 0,
     showFormMobile: false,
-    actualRating: 4
+
   };
 
   const [state, setState] = useState(initialState);
 
+  // const newRating = ()
 
-  let ownRating = {
-    size: 12,
-    count: 5,
-    color: "#ffba69",
-    activeColor: "#ffba69",
-    value: state.ratingComment,
-    a11y: true,
-    isHalf: true,
-    emptyIcon: <i className="far fa-star" />,
-    halfIcon: <i className="fa fa-star-half-alt" />,
-    filledIcon: <i className="fa fa-star" />,
-    onChange: (newValue) => {
-      setState({
-        ...state,
-        ratingComment: newValue,
-      });
-    },
-  };
+
+  const handleChangeRating = (newValue) => {
+    setState({
+      ...state,
+      ratingComment: newValue,
+    });
+  }
 
   const handleChange = (event) => {
     setState({
@@ -142,10 +132,20 @@ const PropertyDetails = (props) => {
       )
       .then((response) => {
         console.log("Comentario añadido", response.data);
+
+        let counter = response.data.rating.counter;
+        let reduceFunc = (a, b) => a + b;
+
+        let rateNumber = parseFloat(
+          (counter.reduce(reduceFunc, 0) / counter.length).toFixed(2)
+        );
+
+
         setState({
           ...state,
           property: response.data,
           comment: "",
+          actualRating: rateNumber
         });
       });
   };
@@ -178,14 +178,14 @@ const PropertyDetails = (props) => {
       });
   }, []);
 
-  var heartKokomo = "far fa-heart fa-stack-1x fa-inverse";
+  let heartKokomo = "far fa-heart fa-stack-1x fa-inverse";
   if (state.favourites && state.favourites.includes(state.property._id)) {
     heartKokomo = "fas fa-heart fa-stack-1x fa-inverse";
   }
 
   console.log(state.availableResults);
 
-  var availableTimes = <></>;
+  let availableTimes = <></>;
 
   const clearAvailableTimes = () => {
     setState({ ...state, availableResults: [] });
@@ -201,7 +201,7 @@ const PropertyDetails = (props) => {
     );
   }
 
-  var allComments = state.property.comments.map((comment, index) => (
+  let allComments = state.property.comments.map((comment, index) => (
     <div className="comment-kokomo pb-4 pt-4" key={index}>
       <h5>
         <img
@@ -219,7 +219,7 @@ const PropertyDetails = (props) => {
     </div>
   ));
 
-  var showProperty = (
+  let showProperty = (
     <>
       <div className="row d-flex align-items-center justify-content-center">
         <div className=" flotante-kokomo">
@@ -243,12 +243,13 @@ const PropertyDetails = (props) => {
     </>
   );
 
-  var addComment = <></>;
+  let addComment = <></>;
 
   if (props.getTheUser) {
     addComment = (
       <>
-        <ReactStars {...ownRating} />
+      <AddRating handleChangeRating={handleChangeRating} ratingComment={state.ratingComment}/>
+        
         <form onSubmit={handleComment} className="d-flex mt-2">
           <div
             className="form-group"

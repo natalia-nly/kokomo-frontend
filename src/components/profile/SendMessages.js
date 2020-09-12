@@ -1,10 +1,10 @@
-import React, {useState, useEffect} from "react";
+import React, {useState} from "react";
 import axios from "axios";
 
 
 
 const SendMessages = (props) => {
-  var initialState = {
+  let initialState = {
     customer: props.customer,
     fromUser: props.user,
     avatar: props.user.avatar,
@@ -47,7 +47,7 @@ console.log(props)
             });
     };
 
-    var message = (
+    let message = (
         <div>
             <form onSubmit={handleMessage} className="d-flex mt-2">
                 <div

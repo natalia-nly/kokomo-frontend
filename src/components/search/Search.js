@@ -3,11 +3,11 @@ import axios from "axios";
 import AvailablePlaces from "./AvailablePlaces";
 import GeneralMap from "./GeneralMap";
 import SearchIcon from "@material-ui/icons/Search";
-import Categories from "../properties/Categories";
+import SearchService from "../../services/search/search-service";
 
-var curr = new Date();
+let curr = new Date();
 curr.setDate(curr.getDate());
-var date = curr.toISOString().substr(0, 10);
+let date = curr.toISOString().substr(0, 10);
 const initialState = {
   bookingDate: date,
   numberGuests: 0,
@@ -16,6 +16,7 @@ const initialState = {
 
 const Search = (props) => {
   const [state, setState] = useState(initialState);
+  const service = new SearchService();
 
   const handleChange = (event) => {
     setState({
@@ -30,17 +31,18 @@ const Search = (props) => {
       bookingDate: state.bookingDate,
       numberGuests: state.numberGuests,
     };
-    axios
-      .post(process.env.REACT_APP_API_URL + "/search/getAvailability", body, {
-        withCredentials: true,
-      })
-      .then((response) => {
-        console.log(response.data);
-        setState({
-          ...state,
-          availableResults: response.data,
-        });
+
+    service.getAvailability(body).then((response) => {
+      console.log(response);
+      setState({
+        ...state,
+        availableResults: response,
       });
+    });
+    // axios
+    //   .post(process.env.REACT_APP_API_URL + "/search/getAvailability", body, {
+    //     withCredentials: true,
+    //   })
   };
 
   let availablePlaces = <></>;
@@ -56,11 +58,13 @@ const Search = (props) => {
           Busca el mejor sitio
         </h3>
         <GeneralMap />
-       
       </div>
       <div>
-        <div className="row d-flex align-items-center justify-content-center">
-          <form className="form-row flotante-kokomo" onSubmit={handleSubmit}>
+        <div className="row d-flex align-items-center justify-content-center mt-5">
+          <form
+            className="form-row flotante-kokomo-search"
+            onSubmit={handleSubmit}
+          >
             <div className="row w-100">
               <div className="col-40">
                 <div className="form-group">

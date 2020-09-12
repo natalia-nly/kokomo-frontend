@@ -84,7 +84,15 @@ const NavbarKokomo = (props) => {
         </li>
         {/* eslint-disable-next-line */}
         <li className="search-icon-menu">
-          <NavLink to="/search" className="mdi mdi-magnify"></NavLink>
+          <NavLink
+            to="/search"
+            className="mdi mdi-magnify"
+            activeClassName="navbar-active-login"
+          >
+            <span>
+              <i className="fas fa-circle dot-kokomo"></i>
+            </span>
+          </NavLink>
         </li>
         {/* eslint-disable-next-line */}
         <li>

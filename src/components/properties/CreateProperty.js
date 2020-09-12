@@ -1,171 +1,12 @@
 import React, { useState } from "react";
 import axios from "axios";
-import PropTypes from "prop-types";
-import { makeStyles, withStyles } from "@material-ui/core/styles";
-import clsx from "clsx";
-import Stepper from "@material-ui/core/Stepper";
-import Step from "@material-ui/core/Step";
-import StepLabel from "@material-ui/core/StepLabel";
-import Check from "@material-ui/icons/Check";
-import ScheduleIcon from "@material-ui/icons/Schedule";
-import RestaurantIcon from "@material-ui/icons/Restaurant";
-import RoomIcon from "@material-ui/icons/Room";
-import StepConnector from "@material-ui/core/StepConnector";
-import Button from "@material-ui/core/Button";
-import Typography from "@material-ui/core/Typography";
+import { Link } from "react-router-dom";
 import { useHistory } from "react-router-dom";
+import StepperKokomo from "./StepperKokomo";
+import SearchService from "../../search/search-service";
 
 function CreateProperty() {
   let history = useHistory();
-
-  const useQontoStepIconStyles = makeStyles({
-    root: {
-      color: "#eaeaf0",
-      display: "flex",
-      height: 22,
-      alignItems: "center",
-    },
-    active: {
-      color: "#784af4",
-    },
-    circle: {
-      width: 8,
-      height: 8,
-      borderRadius: "50%",
-      backgroundColor: "currentColor",
-    },
-    completed: {
-      color: "#784af4",
-      zIndex: 1,
-      fontSize: 18,
-    },
-  });
-
-  function QontoStepIcon(props) {
-    const classes = useQontoStepIconStyles();
-    const { active, completed } = props;
-
-    return (
-      <div
-        className={clsx(classes.root, {
-          [classes.active]: active,
-        })}
-      >
-        {completed ? (
-          <Check className={classes.completed} />
-        ) : (
-          <div className={classes.circle} />
-        )}
-      </div>
-    );
-  }
-
-  QontoStepIcon.propTypes = {
-    /**
-     * Whether this step is active.
-     */
-    active: PropTypes.bool,
-    /**
-     * Mark the step as completed. Is passed to child components.
-     */
-    completed: PropTypes.bool,
-  };
-
-  const ColorlibConnector = withStyles({
-    alternativeLabel: {
-      top: 22,
-    },
-    active: {
-      "& $line": {
-        backgroundImage:
-          "linear-gradient( 95deg,#ffba69 0%,#ffba69 50%,#ffba69 100%)",
-      },
-    },
-    completed: {
-      "& $line": {
-        backgroundImage:
-          "linear-gradient( 95deg,#ffba69 0%,#ffba69 50%,#ffba69 100%)",
-      },
-    },
-    line: {
-      height: 3,
-      border: 0,
-      backgroundColor: "#eaeaf0",
-      borderRadius: 1,
-    },
-  })(StepConnector);
-
-  const useColorlibStepIconStyles = makeStyles({
-    root: {
-      backgroundColor: "#ccc",
-      zIndex: 1,
-      color: "#fff",
-      width: 50,
-      height: 50,
-      display: "flex",
-      borderRadius: "50%",
-      justifyContent: "center",
-      alignItems: "center",
-    },
-    active: {
-      backgroundImage:
-        "linear-gradient( 136deg, #ffba69 0%, #ec9834 50%, #cc7309 100%)",
-      boxShadow: "0 4px 10px 0 rgba(0,0,0,.25)",
-    },
-    completed: {
-      backgroundImage:
-        "linear-gradient( 136deg, #ffba69 0%, #ec9834 50%, #cc7309 100%)",
-    },
-  });
-
-  function ColorlibStepIcon(props) {
-    const classes = useColorlibStepIconStyles();
-    const { active, completed } = props;
-
-    const icons = {
-      1: <RestaurantIcon />,
-      2: <ScheduleIcon />,
-      3: <RoomIcon />,
-    };
-
-    return (
-      <div
-        className={clsx(classes.root, {
-          [classes.active]: active,
-          [classes.completed]: completed,
-        })}
-      >
-        {icons[String(props.icon)]}
-      </div>
-    );
-  }
-
-  ColorlibStepIcon.propTypes = {
-    active: PropTypes.bool,
-    completed: PropTypes.bool,
-    icon: PropTypes.node,
-  };
-
-  const useStyles = makeStyles((theme) => ({
-    root: {
-      width: "100%",
-    },
-    button: {
-      marginRight: theme.spacing(1),
-    },
-    buttonActive: {
-      backgroundColor: "#3294bb",
-      color: "#ffffff",
-    },
-    buttonSuccess: {
-      backgroundColor: "#28a745",
-      color: "#ffffff",
-    },
-    instructions: {
-      marginTop: theme.spacing(1),
-      marginBottom: theme.spacing(1),
-    },
-  }));
 
   const initialState = {
     name: "",
@@ -197,6 +38,7 @@ function CreateProperty() {
   };
 
   const [state, setState] = useState(initialState);
+  const search = new SearchService();
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -267,18 +109,6 @@ function CreateProperty() {
       });
   };
 
-  const handleSave = (e) => {
-    e.preventDefault();
-    const uploadData = new FormData();
-    uploadData.append("mainImage", state.file);
-    axios
-      .post(process.env.REACT_APP_API_URL + "/property/upload", uploadData)
-      .then((response) => {
-        console.log("File upload successful:", response.data);
-        setState({ ...state, mainImage: response.data.path });
-      });
-  };
-
   const handleOpeningDay = (e) => {
     let openingHours = [...state.openingHours];
     openingHours[0].openingDays.openingDay = e.target.value;
@@ -331,407 +161,315 @@ function CreateProperty() {
 
   const handleGoogleSearch = (e) => {
     e.preventDefault();
-    // buscar la direccion y mostrar un PIN en el mapa con la dirección
-    axios
-      .get(
-        process.env.REACT_APP_API_URL + "/search/maps?search=" + state.search
-      )
-      .then((response) => {
-        console.log(response.data);
-        console.log(state);
-        // volver a renderizar el mapa con CENTER = lat, lng y un PIN =  lat, lng
-        setState({
-          ...state,
-          search: response.data.candidates[0].name,
-          location: {
-            lat: response.data.candidates[0].geometry.location.lat,
-            long: response.data.candidates[0].geometry.location.lng,
-            name: response.data.candidates[0].formatted_address,
-          },
-        });
+    search.searchLocation(state.search).then((response) => {
+      console.log(response);
+      console.log(state);
+      // volver a renderizar el mapa con CENTER = lat, lng y un PIN =  lat, lng
+      setState({
+        ...state,
+        search: response.candidates[0].name,
+        location: {
+          lat: response.candidates[0].geometry.location.lat,
+          long: response.candidates[0].geometry.location.lng,
+          name: response.candidates[0].formatted_address,
+        },
       });
+    });
   };
 
-  function getSteps() {
-    return [<p>Datos principales</p>, <p>Horarios</p>, <p>El local</p>];
-  }
+  const stepsTitles = [
+    <p>Datos principales</p>,
+    <p>Horarios</p>,
+    <p>El local</p>,
+  ];
 
-  function getStepContent(step) {
-    switch (step) {
-      case 0:
-        return (
-          <div>
-            <div className="row">
-              <div className="col-sm-12 col-md-6">
-                <div className="form-group">
-                  <label htmlFor="name" className="label active">
-                    Nombre
-                  </label>
+  const step1 = (
+    <div>
+      <div className="row">
+        <div className="col-sm-12 col-md-6">
+          <div className="form-group">
+            <label htmlFor="name" className="label active">
+              Nombre
+            </label>
+            <input
+              type="text"
+              name="name"
+              value={state.name}
+              onChange={handleChange}
+            />
+          </div>
+
+          <div className="form-group">
+            <label htmlFor="imageUrl" className="label active">
+              Imagen
+            </label>
+            <input type="file" name="imageUrl" onChange={handleFile} />
+          </div>
+        </div>
+        <div className="col-sm-12 col-md-6">
+          <div className="form-group">
+            <label htmlFor="description" className="label active">
+              Descripción
+            </label>
+            <input
+              type="textarea"
+              name="description"
+              value={state.description}
+              onChange={handleChange}
+            />
+          </div>
+          <div className="form-group">
+            <label htmlFor="categories" className="label active">
+              Categoría
+            </label>
+            <input
+              list="categories"
+              type="categories"
+              id="input-categories"
+              name="categories"
+              onChange={handleChange}
+            ></input>
+            <datalist id="categories">
+              <option value="Chillout" />
+              <option value="Surfer" />
+              <option value="Restaurante" />
+              <option value="Discoteca" />
+              <option value="Bar" />
+            </datalist>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+
+  const step2 = (
+    <div>
+      <div className="row">
+        <div className="col-sm-12 col-md-6">
+          <div className="form-group">
+            <label htmlFor="openingDay" className="label active">
+              Día de apertura
+            </label>
+            <input
+              type="date"
+              name="openingDay"
+              value={state.openingHours[0].openingDays.openingDay}
+              onChange={handleOpeningDay}
+            />
+          </div>
+          <div className="form-group">
+            <label htmlFor="closingDay" className="label active">
+              Día de cierre
+            </label>
+            <input
+              type="date"
+              name="closingDay"
+              value={state.openingHours[0].openingDays.closingDay}
+              onChange={handleClosingDay}
+            />
+          </div>
+
+          <h6>Días de la semana</h6>
+          <div className="form-group">
+            <div className="row mt-3">
+              <div className="col-6">
+                <div className="custom-control custom-checkbox">
                   <input
-                    type="text"
-                    name="name"
-                    value={state.name}
-                    onChange={handleChange}
+                    type="checkbox"
+                    className="custom-control-input"
+                    name="monday"
+                    value={1}
+                    onChange={handleWeekdays}
                   />
-                </div>
-
-                <div className="form-group">
-                  <label htmlFor="imageUrl" className="label active">
-                    Imagen
+                  <label className="custom-control-label" htmlFor="monday">
+                    Lunes
                   </label>
-                  <input type="file" name="imageUrl" onChange={handleFile} />
+                </div>
+                <div className="custom-control custom-checkbox">
+                  <input
+                    type="checkbox"
+                    className="custom-control-input"
+                    name="tuesday"
+                    value={2}
+                    onChange={handleWeekdays}
+                  />
+                  <label className="custom-control-label" htmlFor="tuesday">
+                    Martes
+                  </label>
+                </div>
+                <div className="custom-control custom-checkbox">
+                  <input
+                    type="checkbox"
+                    className="custom-control-input"
+                    name="wednesday"
+                    value={3}
+                    onChange={handleWeekdays}
+                  />
+                  <label className="custom-control-label" htmlFor="wednesday">
+                    Miércoles
+                  </label>
+                </div>
+                <div className="custom-control custom-checkbox">
+                  <input
+                    type="checkbox"
+                    className="custom-control-input"
+                    name="thursday"
+                    value={4}
+                    onChange={handleWeekdays}
+                  />
+                  <label className="custom-control-label" htmlFor="thursday">
+                    Jueves
+                  </label>
                 </div>
               </div>
-              <div className="col-sm-12 col-md-6">
-                <div className="form-group">
-                  <label htmlFor="description" className="label active">
-                    Descripción
-                  </label>
+              <div className="col-6">
+                <div className="custom-control custom-checkbox">
                   <input
-                    type="textarea"
-                    name="description"
-                    value={state.description}
-                    onChange={handleChange}
+                    type="checkbox"
+                    className="custom-control-input"
+                    name="friday"
+                    value={5}
+                    onChange={handleWeekdays}
                   />
-                </div>
-                <div className="form-group">
-                  <label htmlFor="categories" className="label active">
-                    Categoría
+                  <label className="custom-control-label" htmlFor="friday">
+                    Viernes
                   </label>
+                </div>
+                <div className="custom-control custom-checkbox">
                   <input
-                    list="categories"
-                    type="categories"
-                    id="input-categories"
-                    name="categories"
-                    onChange={handleChange}
-                  ></input>
-                  <datalist id="categories">
-                    <option value="Chillout" />
-                    <option value="Surfer" />
-                    <option value="Restaurante" />
-                    <option value="Discoteca" />
-                    <option value="Bar" />
-                  </datalist>
+                    type="checkbox"
+                    className="custom-control-input"
+                    name="saturday"
+                    value={6}
+                    onChange={handleWeekdays}
+                  />
+                  <label className="custom-control-label" htmlFor="saturday">
+                    Sábado
+                  </label>
+                </div>
+                <div className="custom-control custom-checkbox">
+                  <input
+                    type="checkbox"
+                    className="custom-control-input"
+                    name="sunday"
+                    value={0}
+                    onChange={handleWeekdays}
+                  />
+                  <label className="custom-control-label" htmlFor="sunday">
+                    Domingo
+                  </label>
                 </div>
               </div>
             </div>
           </div>
-        );
-      case 1:
-        return (
-          <div>
-            <div className="row">
-              <div className="col-sm-12 col-md-6">
-                <div className="form-group">
-                  <label htmlFor="openingDay" className="label active">
-                    Día de apertura
-                  </label>
-                  <input
-                    type="date"
-                    name="openingDay"
-                    value={state.openingHours[0].openingDays.openingDay}
-                    onChange={handleOpeningDay}
-                  />
-                </div>
-                <div className="form-group">
-                  <label htmlFor="closingDay" className="label active">
-                    Día de cierre
-                  </label>
-                  <input
-                    type="date"
-                    name="closingDay"
-                    value={state.openingHours[0].openingDays.closingDay}
-                    onChange={handleClosingDay}
-                  />
-                </div>
-
-                <h6>Días de la semana</h6>
-                <div className="form-group">
-                  <div className="row mt-3">
-                    <div className="col-6">
-                      <div className="custom-control custom-checkbox">
-                        <input
-                          type="checkbox"
-                          className="custom-control-input"
-                          name="monday"
-                          value={1}
-                          onChange={handleWeekdays}
-                        />
-                        <label
-                          className="custom-control-label"
-                          htmlFor="monday"
-                        >
-                          Lunes
-                        </label>
-                      </div>
-                      <div className="custom-control custom-checkbox">
-                        <input
-                          type="checkbox"
-                          className="custom-control-input"
-                          name="tuesday"
-                          value={2}
-                          onChange={handleWeekdays}
-                        />
-                        <label
-                          className="custom-control-label"
-                          htmlFor="tuesday"
-                        >
-                          Martes
-                        </label>
-                      </div>
-                      <div className="custom-control custom-checkbox">
-                        <input
-                          type="checkbox"
-                          className="custom-control-input"
-                          name="wednesday"
-                          value={3}
-                          onChange={handleWeekdays}
-                        />
-                        <label
-                          className="custom-control-label"
-                          htmlFor="wednesday"
-                        >
-                          Miércoles
-                        </label>
-                      </div>
-                      <div className="custom-control custom-checkbox">
-                        <input
-                          type="checkbox"
-                          className="custom-control-input"
-                          name="thursday"
-                          value={4}
-                          onChange={handleWeekdays}
-                        />
-                        <label
-                          className="custom-control-label"
-                          htmlFor="thursday"
-                        >
-                          Jueves
-                        </label>
-                      </div>
-                    </div>
-                    <div className="col-6">
-                      <div className="custom-control custom-checkbox">
-                        <input
-                          type="checkbox"
-                          className="custom-control-input"
-                          name="friday"
-                          value={5}
-                          onChange={handleWeekdays}
-                        />
-                        <label
-                          className="custom-control-label"
-                          htmlFor="friday"
-                        >
-                          Viernes
-                        </label>
-                      </div>
-                      <div className="custom-control custom-checkbox">
-                        <input
-                          type="checkbox"
-                          className="custom-control-input"
-                          name="saturday"
-                          value={6}
-                          onChange={handleWeekdays}
-                        />
-                        <label
-                          className="custom-control-label"
-                          htmlFor="saturday"
-                        >
-                          Sábado
-                        </label>
-                      </div>
-                      <div className="custom-control custom-checkbox">
-                        <input
-                          type="checkbox"
-                          className="custom-control-input"
-                          name="sunday"
-                          value={0}
-                          onChange={handleWeekdays}
-                        />
-                        <label
-                          className="custom-control-label"
-                          htmlFor="sunday"
-                        >
-                          Domingo
-                        </label>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div className="col-sm-12 col-md-6">
-                <div className="form-group">
-                  <label htmlFor="openingHours" className="label active">
-                    Hora de apertura
-                  </label>
-                  <input
-                    type="number"
-                    name="openingHours"
-                    value={state.openingHours[0].openingDays.openingTime}
-                    onChange={handleOpeningTime}
-                  />
-                </div>
-                <div className="form-group">
-                  <label htmlFor="closingHours" className="label active">
-                    Hora de cierre
-                  </label>
-                  <input
-                    type="number"
-                    name="closingHours"
-                    value={state.openingHours[0].openingDays.closingTime}
-                    onChange={handleClosingTime}
-                  />
-                </div>
-              </div>
-            </div>
+        </div>
+        <div className="col-sm-12 col-md-6">
+          <div className="form-group">
+            <label htmlFor="openingHours" className="label active">
+              Hora de apertura
+            </label>
+            <input
+              type="number"
+              name="openingHours"
+              value={state.openingHours[0].openingDays.openingTime}
+              onChange={handleOpeningTime}
+            />
           </div>
-        );
-      case 2:
-        return (
-          <div>
-            <div className="row">
-              <div className="col-sm-12 col-md-6">
-                <div className="form-group">
-                  <label htmlFor="bookingDuration" className="label active">
-                    Duración de la reserva (en minutos)
-                  </label>
-                  <input
-                    type="number"
-                    name="bookingDuration"
-                    value={state.bookingDuration}
-                    onChange={handleChange}
-                  />
-                </div>
-
-                <div className="form-group">
-                  <label htmlFor="availablePlaces" className="label active">
-                    Plazas
-                  </label>
-                  <input
-                    type="number"
-                    name="availablePlaces"
-                    value={state.availablePlaces}
-                    onChange={handleChange}
-                  />
-                </div>
-              </div>
-              <div className="col-sm-12 col-md-6">
-                <form onSubmit={handleGoogleSearch} className="d-flex">
-                  <div className="form-group" style={{ width: "80%" }}>
-                    <label htmlFor="search" className="label active">
-                      Dirección
-                    </label>
-                    <input
-                      type="text"
-                      name="search"
-                      value={state.search}
-                      onChange={handleChange}
-                    />
-                  </div>
-                  <div style={{ width: "20%" }}>
-                    <input
-                      type="submit"
-                      value="Buscar"
-                      className="btn-kokomo-flex"
-                      style={{ padding: "19px" }}
-                    />
-                  </div>
-                </form>
-                <p>Candidato: {state.search}</p>
-                <p>Dirección:{state.location.name}</p>
-                <p>Latitud:{state.location.lat}</p>
-                <p>Longitud:{state.location.long}</p>
-              </div>
-            </div>
+          <div className="form-group">
+            <label htmlFor="closingHours" className="label active">
+              Hora de cierre
+            </label>
+            <input
+              type="number"
+              name="closingHours"
+              value={state.openingHours[0].openingDays.closingTime}
+              onChange={handleClosingTime}
+            />
           </div>
-        );
-      default:
-        return "Unknown step";
-    }
-  }
+        </div>
+      </div>
+    </div>
+  );
 
-  const classes = useStyles();
-  const [activeStep, setActiveStep] = React.useState(0);
-  const steps = getSteps();
+  const step3 = (
+    <div>
+      <div className="row">
+        <div className="col-sm-12 col-md-6">
+          <div className="form-group">
+            <label htmlFor="bookingDuration" className="label active">
+              Duración de la reserva (en minutos)
+            </label>
+            <input
+              type="number"
+              name="bookingDuration"
+              value={state.bookingDuration}
+              onChange={handleChange}
+            />
+          </div>
 
-  const handleNext = () => {
-    setActiveStep((prevActiveStep) => prevActiveStep + 1);
-  };
+          <div className="form-group">
+            <label htmlFor="availablePlaces" className="label active">
+              Plazas
+            </label>
+            <input
+              type="number"
+              name="availablePlaces"
+              value={state.availablePlaces}
+              onChange={handleChange}
+            />
+          </div>
+        </div>
+        <div className="col-sm-12 col-md-6">
+          <form onSubmit={handleGoogleSearch} className="d-flex">
+            <div className="form-group" style={{ width: "80%" }}>
+              <label htmlFor="search" className="label active">
+                Dirección
+              </label>
+              <input
+                type="text"
+                name="search"
+                value={state.search}
+                onChange={handleChange}
+              />
+            </div>
+            <div style={{ width: "20%" }}>
+              <input
+                type="submit"
+                value="Buscar"
+                className="btn-kokomo-flex"
+                style={{ padding: "19px" }}
+              />
+            </div>
+          </form>
+          <p>Candidato: {state.search}</p>
+          <p>Dirección:{state.location.name}</p>
+          <p>Latitud:{state.location.lat}</p>
+          <p>Longitud:{state.location.long}</p>
+        </div>
+      </div>
+    </div>
+  );
 
-  const handleBack = () => {
-    setActiveStep((prevActiveStep) => prevActiveStep - 1);
-  };
-
-  const handleReset = () => {
-    setActiveStep(0);
-  };
+  const allSteps = [step1, step2, step3];
 
   return (
-    <div className="body-container">
+    <div className="container mt-4">
+      <Link to="/">
+        <div>
+          <span className="fa-stack fa-2x kokomo-back-button">
+            <i className="fas fa-circle fa-stack-2x circle-back"></i>
+            <i class="fas fa-arrow-left fa-stack-1x fa-inverse arrow-back"></i>
+          </span>
+        </div>
+      </Link>
       <div className="hero">
         <h2 className="hero-title text-center">Crea tu local</h2>
       </div>
-      <div className={classes.root}>
-        <Stepper
-          alternativeLabel
-          activeStep={activeStep}
-          connector={<ColorlibConnector />}
-        >
-          {steps.map((label, index) => (
-            <Step key={index}>
-              <StepLabel StepIconComponent={ColorlibStepIcon}>
-                {label}
-              </StepLabel>
-            </Step>
-          ))}
-        </Stepper>
-        <div>
-          {activeStep === steps.length ? (
-            <div>
-              <Typography className={classes.instructions} component="div">
-                All steps completed - you&apos;re finished
-              </Typography>
-              <Button onClick={handleReset} className={classes.button}>
-                Reset
-              </Button>
-            </div>
-          ) : (
-            <div>
-              <Typography className={classes.instructions} component="div">
-                {getStepContent(activeStep)}
-              </Typography>
-              <div className="text-center mt-5">
-                <Button
-                  disabled={activeStep === 0}
-                  onClick={handleBack}
-                  className={classes.button}
-                >
-                  Anterior
-                </Button>
-                {activeStep === steps.length - 1 ? (
-                  <Button
-                    variant="contained"
-                    color="#3294bb"
-                    onClick={handleSubmit}
-                    className={classes.buttonSuccess}
-                  >
-                    Crear propiedad
-                  </Button>
-                ) : (
-                  <Button
-                    variant="contained"
-                    onClick={handleNext}
-                    className={classes.buttonActive}
-                  >
-                    Siguiente
-                  </Button>
-                )}
-              </div>
-            </div>
-          )}
-        </div>
-      </div>
+      <StepperKokomo
+        allSteps={allSteps}
+        stepsTitles={stepsTitles}
+        handleSubmit={handleSubmit}
+      />
     </div>
   );
 }

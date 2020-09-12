@@ -3,7 +3,7 @@ import React, {useEffect} from 'react'
 import AuthService from './auth-service';
 
 // Retrieve your data from locaStorage
-var saveData = JSON.parse(localStorage.saveData || null) || {};
+let saveData = JSON.parse(localStorage.saveData || null) || {};
 const service = new AuthService()
 
 // Store your data.

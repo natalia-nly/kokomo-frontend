@@ -5,11 +5,12 @@ import Dropdown from "react-bootstrap/Dropdown";
 import Alert from "react-bootstrap/Alert";
 import SendMessages from "./SendMessages";
 import axios from "axios";
-var initialState = {
+let initialState = {
   messages: [],
+  alert: false,
 };
 
-var writeMessage = <></>;
+let writeMessage = <></>;
 
 const OwnerLocal = (props) => {
   const [state, setState] = useState(initialState);
@@ -43,33 +44,11 @@ const OwnerLocal = (props) => {
       message: true,
     });
   };
-  var alertMessage = <></>
 
-  const deleteProperty = (property) => {
-      if(!props.property.bookings.length){
-        axios
-      .get(
-        process.env.REACT_APP_API_URL +
-          "/property/delete/" +
-          props.property._id,
-        
-        { withCredentials: true }
-      )
-      .then((response) => {
-       console.log(response)
-      });
-      }else{
-        alertMessage = <Alert variant='warning'>
-        Por favor, cancele todos las reservas de este local primero
-      </Alert>
-      }
-    
-  }
 
-  
 
   return (
-    <div>
+    <>
       <Link to={"/property/" + props.property._id}>
         <h2 className="title-search">{props.property.name}</h2>
         <p className="mdi mdi-map-marker-radius mb-4">
@@ -77,12 +56,7 @@ const OwnerLocal = (props) => {
           {props.property.location.name}
         </p>
       </Link>
-      <button
-                type="submit"
-                className="btn-kokomo btn-kokomo-success btn-block p-3"
-              onSubmit={deleteProperty(props.property)}>
-                Eliminar local
-              </button>
+      
       {props.property.bookings.map((booking, index) => (
         <>
           <div key={index}>
@@ -157,16 +131,6 @@ const OwnerLocal = (props) => {
                     <i className="mdi mdi-share-variant"></i> Compartir reserva
                   </Dropdown.Item>
                   <Dropdown.Divider />
-                  <form
-                    onSubmit={props.delete}
-                    className="dropdown-item danger"
-                  >
-                    <input type="hidden" name="bookingId" value={booking._id} />
-                    <button className="link-danger">
-                      <i className="far fa-trash-alt"></i> Cancelar reserva
-                    </button>
-                  </form>
-                  <Dropdown.Divider />
                   <form onSubmit={handleSubmit}>
                     <input type="hidden" name="booking" value={booking} />
                     <input type="hidden" name="bookingId" value={booking._id} />
@@ -180,8 +144,8 @@ const OwnerLocal = (props) => {
                       name="customer"
                       value={booking.customer._id}
                     />
-                    <button className="kokomo-btn-form p-2">
-                      Enviar mensaje
+                    <button className="link-danger">
+                      <i className="far fa-trash-alt"></i> Cancelar reserva
                     </button>
                   </form>
                 </DropdownButton>
@@ -191,7 +155,7 @@ const OwnerLocal = (props) => {
           </div>
         </>
       ))}
-    </div>
+    </>
   );
 };
 

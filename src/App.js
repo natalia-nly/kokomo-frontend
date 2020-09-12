@@ -39,7 +39,7 @@ function App() {
   };
 
   // Retrieve your data from locaStorage
-  var saveData = JSON.parse(localStorage.saveData || null) || {};
+  let saveData = JSON.parse(localStorage.saveData || null) || {};
   const service = new AuthService();
 
   // Store your data.
@@ -153,18 +153,22 @@ function App() {
 
   return (
     <Switch>
-      <Route
-        path="/property/edit/:propertyId"
-        render={(props) => (
-          <>
-            <NavbarKokomo
-              getTheUser={state.loggedInUser}
-              key={state.loggedInUser}
-            />
-            <EditProperty {...props} getTheUser={state.loggedInUser} />
-          </>
-        )}
-      />
+
+      <ProtectedRoute
+            user={state.loggedInUser}
+            exact
+            callback={getTheUser}
+            path="/property/create-property"
+            component={CreateProperty}
+          />
+
+          <ProtectedRoute
+            user={state.loggedInUser}
+            callback={getTheUser}
+            path="/property/edit/:propertyId"
+            component={EditProperty}
+          />
+
 
       <Route
         path="/property/:propertyId"
@@ -174,11 +178,9 @@ function App() {
       />
       <Route
         path="/booking/details/:bookingId"
-        render={(props) => (
-          <BookingDetails {...props} />
-        )}
+        render={(props) => <BookingDetails {...props} />}
       />
-      
+
       <Route component={DefaultRoutes} />
       <Route path="*" component={Error404} status={404} />
       <Route path="*" component={Error500} status={500} />
