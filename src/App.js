@@ -9,9 +9,9 @@ import Logout from "./components/auth/Logout";
 import SignUp from "./components/auth/SignUp";
 import SignUpLocal from "./components/auth/SignUpLocal";
 import Profile from "./components/profile/Profile";
-import ProtectedRoute from "./auth/protected-route.js";
+import ProtectedRoute from "./services/auth/protected-route.js";
 import CreateProperty from "./components/properties/CreateProperty";
-import AuthService from "./auth/auth-service";
+import AuthService from "./services/auth/auth-service";
 import Search from "./components/search/Search";
 import PropertyDetails from "./components/properties/PropertyDetails";
 import Home from "./components/Home";
@@ -153,22 +153,20 @@ function App() {
 
   return (
     <Switch>
+      <ProtectedRoute
+        user={state.loggedInUser}
+        exact
+        callback={getTheUser}
+        path="/property/create-property"
+        component={CreateProperty}
+      />
 
       <ProtectedRoute
-            user={state.loggedInUser}
-            exact
-            callback={getTheUser}
-            path="/property/create-property"
-            component={CreateProperty}
-          />
-
-          <ProtectedRoute
-            user={state.loggedInUser}
-            callback={getTheUser}
-            path="/property/edit/:propertyId"
-            component={EditProperty}
-          />
-
+        user={state.loggedInUser}
+        callback={getTheUser}
+        path="/property/edit/:propertyId"
+        component={EditProperty}
+      />
 
       <Route
         path="/property/:propertyId"

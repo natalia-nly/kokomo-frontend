@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import axios from "axios";
 import AvailablePlaces from "./AvailablePlaces";
 import GeneralMap from "./GeneralMap";
 import SearchIcon from "@material-ui/icons/Search";

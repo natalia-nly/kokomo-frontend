@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from "react";
-import AuthService from "../../auth/auth-service";
+import AuthService from "../../services/auth/auth-service";
 import SendMessages from "./SendMessages"
 const service = new AuthService();
 

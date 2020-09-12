@@ -1,14 +1,14 @@
 import React, { Component } from "react";
-import AuthService from '../../auth/auth-service';
+import AuthService from "../../services/auth/auth-service";
 
 export class SignUp extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      user: '',
-      email: '',
-      telNumber:'',
-      password: ''
+      user: "",
+      email: "",
+      telNumber: "",
+      password: "",
     };
     this.service = new AuthService();
   }
@@ -21,20 +21,14 @@ export class SignUp extends Component {
       telNumber: this.state.telNumber,
       email: this.state.email,
     };
-    this
-    .service
-    .signupLocal(body.user, body.password, body.telNumber, body.email)
-    .then(response => {
-        this.setState({user: '', password: '', telNumber: '', email: ''});
-        this
-            .props
-            .callback(response);
-        this
-            .props
-            .history
-            .push('/profile');
-    })
-    .catch(error => console.log(error))
+    this.service
+      .signupLocal(body.user, body.password, body.telNumber, body.email)
+      .then((response) => {
+        this.setState({ user: "", password: "", telNumber: "", email: "" });
+        this.props.callback(response);
+        this.props.history.push("/profile");
+      })
+      .catch((error) => console.log(error));
   };
 
   handleChange = (e) => {
@@ -51,9 +45,9 @@ export class SignUp extends Component {
           style={{ "min-height": "100vh" }}
         >
           <div className="col-sm-12 col-md-4 align-self-center">
-          <h2 className="hero-title text-center mb-4">Crea tus locales</h2>
+            <h2 className="hero-title text-center mb-4">Crea tus locales</h2>
             <form onSubmit={this.handleSubmit}>
-            <div className="form-group">
+              <div className="form-group">
                 <label htmlFor="user" className="label active">
                   Nombre de usuario
                 </label>
@@ -110,7 +104,12 @@ export class SignUp extends Component {
               href="/auth/google"
               className="btn-kokomo btn-kokomo-google btn-block p-3 mt-4"
             >
-              <img src="/images/google.svg" alt="Google logo" style={{"width": "20px", "marginRight" : "8px"}}/> Registrarme con Google
+              <img
+                src="/images/google.svg"
+                alt="Google logo"
+                style={{ width: "20px", marginRight: "8px" }}
+              />{" "}
+              Registrarme con Google
             </a>
           </div>
         </div>
