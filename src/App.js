@@ -21,6 +21,7 @@ import PropertyCategory from "./components/properties/PropertyCategory";
 import Error404 from "./components/error/Error404";
 import Error500 from "./components/error/Error500";
 import EditProperty from "./components/properties/EditProperty";
+import BookingDetails from "./components/profile/BookingDetails";
 
 function App() {
   const initialState = {
@@ -79,19 +80,13 @@ function App() {
           <Route
             path="/category/:name"
             render={(props) => (
-              <>
-                <PropertyCategory {...props} getTheUser={state.loggedInUser} />
-              </>
+              <PropertyCategory {...props} getTheUser={state.loggedInUser} />
             )}
           />
 
           <Route
             path="/login"
-            render={(props) => (
-              <>
-                <Login {...props} callback={getTheUser} />
-              </>
-            )}
+            render={(props) => <Login {...props} callback={getTheUser} />}
           />
           <Route
             path="/signup"
@@ -177,6 +172,13 @@ function App() {
           <PropertyDetails {...props} getTheUser={state.loggedInUser} />
         )}
       />
+      <Route
+        path="/booking/details/:bookingId"
+        render={(props) => (
+          <BookingDetails {...props} />
+        )}
+      />
+      
       <Route component={DefaultRoutes} />
       <Route path="*" component={Error404} status={404} />
       <Route path="*" component={Error500} status={500} />
