@@ -161,6 +161,11 @@ function CreateProperty() {
 
   const handleGoogleSearch = (e) => {
     e.preventDefault();
+
+    // axios
+    //   .get(
+    //     process.env.REACT_APP_API_URL + "/search/maps?search=" + state.search
+    //   ).
     search.searchLocation(state.search).then((response) => {
       console.log(response);
       console.log(state);

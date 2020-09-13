@@ -1,15 +1,14 @@
 import React, {useState} from "react";
 import axios from "axios";
+import ProfileService from "../../services/profile/profile-service"
 
-
-
-const SendMessages = (props) => {
-  let initialState = {
-    customer: props.customer,
-    fromUser: props.user,
-    avatar: props.user.avatar,
+const service = new ProfileService();
+let initialState = {
     message: ""
 };
+
+const SendMessages = (props) => {
+
 console.log(props)
     const [state,
         setState] = useState(initialState);
@@ -25,15 +24,16 @@ console.log(props)
     const handleMessage = (e) => {
         e.preventDefault();
         let body = {
-            fromUser: state.fromUser,
+            fromUser: props.user,
             topic: state.topic,
             message: state.message,
-            avatar: state.avatar
+            avatar:props.user.avatar,
         };
-        axios
-            .post(process.env.REACT_APP_API_URL + "/profile/send-message/" + state.customer, body, {withCredentials: true})
+        // axios
+        //     .post(process.env.REACT_APP_API_URL + "/profile/send-message/" + state.customer, body, {withCredentials: true})
+        service.sendMessage(props.customer,body)
             .then((response) => {
-                console.log("Mensaje enviado", response.data);
+                console.log("Mensaje enviado", response);
                 setState({
                     ...state,
                     topic:"",
@@ -42,8 +42,6 @@ console.log(props)
                 if (props.delete) {
                     props.delete(props.booking.bookingId);
                 }
-
-
             });
     };
 
