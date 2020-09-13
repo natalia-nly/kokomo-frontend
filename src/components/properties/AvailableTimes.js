@@ -102,7 +102,7 @@ const AvailableTimes = (props) => {
   let finalResult = (
     <>
       <img src="/images/calendar.png" className="emoji-img" alt="Horas disponibles"/>
-      <a onClick={props.clearAvailableTimes} className="close-btn"><i className="fas fa-times"></i></a>
+      <button onClick={props.clearAvailableTimes} className="close-btn"><i className="fas fa-times"></i></button>
       <h2 className="subtitle-landing text-center mb-3">Horas disponibles</h2>
       <div className="row justify-content-center">{available}</div>
     </>

@@ -26,8 +26,7 @@ const Messages = (props) => {
   let allMessages = <p>No tienes Notificaciones pendientes</p>;
   if (state.messages.length) {
     allMessages = state.messages.map((message, index) => (
-      <>
-        {" "}
+
         <div className="comment-kokomo pb-4 pt-4" key={index}>
           <h5>
             <img
@@ -43,8 +42,7 @@ const Messages = (props) => {
           </h5>
           <h4>Tema: {message.topic}</h4>
           <p>{message.message}</p>{" "}
-        </div>{" "}
-      </>
+        </div>
     ));
   }
 

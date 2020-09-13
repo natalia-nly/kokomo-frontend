@@ -4,10 +4,10 @@ import CarouselProperties from "./properties/CarouselProperties";
 const Favourites = () => {
     return (
         <div>
-            <div class="body-container">
+            <div className="body-container">
 
-                <h3 class="section-title mt-4">
-                    <i class="fas fa-heart fa-sm"></i>
+                <h3 className="section-title mt-4">
+                    <i className="fas fa-heart fa-sm"></i>
                     Tus favoritos</h3>
 
                     <CarouselProperties filter="Favourites"/>

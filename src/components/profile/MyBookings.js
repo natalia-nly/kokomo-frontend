@@ -4,6 +4,9 @@ import Booking from "./Booking";
 import OwnerLocal from "./OwnerLocal";
 import Tabs from "react-bootstrap/Tabs";
 import Tab from "react-bootstrap/Tab";
+import BookingService from "../../services/booking/booking-service";
+
+let service = new BookingService()
 let reservas = <p>Todavía no tienes reservas</p>;
 let reservasProperties = <p>Todavía no tienes reservas</p>;
 let active = "client";
@@ -25,15 +28,12 @@ const MyBookings = (props) => {
     }
     const loadData = () => {
       try {
-        axios
-          .get(process.env.REACT_APP_API_URL + "/booking/my-bookings", {
-            withCredentials: true,
-          })
+        service.myBookings()
           .then((response) => {
-            console.log("CONSOLE LOG DESDE AXIOS GET", response.data.bookings);
+            console.log("CONSOLE LOG DESDE AXIOS GET", response.bookings);
             setState({
               ...state,
-              bookings: response.data.bookings,
+              bookings: response.bookings,
             });
           });
       } catch (error) {
@@ -51,18 +51,19 @@ const MyBookings = (props) => {
   }, []);
 
   useEffect(() => {
-    axios
-      .get(process.env.REACT_APP_API_URL + "/booking/my-properties-bookings", {
-        withCredentials: true,
-      })
+    // axios
+    //   .get(process.env.REACT_APP_API_URL + "/booking/my-properties-bookings", {
+    //     withCredentials: true,
+    //   })
+      service.propertiesBookings()
       .then((response) => {
         console.log(
           "CONSOLE LOG DESDE AXIOS GET bookings en mis props:",
-          response.data.ownProperties
+          response.ownProperties
         );
         setState({
           ...state,
-          properties: response.data.ownProperties,
+          properties: response.ownProperties,
         });
       });
   }, []);
@@ -73,12 +74,13 @@ const MyBookings = (props) => {
 
   const deleteBooking = (booking) => {
     console.log(booking);
-    axios
-      .post(
-        process.env.REACT_APP_API_URL + "/booking/delete/" + booking,
-        {},
-        { withCredentials: true }
-      )
+    // axios
+    //   .post(
+    //     process.env.REACT_APP_API_URL + "/booking/delete/" + booking,
+    //     {},
+    //     { withCredentials: true }
+    //   )
+    service.deleteBooking(booking)
       .then((response) => {
         console.log(response.data);
         refreshPage();

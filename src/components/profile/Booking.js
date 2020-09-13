@@ -80,7 +80,7 @@ const Booking = (props) => {
           >
             <Dropdown.Item variant="success" className="dropdown-item">
               <Link to={"/booking/details/" + state.bookingId}>
-                <i class="mdi mdi-eye"></i> Ver detalles
+                <i className="mdi mdi-eye"></i> Ver detalles
               </Link>
             </Dropdown.Item>
 

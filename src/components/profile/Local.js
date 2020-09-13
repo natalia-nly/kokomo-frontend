@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
-import { Link, useHistory } from "react-router-dom";
+import { Link} from "react-router-dom";
 import Alert from "react-bootstrap/Alert";
+import PropertyService from "../../services/property/property-service";
 
+const service = new PropertyService();
 let local = <></>;
 let alertMessage = <></>;
 
@@ -11,17 +12,18 @@ const initialState = {
 };
 
 const Local = (props) => {
-  let history = useHistory();
+
 
   const [state, setState] = useState(initialState);
   console.log(process.env.REACT_APP_API_URL + "/property/" + props.property);
 
   useEffect(() => {
     let propertyId = props.property;
-    axios
-      .get(process.env.REACT_APP_API_URL + "/property/" + propertyId, {
-        withCredentials: true,
-      })
+    // axios
+    //   .get(process.env.REACT_APP_API_URL + "/property/" + propertyId, {
+    //     withCredentials: true,
+    //   })
+    service.propertyDetails(propertyId)
       .then((response) => {
         console.log("CONSOLE LOG DESDE AXIOS GET mi local:", response.data);
         setState({
@@ -37,12 +39,13 @@ const Local = (props) => {
 
   const deleteProperty = () => {
     if (!state.property.bookings.length) {
-      axios
-        .get(
-          process.env.REACT_APP_API_URL + "/property/delete/" + props.property,
+      // axios
+      //   .get(
+      //     process.env.REACT_APP_API_URL + "/property/delete/" + props.property,
 
-          { withCredentials: true }
-        )
+      //     { withCredentials: true }
+      //   )
+      service.deleteProperty(state.property._id)
         .then((response) => {
           console.log(response);
           refreshPage();
@@ -100,7 +103,7 @@ const Local = (props) => {
     );
   }
 
-  return <div>{local}</div>;
+  return <>{local}</>;
 };
 
 export default Local;

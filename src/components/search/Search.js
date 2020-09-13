@@ -4,6 +4,7 @@ import GeneralMap from "./GeneralMap";
 import SearchIcon from "@material-ui/icons/Search";
 import SearchService from "../../services/search/search-service";
 
+const service = new SearchService();
 let curr = new Date();
 curr.setDate(curr.getDate());
 let date = curr.toISOString().substr(0, 10);
@@ -15,7 +16,7 @@ const initialState = {
 
 const Search = (props) => {
   const [state, setState] = useState(initialState);
-  const service = new SearchService();
+
 
   const handleChange = (event) => {
     setState({

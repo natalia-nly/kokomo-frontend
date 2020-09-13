@@ -20,5 +20,11 @@ class SearchService {
       .post("/getAvailability", body)
       .then((response) => response.data);
   };
+
+  getPropertyAvailability = (propertyId, body) => {
+    return this.service
+      .post("/getAvailability/"+ propertyId, body)
+      .then((response) => response.data);
+  };
 }
 export default SearchService;
