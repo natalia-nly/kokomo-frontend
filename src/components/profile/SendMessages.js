@@ -31,8 +31,6 @@ const SendMessages = (props) => {
       message: state.message,
       avatar: props.user.avatar,
     };
-    // axios
-    //     .post(process.env.REACT_APP_API_URL + "/profile/send-message/" + state.customer, body, {withCredentials: true})
     service.sendMessage(props.customer, body).then((response) => {
       console.log("Mensaje enviado", response);
       setState({
@@ -64,7 +62,7 @@ const SendMessages = (props) => {
               <i className="fas fa-times"></i>
             </button>
             <p className="mb-4">
-                Avisa a tu cliente de que tienes que cancelar su reserva.
+              Avisa a tu cliente de que tienes que cancelar su reserva.
             </p>
             <form onSubmit={handleMessage}>
               <div className="form-group">

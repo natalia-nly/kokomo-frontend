@@ -39,10 +39,6 @@ const Search = (props) => {
         availableResults: response,
       });
     });
-    // axios
-    //   .post(process.env.REACT_APP_API_URL + "/search/getAvailability", body, {
-    //     withCredentials: true,
-    //   })
   };
 
   let availablePlaces = <></>;

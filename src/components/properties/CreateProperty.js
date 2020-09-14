@@ -4,47 +4,50 @@ import { Link } from "react-router-dom";
 import { useHistory } from "react-router-dom";
 import StepperKokomo from "./StepperKokomo";
 import SearchService from "../../services/search/search-service";
+import PropertyService from "../../services/property/property-service";
+
+const propertyService = new PropertyService();
+const search = new SearchService();
+
+
+const initialState = {
+  name: "",
+  description: "",
+  categories: [],
+  mainImage: null,
+  location: {
+    name: "",
+    lat: 0,
+    long: 0,
+  },
+  openingHours: [
+    {
+      openingDays: {
+        openingDay: null,
+        closingDay: null,
+      },
+      weekDays: [],
+      openingTimes: [
+        {
+          openingTime: 0,
+          closingTime: 0,
+        },
+      ],
+    },
+  ],
+  bookingDuration: 0,
+  availablePlaces: 0,
+};
 
 function CreateProperty() {
+
   let history = useHistory();
-
-  const initialState = {
-    name: "",
-    description: "",
-    categories: [],
-    mainImage: null,
-    location: {
-      name: "",
-      lat: 0,
-      long: 0,
-    },
-    openingHours: [
-      {
-        openingDays: {
-          openingDay: null,
-          closingDay: null,
-        },
-        weekDays: [],
-        openingTimes: [
-          {
-            openingTime: 0,
-            closingTime: 0,
-          },
-        ],
-      },
-    ],
-    bookingDuration: 0,
-    availablePlaces: 0,
-  };
-
   const [state, setState] = useState(initialState);
-  const search = new SearchService();
+  
 
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log(state);
-    const uploadData = new FormData();
-    uploadData.append("mainImage", state.file);
     const body = {
       name: state.name,
       description: state.description,
@@ -54,36 +57,23 @@ function CreateProperty() {
         lat: state.location.lat,
         long: state.location.long,
       },
-      openingHours: [
-        {
-          openingDays: {
-            openingDay: state.openingHours[0].openingDays.openingDay,
-            closingDay: state.openingHours[0].openingDays.closingDay,
-          },
-          weekDays: state.openingHours[0].weekDays,
-          openingTimes: [
-            {
-              openingTime: state.openingHours[0].openingTimes[0].openingTime,
-              closingTime: state.openingHours[0].openingTimes[0].closingTime,
-            },
-          ],
-        },
-      ],
+      openingHours: [...state.openingHours],
       bookingDuration: state.bookingDuration,
       availablePlaces: state.availablePlaces,
       mainImage: state.mainImage,
     };
 
-    axios
-      .post(
-        process.env.REACT_APP_API_URL + "/property/create-property",
-        { body, uploadData },
-        {
-          withCredentials: true,
-        }
-      )
+    // axios
+    //   .post(
+    //     process.env.REACT_APP_API_URL + "/property/create-property",
+    //     { body, uploadData },
+    //     {
+    //       withCredentials: true,
+    //     }
+    //   )
+    propertyService.createProperty(body)
       .then((response) => {
-        console.log("file uploaded", response.data);
+        console.log("file uploaded", response);
         history.push("/");
       })
       .catch((error) => console.log(error));
@@ -101,11 +91,12 @@ function CreateProperty() {
     e.preventDefault();
     const uploadData = new FormData();
     uploadData.append("mainImage", e.target.files[0]);
-    axios
-      .post(process.env.REACT_APP_API_URL + "/property/upload", uploadData)
+    // axios
+    //   .post(process.env.REACT_APP_API_URL + "/property/upload", uploadData)
+    propertyService.uploadPicture(uploadData)
       .then((response) => {
-        console.log("File upload successful:", response.data);
-        setState({ ...state, mainImage: response.data.path });
+        console.log("File upload successful:", response);
+        setState({ ...state, mainImage: response.path });
       });
   };
 
@@ -132,16 +123,17 @@ function CreateProperty() {
     openingHours[0].openingTimes[0].openingTime = e.target.value;
     setState({
       ...state,
-      "openingHours.openingTimes": openingHours,
+      openingHours: openingHours,
     });
   };
 
   const handleClosingTime = (e) => {
+    console.log("closingTime:",  state.openingHours[0].openingTimes[0].closingTime)
     let openingHours = [...state.openingHours];
     openingHours[0].openingTimes[0].closingTime = e.target.value;
     setState({
       ...state,
-      "openingHours.openingTimes": openingHours,
+      openingHours: openingHours,
     });
   };
 
@@ -376,7 +368,7 @@ function CreateProperty() {
             <input
               type="number"
               name="openingHours"
-              value={state.openingHours[0].openingDays.openingTime}
+              value={state.openingHours[0].openingTimes[0].openingTime}
               onChange={handleOpeningTime}
             />
           </div>
@@ -387,7 +379,7 @@ function CreateProperty() {
             <input
               type="number"
               name="closingHours"
-              value={state.openingHours[0].openingDays.closingTime}
+              value={state.openingHours[0].openingTimes[0].closingTime}
               onChange={handleClosingTime}
             />
           </div>

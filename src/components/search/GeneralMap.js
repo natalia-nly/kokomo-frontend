@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import GoogleMapReact from "google-map-react";
-import axios from "axios";
+import PropertyService from "../../services/property/property-service";
+
+let service = new PropertyService();
 
 const GeneralMap = () => {
   let curr = new Date();
@@ -20,11 +22,11 @@ const GeneralMap = () => {
   const [state, setState] = useState(initialState);
 
   useEffect(() => {
-    axios.get(process.env.REACT_APP_API_URL + "/").then((response) => {
+    service.allProperties().then((response) => {
       console.log("CONSOLE LOG DESDE AXIOS GET", response);
       setState({
         ...state,
-        allResults: response.data[0],
+        allResults: response[0],
       });
     });
   }, []);
@@ -48,6 +50,19 @@ const GeneralMap = () => {
     };
   };
 
+  const ActualRating = (rating) => {
+    let counter = rating.counter;
+    if (rating.counter.length) {
+      let reduceFunc = (a, b) => a + b;
+      return parseFloat(
+        (counter.reduce(reduceFunc, 0) / counter.length).toFixed(2)
+      );
+      
+    } else {
+      return 'Sin evaluaciones';
+    }
+  };
+
   const getInfoWindowString = (place) => {
     let today = new Date();
     let openingDate = new Date(place.openingHours[0].openingDays.openingDay);
@@ -62,27 +77,19 @@ const GeneralMap = () => {
     </a>
 
     <div style="font-size: 14px;">
-        <span style="color: grey;">Rating:
-        ${place.rating}
+        <span style="color: grey;">Nota:
+        ${ActualRating(place.rating)}
         </span>
-        <span style="color: orange;">${String.fromCharCode(9733).repeat(
-          Math.floor(place.rating)
-        )}</span><span style="color: lightgrey;">${String.fromCharCode(
-      9733
-    ).repeat(5 - Math.floor(place.rating))}</span>
       </div>
-      <div style="font-size: 14px; color: grey;">Category:
+      <div style="font-size: 14px; color: grey;">Categoría:
         ${place.categories[0]}
-      </div>
-      <div style="font-size: 14px; color: grey;">
-        ${"$".repeat(place.price_level)}
       </div>
       <div style="font-size: 14px; color: green;">
         ${
           openingDate.getTime() <= today.getTime() &&
           today.getTime() <= closingDate.getTime()
-            ? "Open"
-            : "Closed"
+            ? "Abierto"
+            : "Cerrado"
         }
       </div>
     </div>`;

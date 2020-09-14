@@ -14,5 +14,11 @@ class ProfileService {
         .post("/send-message/" + customerId, body)
     }
 
+    deleteMessage = (messageId) => {
+      return this.service
+        .post("/delete/" + messageId)
+        .then((response) => response.data);
+    };
+
 }
 export default ProfileService

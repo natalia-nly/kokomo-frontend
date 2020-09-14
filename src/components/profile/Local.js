@@ -20,6 +20,7 @@ const Local = (props) => {
   useEffect(() => {
     service.propertyDetails(props.property)
       .then((response) => {
+        console.log(response)
         setState({
           ...state,
           property: response,
@@ -32,23 +33,24 @@ const Local = (props) => {
   };
 
   const deleteProperty = () => {
-    if (!state.property.bookings.length) {
+    if (state.property.bookings.length) {
+      console.log(
+        "Por favor, cancele todos las reservas de este local primero"
+      );
+      setState({ ...state, alert: true });
       // axios
       //   .get(
       //     process.env.REACT_APP_API_URL + "/property/delete/" + props.property,
 
       //     { withCredentials: true }
       //   )
-      service.deleteProperty(state.property._id)
-        .then((response) => {
-          console.log(response);
-          refreshPage();
-        });
+     
     } else {
-      console.log(
-        "Por favor, cancele todos las reservas de este local primero"
-      );
-      setState({ ...state, alert: true });
+      service.deleteProperty(state.property._id)
+      .then((response) => {
+        console.log(response);
+        refreshPage();
+      });
     }
   };
 
@@ -60,6 +62,8 @@ const Local = (props) => {
       </Alert>
     );
   }
+
+  console.log(props)
 
   if (state.property) {
     local = (
