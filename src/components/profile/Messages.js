@@ -23,6 +23,8 @@ const Messages = (props) => {
     });
   }, []);
 
+  
+
   let allMessages = <p>No tienes Notificaciones pendientes</p>;
   if (state.messages.length) {
     allMessages = state.messages.map((message, index) => (
