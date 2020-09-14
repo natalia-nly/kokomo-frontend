@@ -71,16 +71,9 @@ const MyBookings = (props) => {
   };
 
   const deleteBooking = (bookingId) => {
-    // axios
-    //   .post(
-    //     process.env.REACT_APP_API_URL + "/booking/delete/" + bookingId,
-    //     {},
-    //     { withCredentials: true }
-    //   )
-
     console.log("este es el bookingId: ", bookingId);
     service.deleteBooking(bookingId).then((response) => {
-      console.log(response.data);
+      console.log(response);
       refreshPage();
     });
   };

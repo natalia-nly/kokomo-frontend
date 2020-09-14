@@ -46,6 +46,7 @@ const OwnerLocal = (props) => {
 
 
 
+
   return (
     <>
       <Link to={"/property/" + props.property._id}>
@@ -150,10 +151,11 @@ const OwnerLocal = (props) => {
                 </DropdownButton>
               </div>
             </div>
-            <div>{writeMessage}</div>
+            
           </div>
         </>
       ))}
+      <div>{writeMessage}</div>
     </>
   );
 };

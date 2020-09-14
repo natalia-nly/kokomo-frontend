@@ -808,12 +808,12 @@ h4.section-title {
 
 .kokomo-popup {
   height: 100vh;
-  position: absolute;
+  position: fixed;
   background-color: rgba(104, 134, 146, 0.8);
   top: 0;
   left: 0;
   width: 100vw;
-  z-index: 100;
+  z-index: 1000;
 }
 
 .kokomo-popup .fondo-kokomo {
@@ -834,6 +834,8 @@ h4.section-title {
   top: 20px;
   cursor: pointer;
   color: #3294bb;
+  background-color: transparent;
+    border: none;
 }
 
 .close-btn:hover {

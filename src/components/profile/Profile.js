@@ -60,7 +60,7 @@ const Profile = (props) => {
 
         <h2>Hola {props.loggedInUser.username}!</h2>
         <p>email: {props.loggedInUser.email}</p>
-        <p>Número de teléfono: {props.loggedInUser.telNumber}</p>
+        <p>{props.loggedInUser.telNumber ? `Número de teléfono: ${props.loggedInUser.telNumber}` : " "}</p>
       </div>
       <div className="body-container">
         <div className="row">
