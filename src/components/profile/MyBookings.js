@@ -50,6 +50,10 @@ const MyBookings = (props) => {
   }, []);
 
   useEffect(() => {
+    // axios
+    //   .get(process.env.REACT_APP_API_URL + "/booking/my-properties-bookings", {
+    //     withCredentials: true,
+    //   })
     service.propertiesBookings().then((response) => {
       console.log(
         "CONSOLE LOG DESDE AXIOS GET bookings en mis props:",
@@ -66,15 +70,16 @@ const MyBookings = (props) => {
     window.location.reload(false);
   };
 
-  const deleteBooking = (booking) => {
-    console.log(booking);
+  const deleteBooking = (bookingId) => {
     // axios
     //   .post(
-    //     process.env.REACT_APP_API_URL + "/booking/delete/" + booking,
+    //     process.env.REACT_APP_API_URL + "/booking/delete/" + bookingId,
     //     {},
     //     { withCredentials: true }
     //   )
-    service.deleteBooking(booking).then((response) => {
+
+    console.log("este es el bookingId: ", bookingId);
+    service.deleteBooking(bookingId).then((response) => {
       console.log(response.data);
       refreshPage();
     });
