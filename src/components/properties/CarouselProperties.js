@@ -13,6 +13,8 @@ const CarouselProperties = (props) => {
 
   const [state, setState] = useState(initialState);
 
+  let allProperties
+
   useEffect(() => {
     if (props.filter === "All") {
       axios
@@ -25,6 +27,8 @@ const CarouselProperties = (props) => {
             favourites: response.data[1],
             properties: response.data[0],
           });
+
+          allProperties = (<p>¡Todavía no hay nada!</p>);
         });
     } else if (props.filter === "Favourites") {
       axios
@@ -47,6 +51,8 @@ const CarouselProperties = (props) => {
             favourites: favouritesResult,
             properties: onlyFavs,
           });
+
+          allProperties = (<p>¡Todavía no hay nada!</p>);
         });
     } else if (props.filter === "Categories") {
       axios
@@ -64,6 +70,12 @@ const CarouselProperties = (props) => {
             favourites: response.data[1],
             properties: response.data[0],
           });
+
+          allProperties = (
+            <>
+              <img src={"/images/" + props.match.params.name + ".png"} alt={props.match.params.name} />
+            </>
+          )
         });
     } else {
       axios
@@ -79,9 +91,17 @@ const CarouselProperties = (props) => {
             favourites: response.data[1],
             properties: response.data[0],
           });
+
+          allProperties = (
+            <>
+              <img src={"/images/" + props.filter + ".png"} alt={props.filter} />
+            </>
+          )
         });
     }
   }, []);
+
+
 
   const handleFavourite = (propertyId) => {
     console.log("ID desde favs: ", propertyId);
@@ -101,12 +121,11 @@ const CarouselProperties = (props) => {
       });
   };
 
-  let allProperties = (<p>¡Todavía no hay nada!</p>);
 
   if(state.properties.length) {
     let allPropertiesMap = state.properties.map((property, index) => {
       let heartKokomo = "far fa-heart fa-stack-1x fa-inverse";
-      if (state.favourites.length && state.favourites.includes(property._id)) {
+      if (state.favourites && state.favourites.includes(property._id)) {
         heartKokomo = "fas fa-heart fa-stack-1x fa-inverse";
       }
   
@@ -156,8 +175,10 @@ const CarouselProperties = (props) => {
               style={{
                 zIndex: 1,
               }}
+
+              alt={property.name}
             />
-            <img src={property.mainImage} className="blur-image" />
+            <img src={property.mainImage} className="blur-image" alt={property.name}/>
           </Link>
           <Link to={"/property/" + property._id}>
           <div className="flex-md-row justify-content-between align-items-baseline">

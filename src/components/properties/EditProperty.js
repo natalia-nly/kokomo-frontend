@@ -1,21 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import PropTypes from "prop-types";
-import { makeStyles, withStyles } from "@material-ui/core/styles";
-import clsx from "clsx";
-import Stepper from "@material-ui/core/Stepper";
-import Step from "@material-ui/core/Step";
-import StepLabel from "@material-ui/core/StepLabel";
-import Check from "@material-ui/icons/Check";
-import ScheduleIcon from "@material-ui/icons/Schedule";
-import RestaurantIcon from "@material-ui/icons/Restaurant";
-import RoomIcon from "@material-ui/icons/Room";
-import StepConnector from "@material-ui/core/StepConnector";
-import Button from "@material-ui/core/Button";
-import Typography from "@material-ui/core/Typography";
 import { useHistory } from "react-router-dom";
 import Image from "react-bootstrap/Image";
-import Alert from "react-bootstrap/Alert";
 import StepperKokomo from "./StepperKokomo";
 import { Link } from "react-router-dom";
 

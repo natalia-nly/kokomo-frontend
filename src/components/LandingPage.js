@@ -19,8 +19,8 @@ const LandingPage = () => {
             <br />
             locales de tu zona
           </h2>
-          <h2 className="hero-arrow-phone mdi mdi-arrow-down"></h2>
-          <h2 className="hero-arrow-desktop mdi mdi-arrow-down"></h2>
+          <p className="hero-arrow-phone mdi mdi-arrow-down"></p>
+          <p className="hero-arrow-desktop mdi mdi-arrow-down"></p>
         </div>
       </div>
       <div className="mapa">
@@ -32,7 +32,7 @@ const LandingPage = () => {
           <div className="row text-center">
             <div className="col-md-4">
               <div className="shadow-blue">
-                <img src="/images/1.png" className="emoji-img" />
+                <img src="/images/1.png" className="emoji-img" alt="Busca locales"/>
                 <h2 className="subtitle-landing">
                   Encuentra los mejores locales
                 </h2>
@@ -44,14 +44,14 @@ const LandingPage = () => {
             </div>
             <div className="col-md-4">
               <div className="shadow-blue">
-                <img src="/images/2.png" className="emoji-img" />
+                <img src="/images/2.png" className="emoji-img" alt="Crea reservas"/>
                 <h2 className="subtitle-landing">Crea tu reserva</h2>
                 <p>Reserva rápidamente desde Kokomo en tus locales favoritos</p>
               </div>
             </div>
             <div className="col-md-4">
               <div className="shadow-blue">
-                <img src="/images/3.png" className="emoji-img" />
+                <img src="/images/3.png" className="emoji-img" alt="Comparte con los amigos"/>
                 <h2 className="subtitle-landing">Compártela con tus amigos</h2>
                 <p>Comparte los detalles de la reserva con quien quieras</p>
               </div>

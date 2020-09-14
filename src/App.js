@@ -63,7 +63,7 @@ function App() {
         });
       }
     }
-  }, [1]);
+  }, []);
 
   const DefaultRoutes = () => {
     return (

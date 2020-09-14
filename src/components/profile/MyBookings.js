@@ -6,7 +6,7 @@ import Tabs from "react-bootstrap/Tabs";
 import Tab from "react-bootstrap/Tab";
 import BookingService from "../../services/booking/booking-service";
 
-let service = new BookingService()
+let service = new BookingService();
 let reservas = <p>Todavía no tienes reservas</p>;
 let reservasProperties = <p>Todavía no tienes reservas</p>;
 let active = "client";
@@ -28,14 +28,13 @@ const MyBookings = (props) => {
     }
     const loadData = () => {
       try {
-        service.myBookings()
-          .then((response) => {
-            console.log("CONSOLE LOG DESDE AXIOS GET", response.bookings);
-            setState({
-              ...state,
-              bookings: response.bookings,
-            });
+        service.myBookings().then((response) => {
+          console.log("CONSOLE LOG DESDE AXIOS GET", response.bookings);
+          setState({
+            ...state,
+            bookings: response.bookings,
           });
+        });
       } catch (error) {
         if (axios.isCancel(error)) {
           console.log("cancelled");
@@ -51,21 +50,16 @@ const MyBookings = (props) => {
   }, []);
 
   useEffect(() => {
-    // axios
-    //   .get(process.env.REACT_APP_API_URL + "/booking/my-properties-bookings", {
-    //     withCredentials: true,
-    //   })
-      service.propertiesBookings()
-      .then((response) => {
-        console.log(
-          "CONSOLE LOG DESDE AXIOS GET bookings en mis props:",
-          response.ownProperties
-        );
-        setState({
-          ...state,
-          properties: response.ownProperties,
-        });
+    service.propertiesBookings().then((response) => {
+      console.log(
+        "CONSOLE LOG DESDE AXIOS GET bookings en mis props:",
+        response.ownProperties
+      );
+      setState({
+        ...state,
+        properties: response.ownProperties,
       });
+    });
   }, []);
 
   const refreshPage = () => {
@@ -80,11 +74,10 @@ const MyBookings = (props) => {
     //     {},
     //     { withCredentials: true }
     //   )
-    service.deleteBooking(booking)
-      .then((response) => {
-        console.log(response.data);
-        refreshPage();
-      });
+    service.deleteBooking(booking).then((response) => {
+      console.log(response.data);
+      refreshPage();
+    });
   };
 
   if (state.bookings.length) {
@@ -97,7 +90,6 @@ const MyBookings = (props) => {
   console.log(props);
 
   if (props.loggedInUser.owner) {
-
     if (state.properties.length) {
       console.log(state.properties);
       reservasProperties = state.properties.map((property, index) => (

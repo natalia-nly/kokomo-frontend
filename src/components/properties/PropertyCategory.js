@@ -23,7 +23,7 @@ const PropertyCategory = (props) => {
           properties: response.data[0]
         });
       });
-  }, [1]);
+  }, []);
 
   return (
     <div>

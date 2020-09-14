@@ -35,7 +35,7 @@ const BookingDetails = (props) => {
         style={{ height: "90vh" }}
       >
         <div>
-          <img src="/images/3.png" className="emoji-img" />
+          <img src="/images/3.png" className="emoji-img" alt="Reserva creada" />
 
           <h2 className="subtitle-landing text-center mb-3">
             ¡Reserva creada con éxito!

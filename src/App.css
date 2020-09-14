@@ -94,6 +94,10 @@ p {
   font-family: bely-display, sans-serif;
 }
 
+.black-white {
+  filter: grayscale(100%);
+}
+
 /* ## Botones
 --------------------------------------------- */
 .btn-kokomo {
@@ -781,13 +785,14 @@ h4.section-title {
   background-color: white;
   border-radius: 100%;
   padding: 16px;
+  box-shadow: 0 0 10px #106688;
 }
 .category-group .one-category .img-container img {
   width: 100%;
 }
 .category-group .one-category p {
   color: white;
-  font-size: 12px;
+  font-size: 14px;
   padding-top: 10px;
   padding-bottom: 14px;
 }
@@ -929,7 +934,7 @@ h4.section-title {
 
 .flotante-kokomo-search {
   display: block;
-  bottom: 10vh;
+  bottom: 6vh;
   background-color: #ffbb69;
   padding: 20px 40px;
   width: 80vw;
@@ -959,7 +964,7 @@ h4.section-title {
   border-radius: 8px;
   padding: 16px;
   font-size: 18px;
-  position: absolute;
+  position: fixed;
   bottom: 14px;
 }
 
@@ -1113,7 +1118,7 @@ h4.section-title {
   .title-heart {
     display: flex;
     flex-direction: row;
-    margin-top: 10vh;
+    margin-top: 6vh;
     margin-left: -90px !important;
   }
 
@@ -1261,7 +1266,7 @@ h4.section-title {
     display: block;
     position: absolute;
     right: 0;
-    bottom: 10vh;
+    bottom: 6vh;
     background-color: #ffbb69;
     padding: 20px 40px;
     width: 80vw;
@@ -1271,7 +1276,7 @@ h4.section-title {
 
   .flotante-kokomo-search {
     display: block;
-    bottom: 10vh;
+    bottom: 6vh;
     background-color: #ffbb69;
     padding: 20px 40px;
     width: 80vw;

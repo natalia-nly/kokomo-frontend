@@ -2,9 +2,8 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import DropdownButton from "react-bootstrap/DropdownButton";
 import Dropdown from "react-bootstrap/Dropdown";
-import Alert from "react-bootstrap/Alert";
 import SendMessages from "./SendMessages";
-import axios from "axios";
+
 let initialState = {
   messages: [],
   alert: false,

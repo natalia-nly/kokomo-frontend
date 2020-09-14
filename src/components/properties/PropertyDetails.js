@@ -70,8 +70,6 @@ const PropertyDetails = (props) => {
           (counter.reduce(reduceFunc, 0) / counter.length).toFixed(2)
         );
 
-        console.log("rate number", rateNumber);
-
         setState({
           ...state,
           property: response,
