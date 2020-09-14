@@ -44,6 +44,7 @@ console.log(props)
                 }
             });
     };
+    console.log(props)
 
     let message = (
         <div>

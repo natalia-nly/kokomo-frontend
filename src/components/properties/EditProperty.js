@@ -4,26 +4,30 @@ import { useHistory } from "react-router-dom";
 import Image from "react-bootstrap/Image";
 import StepperKokomo from "./StepperKokomo";
 import { Link } from "react-router-dom";
+import SearchService from "../../services/search/search-service";
+import PropertyService from "../../services/property/property-service";
+
+const propertyService = new PropertyService();
+const search = new SearchService();
+
+const initialState = {
+  property: {
+    name: "",
+    description: "",
+    categories: [],
+    mainImage: null,
+    location: {
+      name: "",
+      lat: 0,
+      long: 0,
+    },
+    bookingDuration: 0,
+    availablePlaces: 0,
+  },
+};
 
 function EditProperty(props) {
   let history = useHistory();
-
-  const initialState = {
-    property: {
-      name: "",
-      description: "",
-      categories: [],
-      mainImage: null,
-      location: {
-        name: "",
-        lat: 0,
-        long: 0,
-      },
-      bookingDuration: 0,
-      availablePlaces: 0,
-    },
-  };
-
   const [state, setState] = useState(initialState);
 
   useEffect(() => {
@@ -63,16 +67,17 @@ function EditProperty(props) {
       mainImage: state.property.mainImage,
     };
 
-    axios
-      .post(
-        process.env.REACT_APP_API_URL + "/property/edit/" + state.property._id,
-        body,
-        {
-          withCredentials: true,
-        }
-      )
+    // axios
+    //   .post(
+    //     process.env.REACT_APP_API_URL + "/property/edit/" + state.property._id,
+    //     body,
+    //     {
+    //       withCredentials: true,
+    //     }
+    //   )
+    propertyService.editProperty(state.property._id,body)
       .then((response) => {
-        console.log("file uploaded", response.data);
+        console.log("file uploaded", response);
         history.push(`/property/${state.property._id}`);
       })
       .catch((error) => console.log(error));
@@ -100,13 +105,14 @@ function EditProperty(props) {
     e.preventDefault();
     const uploadData = new FormData();
     uploadData.append("mainImage", e.target.files[0]);
-    axios
-      .post(process.env.REACT_APP_API_URL + "/property/upload", uploadData)
+    // axios
+    //   .post(process.env.REACT_APP_API_URL + "/property/upload", uploadData)
+    propertyService.uploadPicture(uploadData)
       .then((response) => {
-        console.log("File upload successful:", response.data);
+        console.log("File upload successful:", response);
         setState({
           ...state,
-          property: { ...state.property, mainImage: response.data.path },
+          property: { ...state.property, mainImage: response.path },
         });
       });
   };
@@ -114,23 +120,24 @@ function EditProperty(props) {
   const handleGoogleSearch = (e) => {
     e.preventDefault();
     // buscar la direccion y mostrar un PIN en el mapa con la dirección
-    axios
-      .get(
-        process.env.REACT_APP_API_URL + "/search/maps?search=" + state.search
-      )
+    // axios
+    //   .get(
+    //     process.env.REACT_APP_API_URL + "/search/maps?search=" + state.search
+    //   )
+    search.searchLocation(state.search)
       .then((response) => {
-        console.log(response.data);
+        console.log(response);
         console.log(state);
         // volver a renderizar el mapa con CENTER = lat, lng y un PIN =  lat, lng
         setState({
           ...state,
-          search: response.data.candidates[0].name,
+          search: response.candidates[0].name,
           property: {
             ...state.property,
             location: {
-              lat: response.data.candidates[0].geometry.location.lat,
-              long: response.data.candidates[0].geometry.location.lng,
-              name: response.data.candidates[0].formatted_address,
+              lat: response.candidates[0].geometry.location.lat,
+              long: response.candidates[0].geometry.location.lng,
+              name: response.candidates[0].formatted_address,
             },
           },
         });

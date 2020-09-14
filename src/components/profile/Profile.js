@@ -5,7 +5,6 @@ import Messages from "./Messages";
 import Local from "./Local";
 const service = new AuthService();
 
-
 const initialState = {};
 
 const Profile = (props) => {
@@ -26,9 +25,11 @@ const Profile = (props) => {
 
   let properties = <></>;
 
-
   if (state.user && state.user.ownProperties) {
-    console.log("Property desde el mapa de ownproperties: ", state.user.ownProperties)
+    console.log(
+      "Property desde el mapa de ownproperties: ",
+      state.user.ownProperties
+    );
     properties = state.user.ownProperties.map((property, index) => (
       <Local key={index} property={property} />
     ));

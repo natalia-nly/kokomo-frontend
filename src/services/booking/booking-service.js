@@ -9,19 +9,23 @@ class BookingService {
     this.service = service;
   }
 
-  myBookings = () => {
-      return this.service
-      .get("/my-bookings")
-      .then((response) => response.data);
-  }
-
-  propertiesBookings= () => {
+  createBooking = (scheduleId, body) => {
     return this.service
-    .get("/my-properties-bookings")
-    .then((response) => response.data);
-  }
+      .post("/create-booking/" + scheduleId, body)
+      .then((response) => response.data);
+  };
 
- bookingDetails = (bookingId) => {
+  myBookings = () => {
+    return this.service.get("/my-bookings").then((response) => response.data);
+  };
+
+  propertiesBookings = () => {
+    return this.service
+      .get("/my-properties-bookings")
+      .then((response) => response.data);
+  };
+
+  bookingDetails = (bookingId) => {
     return this.service
       .get("/details/" + bookingId)
       .then((response) => response.data);
@@ -32,6 +36,5 @@ class BookingService {
       .post("/delete/" + bookingId)
       .then((response) => response.data);
   };
-
 }
 export default BookingService;

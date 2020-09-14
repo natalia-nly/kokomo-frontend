@@ -13,7 +13,6 @@ const DetailedMap = (props) => {
 
   const zoom = 11;
 
-
   center = {
     lat: props.lat,
     lng: props.lng,
@@ -38,6 +37,18 @@ const DetailedMap = (props) => {
     };
   };
 
+  const ActualRating = (rating) => {
+    let counter = rating.counter;
+    if (rating.counter.length) {
+      let reduceFunc = (a, b) => a + b;
+      return parseFloat(
+        (counter.reduce(reduceFunc, 0) / counter.length).toFixed(2)
+      );
+    } else {
+      return 'Sin evaluaciones';
+    }
+  };
+
   const getInfoWindowString = (place) => {
     let today = new Date();
     let openingDate = new Date(place.openingHours[0].openingDays.openingDay);
@@ -52,16 +63,10 @@ const DetailedMap = (props) => {
     </a>
 
     <div style="font-size: 14px;">
-        <span style="color: grey;">Rating:
-        ${place.rating}
+        <span style="color: grey;">Nota:
+        ${ActualRating(place.rating)}
         </span>
-        <span style="color: orange;">${String.fromCharCode(9733).repeat(
-          Math.floor(place.rating)
-        )}</span><span style="color: lightgrey;">${String.fromCharCode(
-      9733
-    ).repeat(5 - Math.floor(place.rating))}</span>
-      </div>
-      <div style="font-size: 14px; color: grey;">Category:
+      <div style="font-size: 14px; color: grey;">Categoría:
         ${place.categories[0]}
       </div>
       <div style="font-size: 14px; color: grey;">
@@ -71,8 +76,8 @@ const DetailedMap = (props) => {
         ${
           openingDate.getTime() <= today.getTime() &&
           today.getTime() <= closingDate.getTime()
-            ? "Open"
-            : "Closed"
+            ? "Abierto"
+            : "Cerrado"
         }
       </div>
     </div>`;
