@@ -4,6 +4,7 @@ import Alert from "react-bootstrap/Alert";
 import PropertyService from "../../services/property/property-service";
 
 const service = new PropertyService();
+
 let local = <></>;
 let alertMessage = <></>;
 
@@ -15,20 +16,13 @@ const Local = (props) => {
 
 
   const [state, setState] = useState(initialState);
-  console.log(process.env.REACT_APP_API_URL + "/property/" + props.property);
 
   useEffect(() => {
-    let propertyId = props.property;
-    // axios
-    //   .get(process.env.REACT_APP_API_URL + "/property/" + propertyId, {
-    //     withCredentials: true,
-    //   })
-    service.propertyDetails(propertyId)
+    service.propertyDetails(props.property)
       .then((response) => {
-        console.log("CONSOLE LOG DESDE AXIOS GET mi local:", response.data);
         setState({
           ...state,
-          property: response.data,
+          property: response,
         });
       });
   }, []);
