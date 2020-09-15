@@ -1,11 +1,10 @@
 import React, { useState } from "react";
 import ProfileService from "../../services/profile/profile-service";
-import { Link } from "react-router-dom";
 
 const service = new ProfileService();
 
 const SendMessages = (props) => {
-  console.log(props);
+
   let initialState = {
     topic: "Cancelación reserva " + props.booking.bookingRef,
     message: "",

@@ -88,11 +88,11 @@ const LandingPage = () => {
       <div className="footer">
         <p>
           Made in Barcelona |{" "}
-          <a href="https://github.com/natalia-nly" target="_blank">
+          <a href="https://github.com/natalia-nly" target="_blank" rel="noopener noreferrer">
             Natalia
           </a>{" "}
           &{" "}
-          <a href="https://github.com/CSS1982" target="_blank">
+          <a href="https://github.com/CSS1982" target="_blank" rel="noopener noreferrer">
             Claudi
           </a>
         </p>

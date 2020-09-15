@@ -70,7 +70,7 @@ const GeneralMap = () => {
 
     return `
     <div>
-    <a href="/property/${
+    <a href="/#/property/${
       place._id
     }" class="btn-kokomo btn-kokomo-danger" style="font-size: 16px;">
     ${place.name}

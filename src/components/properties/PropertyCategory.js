@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import CarouselProperties from "./CarouselProperties";
-import axios from "axios";
 import PropertyService from "../../services/property/property-service";
 
 let service = new PropertyService();
@@ -15,10 +14,6 @@ const PropertyCategory = (props) => {
 
   useEffect(() => {
     console.log(props);
-    // axios
-    //   .get(
-    //     process.env.REACT_APP_API_URL + "/search/category/" + state.title
-    //   )
     service.categoryProperties(state.title)
       .then((response) => {
         console.log("CONSOLE LOG DESDE AXIOS GET", response[0]);
@@ -32,8 +27,7 @@ const PropertyCategory = (props) => {
   return (
     <div>
       <div class="body-container">
-        <h3 class="section-title mt-4">
-          <i class="fas fa-heart fa-sm"></i>
+        <h3 class="section-title mt-4 text-center">
           {state.title}
         </h3>
 

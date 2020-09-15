@@ -5,8 +5,10 @@ import OwnerLocal from "./OwnerLocal";
 import Tabs from "react-bootstrap/Tabs";
 import Tab from "react-bootstrap/Tab";
 import BookingService from "../../services/booking/booking-service";
+import AuthService from "../../services/auth/auth-service";
 
-let service = new BookingService();
+const service = new AuthService();
+const bookingService = new BookingService();
 let reservas = <p>Todavía no tienes reservas</p>;
 let reservasProperties = <p>Todavía no tienes reservas</p>;
 let active = "client";
@@ -15,6 +17,7 @@ let ownerTab = <></>;
 const initialState = {
   bookings: [],
   properties: [],
+  user: {}
 };
 
 const MyBookings = (props) => {
@@ -23,12 +26,16 @@ const MyBookings = (props) => {
   useEffect(() => {
     const CancelToken = axios.CancelToken;
     const source = CancelToken.source();
-    if (props.loggedInUser.owner) {
-      active = "owner";
-    }
+    service.loggedin().then((response) => {
+      if(response.owner){
+        active="owner"
+      }
+      setState({...state, user: response})
+    });
+    
     const loadData = () => {
       try {
-        service.myBookings().then((response) => {
+        bookingService.myBookings().then((response) => {
           console.log("CONSOLE LOG DESDE AXIOS GET", response.bookings);
           setState({
             ...state,
@@ -54,7 +61,7 @@ const MyBookings = (props) => {
     //   .get(process.env.REACT_APP_API_URL + "/booking/my-properties-bookings", {
     //     withCredentials: true,
     //   })
-    service.propertiesBookings().then((response) => {
+    bookingService.propertiesBookings().then((response) => {
       console.log(
         "CONSOLE LOG DESDE AXIOS GET bookings en mis props:",
         response.ownProperties
@@ -72,7 +79,7 @@ const MyBookings = (props) => {
 
   const deleteBooking = (bookingId) => {
     console.log("este es el bookingId: ", bookingId);
-    service.deleteBooking(bookingId).then((response) => {
+    bookingService.deleteBooking(bookingId).then((response) => {
       console.log(response);
       refreshPage();
     });
@@ -122,7 +129,7 @@ const MyBookings = (props) => {
   return (
     <div className="body-container">
       <h3 className="section-title mt-4 mdi mdi-calendar">
-        Gestión de reservas
+        {" "}Gestión de reservas
       </h3>
       <Tabs defaultActiveKey={active} id="nav-tab" className="nav nav-tabs">
         {ownerTab}

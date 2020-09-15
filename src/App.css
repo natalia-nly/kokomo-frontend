@@ -96,6 +96,9 @@ p {
 
 .black-white {
   filter: grayscale(100%);
+  opacity: 0.5;
+  max-width: 110px;
+  padding: 20px;
 }
 
 /* ## Botones
@@ -111,6 +114,23 @@ p {
   line-height: 1.5;
   border: none;
   border-radius: 5px;
+  transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out,
+    border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+.btn-kokomo-circle {
+  display: inline-block;
+  font-weight: 400;
+  text-align: center;
+  vertical-align: middle;
+  user-select: none;
+  width: 40px;
+  height: 40px;
+  padding: 8px;
+  font-size: 1rem;
+  line-height: 1.5;
+  border: none;
+  border-radius: 100%;
   transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out,
     border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
 }
@@ -149,12 +169,13 @@ p {
 }
 
 .btn-kokomo-white {
-  color: #ffba69;
+  color: #49626d;
   background-color: white;
   border-color: white;
+  box-shadow: 0px 4px 40px rgb(68 99 111 / 22%);
 }
 .btn-kokomo-white:hover {
-  color: #ffba69;
+  color: #49626d;
   background-color: #fcfcfc;
   border-color: #fcfcfc;
   transition: 0.6s all ease;
@@ -444,6 +465,23 @@ h1 {
   color: #49636d;
   font-weight: 700;
   padding-left: 20px;
+}
+
+.title-profile {
+  font-size: 22px;
+  font-family: europa, sans-serif;
+  color: #49636d;
+  font-weight: 700;
+}
+
+.logout-kokomo {
+  color: #386e84;
+    font-size: 16px;
+    font-style: italic;
+}
+
+.logout-kokomo:hover {
+  color: #144558;
 }
 
 .subtitle-search-home {
@@ -798,12 +836,19 @@ h4.section-title {
 }
 
 .beach-background {
-  min-height: 30vh;
-  padding: 50px;
+  min-height: 20vh;
+  padding: 20px;
   background-image: url(/images/water.jpg);
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center center;
+}
+
+.card-kokomo {
+  border-radius: 26px;
+    overflow: hidden;
+    box-shadow: 0px 4px 40px rgb(68 99 111 / 11%);
+    background-color: white;
 }
 
 .kokomo-popup {
@@ -835,17 +880,32 @@ h4.section-title {
   cursor: pointer;
   color: #3294bb;
   background-color: transparent;
-    border: none;
+  border: none;
 }
 
-.close-btn:hover {
+.close-btn-2 {
+  cursor: pointer;
+  color: #3294bb;
+  background-color: transparent;
+  border: none;
+}
+
+.close-btn:hover,
+.close-btn-2:hover {
   color: #174e67;
+}
+
+.mini-kokomo {
+  width: 80px;
+  height: 80px;
+  overflow: hidden;
+  border-radius: 8px;
 }
 
 .avatar {
   border-radius: 300px;
   box-shadow: 0px 4px 40px rgba(141, 136, 131, 0.45);
-  max-width: 140px;
+  max-width: 100px;
   margin-top: -60px;
   margin-bottom: 30px;
   background-color: #b2c7c6;
@@ -972,6 +1032,24 @@ h4.section-title {
 
 .btn-floating:hover {
   background-color: #e89f46;
+}
+
+.datos-kokomo span {
+  color: white;
+    font-family: bely display;
+    font-size: 44px;
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #ffffff40;
+    border-radius: 20px;
+    margin-right: 20px;
+}
+
+.datos-kokomo:not(span){
+  color: white;
+  text-transform: uppercase;
+  font-weight: 100;
+  letter-spacing: 3px;
 }
 
 /* # 01. MEDIA QUERIES

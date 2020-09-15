@@ -51,7 +51,7 @@ const Search = (props) => {
     <div className="body-container">
       <div>
         <h3 className="section-title mt-4 mdi mdi-magnify">
-          Busca el mejor sitio
+          {" "}Busca el mejor sitio
         </h3>
         <GeneralMap />
       </div>

@@ -15,8 +15,6 @@ const CarouselProperties = (props) => {
 
   useEffect(() => {
     if (props.filter === "All") {
-      // axios
-      //   .get(process.env.REACT_APP_API_URL + "/", { withCredentials: true })
       service.allProperties().then((response) => {
         console.log("CONSOLE LOG DESDE AXIOS GET", response);
 
@@ -25,12 +23,8 @@ const CarouselProperties = (props) => {
           favourites: response[1],
           properties: response[0],
         });
-
-        allProperties = <p>¡Todavía no hay nada!</p>;
       });
     } else if (props.filter === "Favourites") {
-      // axios
-      //   .get(process.env.REACT_APP_API_URL + "/", { withCredentials: true })
       service.allProperties().then((response) => {
         console.log("CONSOLE LOG DESDE AXIOS GET", response);
 
@@ -49,84 +43,45 @@ const CarouselProperties = (props) => {
           favourites: favouritesResult,
           properties: onlyFavs,
         });
-
-        allProperties = <p>¡Todavía no hay nada!</p>;
       });
     } else if (props.filter === "Categories") {
-      // axios
-      //   .get(
-      //     process.env.REACT_APP_API_URL +
-      //       "/property/category/" +
-      //       props.match.params.name,
-      //     { withCredentials: true }
-      //   )
-      service.categoryProperties(props.match.params.name)
-        .then((response) => {
-          console.log("CONSOLE LOG DESDE AXIOS GET", response);
+      service.categoryProperties(props.match.params.name).then((response) => {
+        console.log("CONSOLE LOG DESDE AXIOS GET", response);
 
-          setState({
-            ...state,
-            favourites: response[1],
-            properties: response[0],
-          });
-
-          allProperties = (
-            <>
-              <img
-                src={"/images/" + props.match.params.name + ".png"}
-                alt={props.match.params.name}
-              />
-            </>
-          );
+        setState({
+          ...state,
+          favourites: response[1],
+          properties: response[0],
         });
+      });
     } else {
-      // axios
-      //   .get(
-      //     process.env.REACT_APP_API_URL + "/search/category/" + props.filter,
-      //     { withCredentials: true }
-      //   )
-      service.categoryProperties(props.filter)
-        .then((response) => {
-          console.log("CONSOLE LOG DESDE AXIOS GET", response);
+      service.categoryProperties(props.filter).then((response) => {
+        console.log("CONSOLE LOG DESDE AXIOS GET", response);
 
-          setState({
-            ...state,
-            favourites: response[1],
-            properties: response[0],
-          });
-
-          allProperties = (
-            <>
-              <img
-                src={"/images/" + props.filter + ".png"}
-                alt={props.filter}
-              />
-            </>
-          );
+        setState({
+          ...state,
+          favourites: response[1],
+          properties: response[0],
         });
+      });
     }
   }, []);
 
   const handleFavourite = (propertyId) => {
     console.log("ID desde favs: ", propertyId);
-    // axios
-    //   .get(process.env.REACT_APP_API_URL + "/property/love/" + propertyId, {
-    //     withCredentials: true,
-    //   })
-    service.propertyLove(propertyId)
-      .then((response) => {
-        console.log("Favorito añadido", response);
-        const newFavs = [...state.favourites];
-        newFavs.push(propertyId);
+    service.propertyLove(propertyId).then((response) => {
+      console.log("Favorito añadido", response);
+      const newFavs = [...state.favourites];
+      newFavs.push(propertyId);
 
-        setState({
-          ...state,
-          favourites: newFavs,
-        });
+      setState({
+        ...state,
+        favourites: newFavs,
       });
+    });
   };
 
-  if (state.properties.length) {
+  if (state.properties.length >= 1) {
     let allPropertiesMap = state.properties.map((property, index) => {
       let heartKokomo = "far fa-heart fa-stack-1x fa-inverse";
       if (state.favourites && state.favourites.includes(property._id)) {
@@ -203,6 +158,44 @@ const CarouselProperties = (props) => {
     });
 
     allProperties = <div className="properties-group">{allPropertiesMap}</div>;
+  } else {
+    
+    if (props.filter === "All") {
+    } else if (props.filter === "Favourites") {
+      allProperties = (
+        <div className="text-center">
+          <img
+            src="/images/broken-heart.png"
+            className="black-white"
+            alt="Sin favoritos"
+          />
+          <p>Todavía no tienes favoritos</p>
+        </div>
+      );
+    } else if (props.filter === "Categories") {
+      allProperties = (
+        <div className="text-center">
+          <img
+            src="/images/broken-heart.png"
+            className="black-white"
+            alt="Sin favoritos"
+          />
+          <p>Todavía no tienes favoritos</p>
+        </div>
+      );
+    } else {
+      allProperties = (
+        <div className="text-center">
+          <img
+            src={"/images/" + props.filter + ".png"}
+            className="black-white"
+            alt={props.filter}
+          />
+          <p>Todavía no hay locales en la categoria {props.filter}</p>
+        </div>
+      )
+      
+    }
   }
 
   return <>{allProperties}</>;

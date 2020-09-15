@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import BookingService from "../../services/booking/booking-service";
 
-let service = new BookingService();
+const service = new BookingService();
 
 const AvailableTimes = (props) => {
   const initialState = {
@@ -39,17 +39,16 @@ const AvailableTimes = (props) => {
     //     body,
     //     { withCredentials: true }
     //   )
-    service.createBooking(params.scheduleId, body)
-      .then((response) => {
-        console.log(response);
-        setState({
-          ...state,
-          bookingFinished: true,
-          bookingId: response._id,
-          day: response.day,
-          hour: response.time,
-        });
+    service.createBooking(params.scheduleId, body).then((response) => {
+      console.log(response);
+      setState({
+        ...state,
+        bookingFinished: true,
+        bookingId: response._id,
+        day: response.day,
+        hour: response.time,
       });
+    });
   };
 
   if (state.availableResults) {
@@ -71,11 +70,15 @@ const AvailableTimes = (props) => {
     ));
   }
 
-  let whatsAppLink = `whatsapp://send?text=¡Te espera una reserva de Kokomo! 😎 Aquí tienes los detalles: http://kokomo-react.herokuapp.com/booking/details/${state.bookingId}`;
+  let whatsAppLink = `whatsapp://send?text=¡Te espera una reserva de Kokomo! 😎 Aquí tienes los detalles: http://kokomo-react.herokuapp.com/#/booking/details/${state.bookingId}`;
 
   let bookingDetails = (
     <>
-      <img src="/images/3.png" className="emoji-img" alt="Reserva creada con éxito"/>
+      <img
+        src="/images/3.png"
+        className="emoji-img"
+        alt="Reserva creada con éxito"
+      />
 
       <h2 className="subtitle-landing text-center mb-3">
         ¡Reserva creada con éxito!
@@ -104,8 +107,14 @@ const AvailableTimes = (props) => {
 
   let finalResult = (
     <>
-      <img src="/images/calendar.png" className="emoji-img" alt="Horas disponibles"/>
-      <button onClick={props.clearAvailableTimes} className="close-btn"><i className="fas fa-times"></i></button>
+      <img
+        src="/images/calendar.png"
+        className="emoji-img"
+        alt="Horas disponibles"
+      />
+      <button onClick={props.clearAvailableTimes} className="close-btn">
+        <i className="fas fa-times"></i>
+      </button>
       <h2 className="subtitle-landing text-center mb-3">Horas disponibles</h2>
       <div className="row justify-content-center">{available}</div>
     </>

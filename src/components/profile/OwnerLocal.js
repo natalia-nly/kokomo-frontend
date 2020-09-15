@@ -44,9 +44,6 @@ const OwnerLocal = (props) => {
     });
   };
 
-
-
-
   return (
     <>
       <Link to={"/property/" + props.property._id}>
@@ -124,7 +121,7 @@ const OwnerLocal = (props) => {
                     variant="success"
                     className="dropdown-item"
                     href={
-                      "whatsapp://send?text=¡Te espera una reserva de Kokomo! 😎 Aquí tienes los detalles: http://kokomo-react.herokuapp.com/booking/details/" +
+                      "whatsapp://send?text=¡Te espera una reserva de Kokomo! 😎 Aquí tienes los detalles: http://kokomo-react.herokuapp.com/#/booking/details/" +
                       booking._id
                     }
                   >

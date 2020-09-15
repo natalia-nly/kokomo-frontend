@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Link} from "react-router-dom";
+import { Link } from "react-router-dom";
 import Alert from "react-bootstrap/Alert";
 import PropertyService from "../../services/property/property-service";
 
@@ -13,19 +13,16 @@ const initialState = {
 };
 
 const Local = (props) => {
-
-
   const [state, setState] = useState(initialState);
 
   useEffect(() => {
-    service.propertyDetails(props.property)
-      .then((response) => {
-        console.log(response)
-        setState({
-          ...state,
-          property: response,
-        });
+    service.propertyDetails(props.property).then((response) => {
+      console.log(response);
+      setState({
+        ...state,
+        property: response,
       });
+    });
   }, []);
 
   const refreshPage = () => {
@@ -38,16 +35,8 @@ const Local = (props) => {
         "Por favor, cancele todos las reservas de este local primero"
       );
       setState({ ...state, alert: true });
-      // axios
-      //   .get(
-      //     process.env.REACT_APP_API_URL + "/property/delete/" + props.property,
-
-      //     { withCredentials: true }
-      //   )
-     
     } else {
-      service.deleteProperty(state.property._id)
-      .then((response) => {
+      service.deleteProperty(state.property._id).then((response) => {
         console.log(response);
         refreshPage();
       });
@@ -56,46 +45,50 @@ const Local = (props) => {
 
   if (state.alert) {
     alertMessage = (
-      <Alert variant="warning mt-4">
-        Por favor, cancele todos las reservas de este local primero.{" "}
-        <Link to="/my-bookings">Ver reservas</Link>
-      </Alert>
+      <tr>
+        <td colspan="3">
+          <Alert variant="warning">
+            Por favor, cancele todos las reservas de este local primero.{" "}
+            <Link to="/my-bookings">Ver reservas</Link>
+          </Alert>
+        </td>
+      </tr>
     );
   }
-
-  console.log(props)
 
   if (state.property) {
     local = (
       <>
         <tr>
           <td>
-            <Link to={"/property/" + props.property}>
-              <h2 className="title-search-home">{state.property.name}</h2>
-              <p className="mdi mdi-map-marker-radius mb-4">
+            <img src={state.property.mainImage} className="mini-kokomo" alt={state.property.name}/>
+          </td>
+          <td>
+            <Link to="/my-bookings">
+              <h2 className="title-profile">{state.property.name}</h2>
+              <p className="mdi mdi-calendar">
                 {" "}
-                {state.property.location.name}
+                {state.property.bookings.length} reservas
               </p>
             </Link>
           </td>
-          <td>
+          <td className="text-right">
             <Link
               type="submit"
-              className="btn-kokomo btn-kokomo-grey mr-3 mb-4"
+              className="btn-kokomo-circle btn-kokomo-grey mr-2"
               to={"/property/edit/" + props.property}
             >
-              <i className="fas fa-pen"></i>
+              <i className="mdi mdi-square-edit-outline"></i>
             </Link>
             <button
               type="submit"
-              className="btn-kokomo btn-kokomo-danger mr-3 mb-4"
+              className="btn-kokomo-circle btn-kokomo-danger"
               onClick={() => deleteProperty()}
             >
               <i className="far fa-trash-alt"></i>
             </button>
           </td>
         </tr>
-
         {alertMessage}
       </>
     );

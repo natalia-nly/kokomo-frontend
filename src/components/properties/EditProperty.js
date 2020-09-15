@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
 import { useHistory } from "react-router-dom";
 import Image from "react-bootstrap/Image";
 import StepperKokomo from "./StepperKokomo";
@@ -10,41 +9,36 @@ import PropertyService from "../../services/property/property-service";
 const propertyService = new PropertyService();
 const search = new SearchService();
 
-const initialState = {
-  property: {
-    name: "",
-    description: "",
-    categories: [],
-    mainImage: null,
-    location: {
-      name: "",
-      lat: 0,
-      long: 0,
-    },
-    bookingDuration: 0,
-    availablePlaces: 0,
-  },
-};
+
 
 function EditProperty(props) {
+  const initialState = {
+    property: {
+      name: "",
+      description: "",
+      categories: [],
+      mainImage: null,
+      location: {
+        name: "",
+        lat: 0,
+        long: 0,
+      }
+    },
+  };
+
   let history = useHistory();
   const [state, setState] = useState(initialState);
 
   useEffect(() => {
-    console.log(props);
-    axios
-      .get(
-        process.env.REACT_APP_API_URL +
-          "/property/" +
-          props.match.params.propertyId,
-        { withCredentials: true }
-      )
+
+
+      propertyService.propertyDetails(props.match.params.propertyId)
       .then((response) => {
         console.log("CONSOLE LOG DESDE AXIOS GET", response);
 
         setState({
           ...state,
-          property: response.data,
+          property: response,
         });
       });
   }, []);
@@ -62,8 +56,6 @@ function EditProperty(props) {
         lat: state.property.location.lat,
         long: state.property.location.long,
       },
-      bookingDuration: state.property.bookingDuration,
-      availablePlaces: state.property.availablePlaces,
       mainImage: state.property.mainImage,
     };
 
@@ -211,32 +203,7 @@ function EditProperty(props) {
     <div>
       <div className="row">
         <div className="col-sm-12 col-md-6">
-          <div className="form-group">
-            <label htmlFor="bookingDuration" className="label active">
-              Duración de la reserva (en minutos)
-            </label>
-            <input
-              type="number"
-              name="bookingDuration"
-              value={state.property.bookingDuration}
-              onChange={handleChange}
-            />
-          </div>
-
-          <div className="form-group">
-            <label htmlFor="availablePlaces" className="label active">
-              Plazas
-            </label>
-            <input
-              type="number"
-              name="availablePlaces"
-              value={state.property.availablePlaces}
-              onChange={handleChange}
-            />
-          </div>
-        </div>
-        <div className="col-sm-12 col-md-6">
-          <form onSubmit={handleGoogleSearch} className="d-flex">
+        <form onSubmit={handleGoogleSearch} className="d-flex">
             <div className="form-group" style={{ width: "80%" }}>
               <label htmlFor="search" className="label active">
                 Dirección
@@ -257,6 +224,11 @@ function EditProperty(props) {
               />
             </div>
           </form>
+
+          
+        </div>
+        <div className="col-sm-12 col-md-6">
+          
           <p>Candidato: {state.search}</p>
           <p>Dirección:{" " + state.property.location.name}</p>
           <p>Latitud:{" " + state.property.location.lat}</p>

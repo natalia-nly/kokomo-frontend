@@ -8,8 +8,6 @@ const Home = () => {
       <div className="home-container" style={{ paddingBottom: "80px" }}>
         <div className="hero">
           <h2 className="hero-title">Inicio</h2>
-
-          <br />
         </div>
 
         <Categories />

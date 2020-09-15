@@ -57,7 +57,7 @@ const BookingDetails = (props) => {
 
           <a
             href={
-              "whatsapp://send?text=¡Te espera una reserva de Kokomo! 😎 Aquí tienes los detalles: http://kokomo-react.herokuapp.com/booking/details/" +
+              "whatsapp://send?text=¡Te espera una reserva de Kokomo! 😎 Aquí tienes los detalles: http://kokomo-react.herokuapp.com/#/booking/details/" +
               state.booking._id
             }
             className="btn-kokomo btn-kokomo-grey mt-4 p-3 mr-4"
