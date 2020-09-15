@@ -15,28 +15,19 @@ const initialState = {
 const Local = (props) => {
   const [state, setState] = useState(initialState);
 
-  useEffect(() => {
-    service.propertyDetails(props.property).then((response) => {
-      console.log(response);
-      setState({
-        ...state,
-        property: response,
-      });
-    });
-  }, []);
 
   const refreshPage = () => {
     window.location.reload(false);
   };
 
   const deleteProperty = () => {
-    if (state.property.bookings.length) {
+    if (props.property.bookings.length) {
       console.log(
         "Por favor, cancele todos las reservas de este local primero"
       );
       setState({ ...state, alert: true });
     } else {
-      service.deleteProperty(state.property._id).then((response) => {
+      service.deleteProperty(props.property._id).then((response) => {
         console.log(response);
         refreshPage();
       });
@@ -56,19 +47,19 @@ const Local = (props) => {
     );
   }
 
-  if (state.property) {
+  if (props.property) {
     local = (
       <>
         <tr>
           <td>
-            <img src={state.property.mainImage} className="mini-kokomo" alt={state.property.name}/>
+            <img src={props.property.mainImage} className="mini-kokomo" alt={props.property.name}/>
           </td>
           <td>
             <Link to="/my-bookings">
-              <h2 className="title-profile">{state.property.name}</h2>
+              <h2 className="title-profile">{props.property.name}</h2>
               <p className="mdi mdi-calendar">
                 {" "}
-                {state.property.bookings.length} reservas
+                {props.property.bookings.length} reservas
               </p>
             </Link>
           </td>
@@ -76,7 +67,7 @@ const Local = (props) => {
             <Link
               type="submit"
               className="btn-kokomo-circle btn-kokomo-grey mr-2"
-              to={"/property/edit/" + props.property}
+              to={"/property/edit/" + props.property._id}
             >
               <i className="mdi mdi-square-edit-outline"></i>
             </Link>

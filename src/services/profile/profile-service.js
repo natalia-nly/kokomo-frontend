@@ -20,5 +20,17 @@ class ProfileService {
         .then((response) => response.data);
     };
 
+    editPhone = (body) => {
+      return this.service
+        .post("/editTelephone", body)
+        .then((response) => response.data);
+    }
+
+    addOwner = (body) => {
+      return this.service
+        .post("/add-owner")
+        .then((response) => response.data);
+    }
+
 }
 export default ProfileService

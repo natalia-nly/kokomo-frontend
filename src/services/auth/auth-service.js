@@ -45,6 +45,12 @@ class AuthService {
             .get('/loggedin')
             .then(response => response.data)
     };
+    infoUser = () => {
+        return this
+            .service
+            .get('/info-user')
+            .then(response => response.data)
+    };
     logout = () => {
         return this
             .service
