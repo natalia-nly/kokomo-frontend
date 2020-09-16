@@ -100,7 +100,7 @@ https://github.com/natalia-nly/kokomo-backend/
 
 ### Deploy
 
---
+https://kokomo-react.herokuapp.com/
 
 ### Slides
 
