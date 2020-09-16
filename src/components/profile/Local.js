@@ -59,7 +59,7 @@ const Local = (props) => {
               <h2 className="title-profile">{props.property.name}</h2>
               <p className="mdi mdi-calendar">
                 {" "}
-                {props.property.bookings.length} reservas
+                {props.property.bookings ? props.property.bookings.length : "0"} reservas
               </p>
             </Link>
           </td>

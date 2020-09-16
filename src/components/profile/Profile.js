@@ -54,9 +54,11 @@ const Profile = (props) => {
       <Local key={index} property={property} />
     ));
 
-    state.user.ownProperties.map(
-      (property) => (allBookingsOwner += property.bookings.length)
-    );
+    state.user.ownProperties.map((property) => {
+      if(property.bookings){
+        allBookingsOwner += property.bookings.length;
+      }
+    });
   }
 
   const handleChange = (e) => {
@@ -243,24 +245,35 @@ const Profile = (props) => {
                 <h2 className="title-search-home"> Mi última reserva</h2>
                 {state.user.bookings.length ? (
                   <>
-                      <div>
-                      <Badge variant="info">{state.user.bookings[state.user.bookings.length - 1].bookingRef}</Badge>
-                        <p>
-                          <i className="far fa-calendar-alt"></i> Día:{" "}
-                          {state.user.bookings[state.user.bookings.length - 1].day}
-                        </p>
-                        <p>
-                          <i className="far fa-clock"></i> Hora:{" "}
-                          {state.user.bookings[state.user.bookings.length - 1].time}
-                        </p>
-                        <p>
-                          <i className="fas fa-users"></i> Número de personas:{" "}
-                          {state.user.bookings[state.user.bookings.length - 1].guests}
-                        </p>
-                        
-
-                      </div>
-               
+                    <div>
+                      <Badge variant="info">
+                        {
+                          state.user.bookings[state.user.bookings.length - 1]
+                            .bookingRef
+                        }
+                      </Badge>
+                      <p>
+                        <i className="far fa-calendar-alt"></i> Día:{" "}
+                        {
+                          state.user.bookings[state.user.bookings.length - 1]
+                            .day
+                        }
+                      </p>
+                      <p>
+                        <i className="far fa-clock"></i> Hora:{" "}
+                        {
+                          state.user.bookings[state.user.bookings.length - 1]
+                            .time
+                        }
+                      </p>
+                      <p>
+                        <i className="fas fa-users"></i> Número de personas:{" "}
+                        {
+                          state.user.bookings[state.user.bookings.length - 1]
+                            .guests
+                        }
+                      </p>
+                    </div>
                   </>
                 ) : (
                   <>
