@@ -64,9 +64,9 @@ En la estructura de Profile y Reservas, se basa en la sección de Profile y todo
 
 Todos los componentes que permiten renderizar los locales y sus gestiones. Estos son los principales:
 
-    - CreateProperty/EditProperty: Permiten crear y actualizar un local
-        -StepperKokomo: Permite rellenar los formularios en varias etapas.
-    - CarouselProperties: Visión en carousel de todos los locales en BBDD.
+-  CreateProperty/EditProperty: Permiten crear y actualizar un local
+    - StepperKokomo: Permite rellenar los formularios en varias etapas.
+- CarouselProperties: Visión en carousel de todos los locales en BBDD.
     - Categories: Renderiza las diferentes Categorías de locales.
     - PropertyDetails: Renderiza una Property y todos sus detalles.
         - AvailableTimes: Renderiza los horarios disponibles para su reserva
@@ -78,16 +78,17 @@ Todos los componentes que permiten renderizar los locales y sus gestiones. Estos
 
 Componentes que permiten realizar una búsqueda en la totalidad de locles disponibles en BBDD
 
-    - Search: Permite hacer la búsqueda.
-        - AvailablePlaces: Permite retornar los locales disponibles para su reserva.
-        - GeneralMap: Permite visulaizar en un mapa todos los locales en BBDD.
+- Search: Permite hacer la búsqueda.
+    - AvailablePlaces: Permite retornar los locales disponibles para su reserva.
+    - GeneralMap: Permite visulaizar en un mapa todos los locales en BBDD.
 
 
 ### OtrosComponentes
 
-    - LandingPage: Página de inicio para usuarios no logeados.
-    - Home: Página de inicio para usuarios logeados.
-    - NavbarKokomo: barra de navegación para usuaros logeados.
+
+- LandingPage: Página de inicio para usuarios no logeados.
+- Home: Página de inicio para usuarios logeados.
+- NavbarKokomo: barra de navegación para usuaros logeados.
 
 
 ## Links
