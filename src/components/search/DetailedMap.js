@@ -7,8 +7,8 @@ const DetailedMap = (props) => {
   // let date = curr.toISOString().substr(0, 10);
 
   let center = {
-    lat: 41.35,
-    lng: 2.1,
+    lat: 41.2862717,
+    lng: 1.9799514
   };
 
   const zoom = 11;

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import axios from "axios";
 import GoogleMapReact from "google-map-react";
 import PropertyService from "../../services/property/property-service";
 
@@ -22,13 +23,28 @@ const GeneralMap = () => {
   const [state, setState] = useState(initialState);
 
   useEffect(() => {
+    const CancelToken = axios.CancelToken;
+    const source = CancelToken.source();
+    const loadData = () => {
+      try {
     service.allProperties().then((response) => {
       console.log("CONSOLE LOG DESDE AXIOS GET", response);
-      setState({
+      setState(state => ({
         ...state,
         allResults: response[0],
-      });
-    });
+      }));
+    }); 
+  } catch (error) {
+      if (axios.isCancel(error)) {
+        console.log("cancelled");
+      } else {
+        throw error;
+      }
+    }}
+    loadData();
+    return () => {
+      source.cancel();
+    };
   }, []);
 
   const getMapOptions = (maps) => {

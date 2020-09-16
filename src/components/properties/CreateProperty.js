@@ -8,7 +8,6 @@ import PropertyService from "../../services/property/property-service";
 const propertyService = new PropertyService();
 const search = new SearchService();
 
-
 const initialState = {
   name: "",
   description: "",
@@ -39,10 +38,8 @@ const initialState = {
 };
 
 function CreateProperty() {
-
   let history = useHistory();
   const [state, setState] = useState(initialState);
-  
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -62,15 +59,9 @@ function CreateProperty() {
       mainImage: state.mainImage,
     };
 
-    // axios
-    //   .post(
-    //     process.env.REACT_APP_API_URL + "/property/create-property",
-    //     { body, uploadData },
-    //     {
-    //       withCredentials: true,
-    //     }
-    //   )
-    propertyService.createProperty(body)
+
+    propertyService
+      .createProperty(body)
       .then((response) => {
         console.log("file uploaded", response);
         history.push("/");
@@ -86,17 +77,13 @@ function CreateProperty() {
   };
 
   const handleFile = (e) => {
-    // setState({ ...state, file: e.target.files[0] });
     e.preventDefault();
     const uploadData = new FormData();
     uploadData.append("mainImage", e.target.files[0]);
-    // axios
-    //   .post(process.env.REACT_APP_API_URL + "/property/upload", uploadData)
-    propertyService.uploadPicture(uploadData)
-      .then((response) => {
-        console.log("File upload successful:", response);
-        setState({ ...state, mainImage: response.path });
-      });
+    propertyService.uploadPicture(uploadData).then((response) => {
+      console.log("File upload successful:", response);
+      setState({ ...state, mainImage: response.path });
+    });
   };
 
   const handleOpeningDay = (e) => {
@@ -127,7 +114,10 @@ function CreateProperty() {
   };
 
   const handleClosingTime = (e) => {
-    console.log("closingTime:",  state.openingHours[0].openingTimes[0].closingTime)
+    console.log(
+      "closingTime:",
+      state.openingHours[0].openingTimes[0].closingTime
+    );
     let openingHours = [...state.openingHours];
     openingHours[0].openingTimes[0].closingTime = e.target.value;
     setState({
@@ -152,15 +142,9 @@ function CreateProperty() {
 
   const handleGoogleSearch = (e) => {
     e.preventDefault();
-
-    // axios
-    //   .get(
-    //     process.env.REACT_APP_API_URL + "/search/maps?search=" + state.search
-    //   ).
     search.searchLocation(state.search).then((response) => {
       console.log(response);
       console.log(state);
-      // volver a renderizar el mapa con CENTER = lat, lng y un PIN =  lat, lng
       setState({
         ...state,
         search: response.candidates[0].name,
@@ -454,7 +438,7 @@ function CreateProperty() {
         <div>
           <span className="fa-stack fa-2x kokomo-back-button">
             <i className="fas fa-circle fa-stack-2x circle-back"></i>
-            <i class="fas fa-arrow-left fa-stack-1x fa-inverse arrow-back"></i>
+            <i className="fas fa-arrow-left fa-stack-1x fa-inverse arrow-back"></i>
           </span>
         </div>
       </Link>

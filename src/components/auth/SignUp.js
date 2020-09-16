@@ -95,14 +95,14 @@ export class SignUp extends Component {
 
               <button
                 type="submit"
-                class="btn-kokomo btn-kokomo-success btn-block p-3"
+                className="btn-kokomo btn-kokomo-success btn-block p-3"
               >
                 Registrarme
               </button>
             </form>
             <a
               href={process.env.REACT_APP_API_URL + "/auth/google"}
-              class="btn-kokomo btn-kokomo-google btn-block p-3 mt-4"
+              className="btn-kokomo btn-kokomo-google btn-block p-3 mt-4"
             >
               <img
                 src="/images/google.svg"

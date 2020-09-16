@@ -70,13 +70,13 @@ const PropertyDetails = (props) => {
           (counter.reduce(reduceFunc, 0) / counter.length).toFixed(2)
         );
 
-        setState({
+        setState(state => ({
           ...state,
           property: response,
           actualRating: rateNumber,
-        });
+        }));
       });
-  }, []);
+  }, [props]);
 
   const handleChangeRating = (newValue) => {
     setState({

@@ -9,8 +9,6 @@ import PropertyService from "../../services/property/property-service";
 const propertyService = new PropertyService();
 const search = new SearchService();
 
-
-
 function EditProperty(props) {
   const initialState = {
     property: {
@@ -22,7 +20,7 @@ function EditProperty(props) {
         name: "",
         lat: 0,
         long: 0,
-      }
+      },
     },
   };
 
@@ -30,18 +28,17 @@ function EditProperty(props) {
   const [state, setState] = useState(initialState);
 
   useEffect(() => {
-
-
-      propertyService.propertyDetails(props.match.params.propertyId)
+    propertyService
+      .propertyDetails(props.match.params.propertyId)
       .then((response) => {
         console.log("CONSOLE LOG DESDE AXIOS GET", response);
 
-        setState({
+        setState(state => ({
           ...state,
           property: response,
-        });
+        }));
       });
-  }, []);
+  }, [props.match.params.propertyId]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -67,7 +64,8 @@ function EditProperty(props) {
     //       withCredentials: true,
     //     }
     //   )
-    propertyService.editProperty(state.property._id,body)
+    propertyService
+      .editProperty(state.property._id, body)
       .then((response) => {
         console.log("file uploaded", response);
         history.push(`/property/${state.property._id}`);
@@ -99,14 +97,13 @@ function EditProperty(props) {
     uploadData.append("mainImage", e.target.files[0]);
     // axios
     //   .post(process.env.REACT_APP_API_URL + "/property/upload", uploadData)
-    propertyService.uploadPicture(uploadData)
-      .then((response) => {
-        console.log("File upload successful:", response);
-        setState({
-          ...state,
-          property: { ...state.property, mainImage: response.path },
-        });
+    propertyService.uploadPicture(uploadData).then((response) => {
+      console.log("File upload successful:", response);
+      setState({
+        ...state,
+        property: { ...state.property, mainImage: response.path },
       });
+    });
   };
 
   const handleGoogleSearch = (e) => {
@@ -116,24 +113,23 @@ function EditProperty(props) {
     //   .get(
     //     process.env.REACT_APP_API_URL + "/search/maps?search=" + state.search
     //   )
-    search.searchLocation(state.search)
-      .then((response) => {
-        console.log(response);
-        console.log(state);
-        // volver a renderizar el mapa con CENTER = lat, lng y un PIN =  lat, lng
-        setState({
-          ...state,
-          search: response.candidates[0].name,
-          property: {
-            ...state.property,
-            location: {
-              lat: response.candidates[0].geometry.location.lat,
-              long: response.candidates[0].geometry.location.lng,
-              name: response.candidates[0].formatted_address,
-            },
+    search.searchLocation(state.search).then((response) => {
+      console.log(response);
+      console.log(state);
+      // volver a renderizar el mapa con CENTER = lat, lng y un PIN =  lat, lng
+      setState({
+        ...state,
+        search: response.candidates[0].name,
+        property: {
+          ...state.property,
+          location: {
+            lat: response.candidates[0].geometry.location.lat,
+            long: response.candidates[0].geometry.location.lng,
+            name: response.candidates[0].formatted_address,
           },
-        });
+        },
       });
+    });
   };
 
   const stepsTitles = [<p>Datos principales</p>, <p>El local</p>];
@@ -203,7 +199,7 @@ function EditProperty(props) {
     <div>
       <div className="row">
         <div className="col-sm-12 col-md-6">
-        <form onSubmit={handleGoogleSearch} className="d-flex">
+          <form onSubmit={handleGoogleSearch} className="d-flex">
             <div className="form-group" style={{ width: "80%" }}>
               <label htmlFor="search" className="label active">
                 Dirección
@@ -224,11 +220,8 @@ function EditProperty(props) {
               />
             </div>
           </form>
-
-          
         </div>
         <div className="col-sm-12 col-md-6">
-          
           <p>Candidato: {state.search}</p>
           <p>Dirección:{" " + state.property.location.name}</p>
           <p>Latitud:{" " + state.property.location.lat}</p>
@@ -246,7 +239,7 @@ function EditProperty(props) {
         <div>
           <span className="fa-stack fa-2x kokomo-back-button">
             <i className="fas fa-circle fa-stack-2x circle-back"></i>
-            <i class="fas fa-arrow-left fa-stack-1x fa-inverse arrow-back"></i>
+            <i className="fas fa-arrow-left fa-stack-1x fa-inverse arrow-back"></i>
           </span>
         </div>
       </Link>

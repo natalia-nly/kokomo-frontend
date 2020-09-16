@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import axios from "axios";
 import AuthService from "../../services/auth/auth-service";
 import Badge from "react-bootstrap/Badge";
 import ProfileService from "../../services/profile/profile-service";
@@ -10,21 +11,38 @@ let initialState = {
   messages: [],
 };
 
-const Messages = (props) => {
+const Messages = () => {
   const [state, setState] = useState(initialState);
 
   useEffect(() => {
-    service.loggedin().then((response) => {
-      console.log(response.messages);
-      if (response.messages) {
-        setState({
-          ...state,
-          user: response,
-          messages: response.messages,
-          message: false,
+    const CancelToken = axios.CancelToken;
+    const source = CancelToken.source();
+    const loadData = () => {
+      try {
+        service.loggedin().then((response) => {
+          console.log(response.messages);
+          if (response.messages) {
+            setState(state =>({
+              ...state,
+              user: response,
+              messages: response.messages,
+              message: false,
+            }));
+          }
         });
+
+      } catch (error) {
+        if (axios.isCancel(error)) {
+          console.log("cancelled");
+        } else {
+          throw error;
+        }
       }
-    });
+    };
+    loadData();
+    return () => {
+      source.cancel();
+    };
   }, []);
 
   const deleteMessage = (e) => {

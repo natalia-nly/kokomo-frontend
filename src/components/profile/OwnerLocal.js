@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import DropdownButton from "react-bootstrap/DropdownButton";
 import Dropdown from "react-bootstrap/Dropdown";
@@ -7,19 +7,13 @@ import SendMessages from "./SendMessages";
 let initialState = {
   messages: [],
   alert: false,
+  message: false
 };
 
 let writeMessage = <></>;
 
 const OwnerLocal = (props) => {
   const [state, setState] = useState(initialState);
-
-  useEffect(() => {
-    setState({
-      ...state,
-      message: false,
-    });
-  }, []);
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -55,7 +49,7 @@ const OwnerLocal = (props) => {
       </Link>
       
       {props.property.bookings.map((booking, index) => (
-        <>
+
           <div key={index}>
             <div className="div-booking">
               <div className="column-xs">
@@ -150,7 +144,7 @@ const OwnerLocal = (props) => {
             </div>
             
           </div>
-        </>
+
       ))}
       <div>{writeMessage}</div>
     </>

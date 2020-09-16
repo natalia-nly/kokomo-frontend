@@ -27,19 +27,19 @@ const initialState = {
 
 const Profile = (props) => {
   console.log("estamos en profile!!");
-  console.log(props.loggedInUser);
+  // console.log(props.loggedInUser);
 
   const [state, setState] = useState(initialState);
 
   useEffect(() => {
     service.infoUser().then((response) => {
       console.log(response.messages);
-      setState({
+      setState(state=>({
         ...state,
         user: response,
-      });
+      }));
     });
-  }, []);
+  }, [props.loggedInUser._id]);
 
   let properties = <></>;
   let allBookingsOwner = 0;
@@ -58,6 +58,7 @@ const Profile = (props) => {
       if(property.bookings){
         allBookingsOwner += property.bookings.length;
       }
+      return  allBookingsOwner
     });
   }
 

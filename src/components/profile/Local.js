@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState} from "react";
 import { Link } from "react-router-dom";
 import Alert from "react-bootstrap/Alert";
 import PropertyService from "../../services/property/property-service";

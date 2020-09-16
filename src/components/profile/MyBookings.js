@@ -30,17 +30,16 @@ const MyBookings = (props) => {
       if(response.owner){
         active="owner"
       }
-      setState({...state, user: response})
+      setState(state => ({...state, user: response}))
     });
-    
     const loadData = () => {
       try {
         bookingService.myBookings().then((response) => {
           console.log("CONSOLE LOG DESDE AXIOS GET", response.bookings);
-          setState({
+          setState(state => ({
             ...state,
             bookings: response.bookings,
-          });
+          }));
         });
       } catch (error) {
         if (axios.isCancel(error)) {
@@ -66,10 +65,10 @@ const MyBookings = (props) => {
         "CONSOLE LOG DESDE AXIOS GET bookings en mis props:",
         response.ownProperties
       );
-      setState({
+      setState(state => ({
         ...state,
         properties: response.ownProperties,
-      });
+      }));
     });
   }, []);
 

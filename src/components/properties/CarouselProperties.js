@@ -18,11 +18,11 @@ const CarouselProperties = (props) => {
       service.allProperties().then((response) => {
         console.log("CONSOLE LOG DESDE AXIOS GET", response);
 
-        setState({
+        setState(state => ({
           ...state,
           favourites: response[1],
           properties: response[0],
-        });
+        }));
       });
     } else if (props.filter === "Favourites") {
       service.allProperties().then((response) => {
@@ -36,36 +36,37 @@ const CarouselProperties = (props) => {
           if (favouritesResult.includes(property._id)) {
             onlyFavs.push(property);
           }
+          return onlyFavs
         });
 
-        setState({
+        setState(state => ({
           ...state,
           favourites: favouritesResult,
           properties: onlyFavs,
-        });
+        }));
       });
     } else if (props.filter === "Categories") {
       service.categoryProperties(props.match.params.name).then((response) => {
         console.log("CONSOLE LOG DESDE AXIOS GET", response);
 
-        setState({
+        setState(state => ({
           ...state,
           favourites: response[1],
           properties: response[0],
-        });
+        }));
       });
     } else {
       service.categoryProperties(props.filter).then((response) => {
         console.log("CONSOLE LOG DESDE AXIOS GET", response);
 
-        setState({
+        setState(state => ({
           ...state,
           favourites: response[1],
           properties: response[0],
-        });
+        }));
       });
     }
-  }, []);
+  }, [props]);
 
   const handleFavourite = (propertyId) => {
     console.log("ID desde favs: ", propertyId);
@@ -92,11 +93,14 @@ const CarouselProperties = (props) => {
 
       if (property.rating) {
         let counter = property.rating.counter;
-        let reduceFunc = (a, b) => a + b;
+        let rateNumber = 0
+        if (counter.length) {
+          let reduceFunc = (a, b) => a + b;
+          rateNumber = parseFloat(
+            (counter.reduce(reduceFunc, 0) / counter.length).toFixed(2)
+          );
+        }
 
-        let rateNumber = parseFloat(
-          (counter.reduce(reduceFunc, 0) / counter.length).toFixed(2)
-        );
 
         let actualRating = {
           size: 12,
