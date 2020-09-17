@@ -1,69 +1,89 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
 import Tabs from "react-bootstrap/Tabs";
 import Tab from "react-bootstrap/Tab";
-import AvailableTimes from "./availableTimes";
+import AvailableTimes from "./AvailableTimes";
 import DetailedMap from "../search/DetailedMap";
 import { Link } from "react-router-dom";
 import dateFormat from "dateformat";
 import SearchIcon from "@material-ui/icons/Search";
 import ActualRating from "./ActualRating";
 import AddRating from "./AddRating";
+import PropertyService from "../../services/property/property-service";
+import SearchService from "../../services/search/search-service";
+
+const propertyService = new PropertyService();
+const searchService = new SearchService();
+const initialState = {
+  property: {
+    name: "",
+    location: {
+      name: "",
+      lat: 41.393542,
+      lng: 2.203153,
+    },
+    rating: {
+      counter: [4],
+    },
+    openingHours: [
+      {
+        openingDays: {
+          openingDay: "",
+          closingDay: "",
+        },
+        openingTimes: [
+          {
+            openingTime: 0,
+            closingTime: 0,
+          },
+        ],
+        weekDays: [],
+      },
+    ],
+    bookings: [],
+    comments: [
+      {
+        username: "",
+        comment: "",
+      },
+    ],
+  },
+  availableResults: [],
+  comment: "",
+  favourites: [],
+  ratingComment: 0,
+  showFormMobile: false,
+};
 
 const PropertyDetails = (props) => {
-  const initialState = {
-    property: {
-      name: "",
-      location: {
-        name: "",
-        lat: 41.393542,
-        lng: 2.203153,
-      },
-      rating: {
-        counter: [4],
-      },
-      openingHours: [
-        {
-          openingDays: {
-            openingDay: "",
-            closingDay: "",
-          },
-          openingTimes: [
-            {
-              openingTime: 0,
-              closingTime: 0,
-            },
-          ],
-          weekDays: [],
-        },
-      ],
-      bookings: [],
-      comments: [
-        {
-          username: "",
-          comment: "",
-        },
-      ],
-    },
-    availableResults: [],
-    comment: "",
-    favourites: [],
-    ratingComment: 0,
-    showFormMobile: false,
-
-  };
-
   const [state, setState] = useState(initialState);
 
-  // const newRating = ()
+  useEffect(() => {
+    console.log(props);
+    propertyService
+      .propertyDetails(props.match.params.propertyId)
+      .then((response) => {
+        console.log("CONSOLE LOG DESDE AXIOS GET", response);
+        let counter = response.rating.counter;
+        let reduceFunc = (a, b) => a + b;
 
+        let rateNumber = parseFloat(
+          (counter.reduce(reduceFunc, 0) / counter.length).toFixed(2)
+        );
+
+        setState(state => ({
+          ...state,
+          property: response,
+          actualRating: rateNumber,
+        }));
+      });
+  }, [props]);
 
   const handleChangeRating = (newValue) => {
     setState({
       ...state,
       ratingComment: newValue,
     });
-  }
+  };
 
   const handleChange = (event) => {
     setState({
@@ -78,40 +98,29 @@ const PropertyDetails = (props) => {
       bookingDate: state.bookingDate,
       numberGuests: state.numberGuests,
     };
-    axios
-      .post(
-        process.env.REACT_APP_API_URL +
-          "/search/property/" +
-          props.match.params.propertyId,
-        body,
-        { withCredentials: true }
-      )
+    searchService
+      .getPropertyAvailability(state.property._id, body)
       .then((response) => {
-        console.log(response.data);
+        console.log(response);
         setState({
           ...state,
-          availableResults: response.data,
+          availableResults: response,
           showFormMobile: false,
         });
       });
   };
 
   const handleFavourite = () => {
-    axios
-      .get(
-        process.env.REACT_APP_API_URL + "/property/love/" + state.property._id,
-        { withCredentials: true }
-      )
-      .then((response) => {
-        console.log("Favorito añadido", response.data);
-        const newFavs = [...state.favourites];
-        newFavs.push(state.property._id);
+    propertyService.propertyLove(state.property._id).then((response) => {
+      console.log("Favorito añadido", response);
+      const newFavs = [...state.favourites];
+      newFavs.push(state.property._id);
 
-        setState({
-          ...state,
-          favourites: newFavs,
-        });
+      setState({
+        ...state,
+        favourites: newFavs,
       });
+    });
   };
 
   const handleComment = (e) => {
@@ -122,61 +131,24 @@ const PropertyDetails = (props) => {
       avatar: props.getTheUser.avatar,
       rating: state.ratingComment,
     };
-    axios
-      .post(
-        process.env.REACT_APP_API_URL +
-          "/property/add-comment/" +
-          props.match.params.propertyId,
-        body,
-        { withCredentials: true }
-      )
-      .then((response) => {
-        console.log("Comentario añadido", response.data);
+    propertyService.addComment(state.property._id, body).then((response) => {
+      console.log("Comentario añadido", response);
 
-        let counter = response.data.rating.counter;
-        let reduceFunc = (a, b) => a + b;
+      let counter = response.rating.counter;
+      let reduceFunc = (a, b) => a + b;
 
-        let rateNumber = parseFloat(
-          (counter.reduce(reduceFunc, 0) / counter.length).toFixed(2)
-        );
+      let rateNumber = parseFloat(
+        (counter.reduce(reduceFunc, 0) / counter.length).toFixed(2)
+      );
 
-
-        setState({
-          ...state,
-          property: response.data,
-          comment: "",
-          actualRating: rateNumber
-        });
+      setState({
+        ...state,
+        property: response,
+        comment: "",
+        actualRating: rateNumber,
       });
+    });
   };
-
-  useEffect(() => {
-    console.log(props);
-    axios
-      .get(
-        process.env.REACT_APP_API_URL +
-          "/property/" +
-          props.match.params.propertyId,
-        { withCredentials: true }
-      )
-      .then((response) => {
-        console.log("CONSOLE LOG DESDE AXIOS GET", response);
-        let counter = response.data.rating.counter;
-        let reduceFunc = (a, b) => a + b;
-
-        let rateNumber = parseFloat(
-          (counter.reduce(reduceFunc, 0) / counter.length).toFixed(2)
-        );
-
-        console.log("rate number", rateNumber);
-
-        setState({
-          ...state,
-          property: response.data,
-          actualRating: rateNumber,
-        });
-      });
-  }, []);
 
   let heartKokomo = "far fa-heart fa-stack-1x fa-inverse";
   if (state.favourites && state.favourites.includes(state.property._id)) {
@@ -248,8 +220,10 @@ const PropertyDetails = (props) => {
   if (props.getTheUser) {
     addComment = (
       <>
-      <AddRating handleChangeRating={handleChangeRating} ratingComment={state.ratingComment}/>
-        
+        <AddRating
+          handleChangeRating={handleChangeRating}
+          ratingComment={state.ratingComment}
+        />
         <form onSubmit={handleComment} className="d-flex mt-2">
           <div
             className="form-group"
@@ -280,7 +254,7 @@ const PropertyDetails = (props) => {
                 padding: "19px",
               }}
             >
-              <i class="fas fa-paper-plane"></i>
+              <i className="fas fa-paper-plane"></i>
             </button>
           </div>
         </form>{" "}
@@ -339,7 +313,10 @@ const PropertyDetails = (props) => {
   let ratingProperty = <></>;
   if (state.actualRating) {
     ratingProperty = (
-      <ActualRating rate={state.actualRating} numberReviews={state.property.rating.counter.length}/>
+      <ActualRating
+        rate={state.actualRating}
+        numberReviews={state.property.rating.counter.length}
+      />
     );
   }
 
@@ -374,11 +351,15 @@ const PropertyDetails = (props) => {
         break;
       case 7:
         weekDaysFormat.push("Domingo");
+        break;
+      default:
+        console.log("El número no pertenece a un día de la semana");
+        break;
     }
   });
 
   let daysInTable = weekDaysFormat.map((day, index) => (
-    <tr>
+    <tr key={index}>
       <td>
         <p>{day}</p>
       </td>
@@ -412,9 +393,9 @@ const PropertyDetails = (props) => {
                 className="emoji-img"
                 alt="Horas disponibles"
               />
-              <a onClick={hideForm} className="close-btn">
+              <button onClick={hideForm} className="close-btn">
                 <i className="fas fa-times"></i>
-              </a>
+              </button>
               <form onSubmit={handleSubmit}>
                 <div className="form-group">
                   <label htmlFor="bookingDate" className="label active">
@@ -460,7 +441,7 @@ const PropertyDetails = (props) => {
           <div>
             <span className="fa-stack fa-2x kokomo-back-button">
               <i className="fas fa-circle fa-stack-2x circle-back"></i>
-              <i class="fas fa-arrow-left fa-stack-1x fa-inverse arrow-back"></i>
+              <i className="fas fa-arrow-left fa-stack-1x fa-inverse arrow-back"></i>
             </span>
           </div>
         </Link>
@@ -549,7 +530,7 @@ const PropertyDetails = (props) => {
                       <span id="closingDay1"> {formatClosing}</span>
                     </p>
 
-                    <table class="table">
+                    <table className="table">
                       <tbody>{daysInTable}</tbody>
                     </table>
                   </div>

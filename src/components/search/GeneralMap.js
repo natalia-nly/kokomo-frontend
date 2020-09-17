@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from "react";
-import GoogleMapReact from "google-map-react";
 import axios from "axios";
+import GoogleMapReact from "google-map-react";
+import PropertyService from "../../services/property/property-service";
 
+let service = new PropertyService();
 
 const GeneralMap = () => {
-
   let curr = new Date();
   curr.setDate(curr.getDate());
   let date = curr.toISOString().substr(0, 10);
@@ -21,17 +22,30 @@ const GeneralMap = () => {
   const zoom = 11;
   const [state, setState] = useState(initialState);
 
-
   useEffect(() => {
-    axios.get(process.env.REACT_APP_API_URL + "/").then((response) => {
+    const CancelToken = axios.CancelToken;
+    const source = CancelToken.source();
+    const loadData = () => {
+      try {
+    service.allProperties().then((response) => {
       console.log("CONSOLE LOG DESDE AXIOS GET", response);
-      setState({
+      setState(state => ({
         ...state,
-        allResults: response.data[0],
-      });
-    });
+        allResults: response[0],
+      }));
+    }); 
+  } catch (error) {
+      if (axios.isCancel(error)) {
+        console.log("cancelled");
+      } else {
+        throw error;
+      }
+    }}
+    loadData();
+    return () => {
+      source.cancel();
+    };
   }, []);
-
 
   const getMapOptions = (maps) => {
     return {
@@ -52,6 +66,19 @@ const GeneralMap = () => {
     };
   };
 
+  const ActualRating = (rating) => {
+    let counter = rating.counter;
+    if (rating.counter.length) {
+      let reduceFunc = (a, b) => a + b;
+      return parseFloat(
+        (counter.reduce(reduceFunc, 0) / counter.length).toFixed(2)
+      );
+      
+    } else {
+      return 'Sin evaluaciones';
+    }
+  };
+
   const getInfoWindowString = (place) => {
     let today = new Date();
     let openingDate = new Date(place.openingHours[0].openingDays.openingDay);
@@ -59,34 +86,26 @@ const GeneralMap = () => {
 
     return `
     <div>
-    <a href="/property/${
+    <a href="/#/property/${
       place._id
     }" class="btn-kokomo btn-kokomo-danger" style="font-size: 16px;">
     ${place.name}
     </a>
 
     <div style="font-size: 14px;">
-        <span style="color: grey;">Rating:
-        ${place.rating}
+        <span style="color: grey;">Nota:
+        ${ActualRating(place.rating)}
         </span>
-        <span style="color: orange;">${String.fromCharCode(9733).repeat(
-          Math.floor(place.rating)
-        )}</span><span style="color: lightgrey;">${String.fromCharCode(
-      9733
-    ).repeat(5 - Math.floor(place.rating))}</span>
       </div>
-      <div style="font-size: 14px; color: grey;">Category:
+      <div style="font-size: 14px; color: grey;">Categoría:
         ${place.categories[0]}
-      </div>
-      <div style="font-size: 14px; color: grey;">
-        ${"$".repeat(place.price_level)}
       </div>
       <div style="font-size: 14px; color: green;">
         ${
           openingDate.getTime() <= today.getTime() &&
           today.getTime() <= closingDate.getTime()
-            ? "Open"
-            : "Closed"
+            ? "Abierto"
+            : "Cerrado"
         }
       </div>
     </div>`;
@@ -97,25 +116,23 @@ const GeneralMap = () => {
     const infowindows = [];
     console.log(places.length);
     console.log(places);
-   
 
-     places.forEach((place) => {
-        console.log(place.location);
-        markers.push(
-          new maps.Marker({
-            position: {
-              lat: place.location.lat,
-              lng: place.location.long,
-            },
-            map,
-          })
-        );
+    places.forEach((place) => {
+      console.log(place.location);
+      markers.push(
+        new maps.Marker({
+          position: {
+            lat: place.location.lat,
+            lng: place.location.long,
+          },
+          map,
+        })
+      );
 
-        infowindows.push(
-          new maps.InfoWindow({ content: getInfoWindowString(place) })
-        );
-      })
-    
+      infowindows.push(
+        new maps.InfoWindow({ content: getInfoWindowString(place) })
+      );
+    });
 
     markers.forEach((marker, i) => {
       marker.addListener("click", () => {
@@ -124,32 +141,29 @@ const GeneralMap = () => {
     });
   };
 
-  let mapa = <></>
-  if(state.allResults.length){
-    mapa = ( <div className="container mt-4 mapa">
-    <GoogleMapReact
-      bootstrapURLKeys={{
-        key: process.env.REACT_APP_GOOGLE_API_KEY,
-        language: "sp",
-      }}
-      center={center}
-      defaultZoom={zoom}
-      options={getMapOptions}
-      yesIWantToUseGoogleMapApiInternals
-      onGoogleApiLoaded={({ map, maps }) =>
-        handleApiLoaded(map, maps, state.allResults)
-      }
-    />
-  </div>)
+  let mapa = <></>;
+  if (state.allResults.length) {
+    mapa = (
+      <div className="container mt-4 mapa">
+        <GoogleMapReact
+          bootstrapURLKeys={{
+            key: process.env.REACT_APP_GOOGLE_API_KEY,
+            language: "sp",
+          }}
+          center={center}
+          defaultZoom={zoom}
+          options={getMapOptions}
+          yesIWantToUseGoogleMapApiInternals
+          onGoogleApiLoaded={({ map, maps }) =>
+            handleApiLoaded(map, maps, state.allResults)
+          }
+        />
+      </div>
+    );
   }
 
-    console.log(state.allResults);
-    return (
-     <div>
-       {mapa}
-     </div>
-    );
-
+  console.log(state.allResults);
+  return <div>{mapa}</div>;
 };
 
 export default GeneralMap;

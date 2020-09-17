@@ -7,9 +7,17 @@ const Categories = () => {
       <div className="one-category">
         <Link to="/category/Surfer">
           <div className="img-container">
-            <img src="/images/surf.png" alt="Surfer" />
+            <img src="/images/Surfer.png" alt="Surfer" />
           </div>
           <p>Surfer</p>
+        </Link>
+      </div>
+      <div className="one-category">
+        <Link to="/category/Restaurante">
+          <div className="img-container">
+            <img src="/images/Restaurante.png" alt="Restaurant" />
+          </div>
+          <p>Restaurant</p>
         </Link>
       </div>
       <div className="one-category">
@@ -21,14 +29,6 @@ const Categories = () => {
         </Link>
       </div>
       <div className="one-category">
-        <Link to="/category/Discoteca">
-          <div className="img-container">
-            <img src="/images/disco.png" alt="Disco" />
-          </div>
-          <p>Disco</p>
-        </Link>
-      </div>
-      <div className="one-category">
         <Link to="/category/Bar">
           <div className="img-container">
             <img src="/images/bar.png" alt="Bar" />
@@ -37,13 +37,14 @@ const Categories = () => {
         </Link>
       </div>
       <div className="one-category">
-        <Link to="/category/Restaurante">
+        <Link to="/category/Discoteca">
           <div className="img-container">
-            <img src="/images/restaurant.png" alt="Bar" />
+            <img src="/images/Discoteca.png" alt="Disco" />
           </div>
-          <p>Restaurant</p>
+          <p>Disco</p>
         </Link>
       </div>
+      
     </div>
   );
 };

@@ -1,26 +1,19 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import DropdownButton from "react-bootstrap/DropdownButton";
 import Dropdown from "react-bootstrap/Dropdown";
-import Alert from "react-bootstrap/Alert";
 import SendMessages from "./SendMessages";
-import axios from "axios";
+
 let initialState = {
   messages: [],
   alert: false,
+  message: false
 };
 
 let writeMessage = <></>;
 
 const OwnerLocal = (props) => {
   const [state, setState] = useState(initialState);
-
-  useEffect(() => {
-    setState({
-      ...state,
-      message: false,
-    });
-  }, []);
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -45,8 +38,6 @@ const OwnerLocal = (props) => {
     });
   };
 
-
-
   return (
     <>
       <Link to={"/property/" + props.property._id}>
@@ -58,7 +49,7 @@ const OwnerLocal = (props) => {
       </Link>
       
       {props.property.bookings.map((booking, index) => (
-        <>
+
           <div key={index}>
             <div className="div-booking">
               <div className="column-xs">
@@ -124,7 +115,7 @@ const OwnerLocal = (props) => {
                     variant="success"
                     className="dropdown-item"
                     href={
-                      "whatsapp://send?text=¡Te espera una reserva de Kokomo! 😎 Aquí tienes los detalles: http://kokomo-react.herokuapp.com/booking/details/" +
+                      "whatsapp://send?text=¡Te espera una reserva de Kokomo! 😎 Aquí tienes los detalles: http://kokomo-react.herokuapp.com/#/booking/details/" +
                       booking._id
                     }
                   >
@@ -151,10 +142,11 @@ const OwnerLocal = (props) => {
                 </DropdownButton>
               </div>
             </div>
-            <div>{writeMessage}</div>
+            
           </div>
-        </>
+
       ))}
+      <div>{writeMessage}</div>
     </>
   );
 };

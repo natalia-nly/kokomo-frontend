@@ -1,125 +1,107 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import axios from "axios";
 import ReactStars from "react-rating-stars-component";
+import PropertyService from "../../services/property/property-service";
 
-
+let service = new PropertyService();
 const initialState = {
   properties: [],
   favourites: [],
 };
 const CarouselProperties = (props) => {
-
-
   const [state, setState] = useState(initialState);
+
+  let allProperties;
 
   useEffect(() => {
     if (props.filter === "All") {
-      axios
-        .get(process.env.REACT_APP_API_URL + "/", { withCredentials: true })
-        .then((response) => {
-          console.log("CONSOLE LOG DESDE AXIOS GET", response);
+      service.allProperties().then((response) => {
+        console.log("CONSOLE LOG DESDE AXIOS GET", response);
 
-          setState({
-            ...state,
-            favourites: response.data[1],
-            properties: response.data[0],
-          });
-        });
+        setState(state => ({
+          ...state,
+          favourites: response[1],
+          properties: response[0],
+        }));
+      });
     } else if (props.filter === "Favourites") {
-      axios
-        .get(process.env.REACT_APP_API_URL + "/", { withCredentials: true })
-        .then((response) => {
-          console.log("CONSOLE LOG DESDE AXIOS GET", response);
+      service.allProperties().then((response) => {
+        console.log("CONSOLE LOG DESDE AXIOS GET", response);
 
-          let favouritesResult = response.data[1]
-          let propertiesResult = response.data[0]
+        let favouritesResult = response[1];
+        let propertiesResult = response[0];
 
-          let onlyFavs = []
-          propertiesResult.map((property) => {
-            if(favouritesResult.includes(property._id)){
-              onlyFavs.push(property)
-            }
-          })
-
-          setState({
-            ...state,
-            favourites: favouritesResult,
-            properties: onlyFavs,
-          });
+        let onlyFavs = [];
+        propertiesResult.map((property) => {
+          if (favouritesResult.includes(property._id)) {
+            onlyFavs.push(property);
+          }
+          return onlyFavs
         });
+
+        setState(state => ({
+          ...state,
+          favourites: favouritesResult,
+          properties: onlyFavs,
+        }));
+      });
     } else if (props.filter === "Categories") {
-      axios
-        .get(
-          process.env.REACT_APP_API_URL +
-            "/search/category/" +
-            props.match.params.name,
-          { withCredentials: true }
-        )
-        .then((response) => {
-          console.log("CONSOLE LOG DESDE AXIOS GET", response);
+      service.categoryProperties(props.match.params.name).then((response) => {
+        console.log("CONSOLE LOG DESDE AXIOS GET", response);
 
-          setState({
-            ...state,
-            favourites: response.data[1],
-            properties: response.data[0],
-          });
-        });
+        setState(state => ({
+          ...state,
+          favourites: response[1],
+          properties: response[0],
+        }));
+      });
     } else {
-      axios
-        .get(
-          process.env.REACT_APP_API_URL + "/search/category/" + props.filter,
-          { withCredentials: true }
-        )
-        .then((response) => {
-          console.log("CONSOLE LOG DESDE AXIOS GET", response);
+      service.categoryProperties(props.filter).then((response) => {
+        console.log("CONSOLE LOG DESDE AXIOS GET", response);
 
-          setState({
-            ...state,
-            favourites: response.data[1],
-            properties: response.data[0],
-          });
-        });
+        setState(state => ({
+          ...state,
+          favourites: response[1],
+          properties: response[0],
+        }));
+      });
     }
-  }, []);
+  }, [props]);
 
   const handleFavourite = (propertyId) => {
     console.log("ID desde favs: ", propertyId);
-    axios
-      .get(process.env.REACT_APP_API_URL + "/property/love/" + propertyId, {
-        withCredentials: true,
-      })
-      .then((response) => {
-        console.log("Favorito añadido", response);
-        const newFavs = [...state.favourites];
-        newFavs.push(propertyId);
+    service.propertyLove(propertyId).then((response) => {
+      console.log("Favorito añadido", response);
+      const newFavs = [...state.favourites];
+      newFavs.push(propertyId);
 
-        setState({
-          ...state,
-          favourites: newFavs,
-        });
+      setState({
+        ...state,
+        favourites: newFavs,
       });
+    });
   };
 
-  let allProperties = (<p>¡Todavía no hay nada!</p>);
-
-  if(state.properties.length) {
+  if (state.properties.length >= 1) {
     let allPropertiesMap = state.properties.map((property, index) => {
       let heartKokomo = "far fa-heart fa-stack-1x fa-inverse";
-      if (state.favourites.length && state.favourites.includes(property._id)) {
+      if (state.favourites && state.favourites.includes(property._id)) {
         heartKokomo = "fas fa-heart fa-stack-1x fa-inverse";
       }
-  
+
       let ratingProperty = <></>;
-  
+
       if (property.rating) {
         let counter = property.rating.counter;
-        let reduceFunc = (a, b) => a + b;
-  
-        let rateNumber = parseFloat(
-          (counter.reduce(reduceFunc, 0) / counter.length).toFixed(2)
-        );
-  
+        let rateNumber = 0
+        if (counter.length) {
+          let reduceFunc = (a, b) => a + b;
+          rateNumber = parseFloat(
+            (counter.reduce(reduceFunc, 0) / counter.length).toFixed(2)
+          );
+        }
+
+
         let actualRating = {
           size: 12,
           count: 5,
@@ -135,7 +117,7 @@ const CarouselProperties = (props) => {
           edit: false,
           value: rateNumber,
         };
-  
+
         ratingProperty = (
           <div>
             <ReactStars {...actualRating} />
@@ -156,25 +138,69 @@ const CarouselProperties = (props) => {
               style={{
                 zIndex: 1,
               }}
+              alt={property.name}
             />
-            <img src={property.mainImage} className="blur-image" />
+            <img
+              src={property.mainImage}
+              className="blur-image"
+              alt={property.name}
+            />
           </Link>
           <Link to={"/property/" + property._id}>
-          <div className="flex-md-row justify-content-between align-items-baseline">
-          <h3>{property.name}</h3>
-            {ratingProperty}
-          </div>
-            
-            <p className="mdi mdi-map-marker-radius"> {property.location.name}</p>
+            <div className="flex-md-row justify-content-between align-items-baseline">
+              <h3>{property.name}</h3>
+              {ratingProperty}
+            </div>
+
+            <p className="mdi mdi-map-marker-radius">
+              {" "}
+              {property.location.name}
+            </p>
           </Link>
         </div>
       );
     });
 
-    allProperties = (<div className="properties-group">{allPropertiesMap}</div>)
+    allProperties = <div className="properties-group">{allPropertiesMap}</div>;
+  } else {
+    
+    if (props.filter === "All") {
+    } else if (props.filter === "Favourites") {
+      allProperties = (
+        <div className="text-center">
+          <img
+            src="/images/broken-heart.png"
+            className="black-white"
+            alt="Sin favoritos"
+          />
+          <p>Todavía no tienes favoritos</p>
+        </div>
+      );
+    } else if (props.filter === "Categories") {
+      allProperties = (
+        <div className="text-center">
+          <img
+            src="/images/broken-heart.png"
+            className="black-white"
+            alt="Sin favoritos"
+          />
+          <p>Todavía no tienes favoritos</p>
+        </div>
+      );
+    } else {
+      allProperties = (
+        <div className="text-center">
+          <img
+            src={"/images/" + props.filter + ".png"}
+            className="black-white"
+            alt={props.filter}
+          />
+          <p>Todavía no hay locales en la categoria {props.filter}</p>
+        </div>
+      )
+      
+    }
   }
-
-  
 
   return <>{allProperties}</>;
 };

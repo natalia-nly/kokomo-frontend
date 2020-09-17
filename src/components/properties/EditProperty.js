@@ -1,27 +1,15 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
-import PropTypes from "prop-types";
-import { makeStyles, withStyles } from "@material-ui/core/styles";
-import clsx from "clsx";
-import Stepper from "@material-ui/core/Stepper";
-import Step from "@material-ui/core/Step";
-import StepLabel from "@material-ui/core/StepLabel";
-import Check from "@material-ui/icons/Check";
-import ScheduleIcon from "@material-ui/icons/Schedule";
-import RestaurantIcon from "@material-ui/icons/Restaurant";
-import RoomIcon from "@material-ui/icons/Room";
-import StepConnector from "@material-ui/core/StepConnector";
-import Button from "@material-ui/core/Button";
-import Typography from "@material-ui/core/Typography";
 import { useHistory } from "react-router-dom";
 import Image from "react-bootstrap/Image";
-import Alert from "react-bootstrap/Alert";
 import StepperKokomo from "./StepperKokomo";
 import { Link } from "react-router-dom";
+import SearchService from "../../services/search/search-service";
+import PropertyService from "../../services/property/property-service";
+
+const propertyService = new PropertyService();
+const search = new SearchService();
 
 function EditProperty(props) {
-  let history = useHistory();
-
   const initialState = {
     property: {
       name: "",
@@ -33,31 +21,24 @@ function EditProperty(props) {
         lat: 0,
         long: 0,
       },
-      bookingDuration: 0,
-      availablePlaces: 0,
     },
   };
 
+  let history = useHistory();
   const [state, setState] = useState(initialState);
 
   useEffect(() => {
-    console.log(props);
-    axios
-      .get(
-        process.env.REACT_APP_API_URL +
-          "/property/" +
-          props.match.params.propertyId,
-        { withCredentials: true }
-      )
+    propertyService
+      .propertyDetails(props.match.params.propertyId)
       .then((response) => {
         console.log("CONSOLE LOG DESDE AXIOS GET", response);
 
-        setState({
+        setState(state => ({
           ...state,
-          property: response.data,
-        });
+          property: response,
+        }));
       });
-  }, []);
+  }, [props.match.params.propertyId]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -72,21 +53,21 @@ function EditProperty(props) {
         lat: state.property.location.lat,
         long: state.property.location.long,
       },
-      bookingDuration: state.property.bookingDuration,
-      availablePlaces: state.property.availablePlaces,
       mainImage: state.property.mainImage,
     };
 
-    axios
-      .post(
-        process.env.REACT_APP_API_URL + "/property/edit/" + state.property._id,
-        body,
-        {
-          withCredentials: true,
-        }
-      )
+    // axios
+    //   .post(
+    //     process.env.REACT_APP_API_URL + "/property/edit/" + state.property._id,
+    //     body,
+    //     {
+    //       withCredentials: true,
+    //     }
+    //   )
+    propertyService
+      .editProperty(state.property._id, body)
       .then((response) => {
-        console.log("file uploaded", response.data);
+        console.log("file uploaded", response);
         history.push(`/property/${state.property._id}`);
       })
       .catch((error) => console.log(error));
@@ -114,41 +95,41 @@ function EditProperty(props) {
     e.preventDefault();
     const uploadData = new FormData();
     uploadData.append("mainImage", e.target.files[0]);
-    axios
-      .post(process.env.REACT_APP_API_URL + "/property/upload", uploadData)
-      .then((response) => {
-        console.log("File upload successful:", response.data);
-        setState({
-          ...state,
-          property: { ...state.property, mainImage: response.data.path },
-        });
+    // axios
+    //   .post(process.env.REACT_APP_API_URL + "/property/upload", uploadData)
+    propertyService.uploadPicture(uploadData).then((response) => {
+      console.log("File upload successful:", response);
+      setState({
+        ...state,
+        property: { ...state.property, mainImage: response.path },
       });
+    });
   };
 
   const handleGoogleSearch = (e) => {
     e.preventDefault();
     // buscar la direccion y mostrar un PIN en el mapa con la dirección
-    axios
-      .get(
-        process.env.REACT_APP_API_URL + "/search/maps?search=" + state.search
-      )
-      .then((response) => {
-        console.log(response.data);
-        console.log(state);
-        // volver a renderizar el mapa con CENTER = lat, lng y un PIN =  lat, lng
-        setState({
-          ...state,
-          search: response.data.candidates[0].name,
-          property: {
-            ...state.property,
-            location: {
-              lat: response.data.candidates[0].geometry.location.lat,
-              long: response.data.candidates[0].geometry.location.lng,
-              name: response.data.candidates[0].formatted_address,
-            },
+    // axios
+    //   .get(
+    //     process.env.REACT_APP_API_URL + "/search/maps?search=" + state.search
+    //   )
+    search.searchLocation(state.search).then((response) => {
+      console.log(response);
+      console.log(state);
+      // volver a renderizar el mapa con CENTER = lat, lng y un PIN =  lat, lng
+      setState({
+        ...state,
+        search: response.candidates[0].name,
+        property: {
+          ...state.property,
+          location: {
+            lat: response.candidates[0].geometry.location.lat,
+            long: response.candidates[0].geometry.location.lng,
+            name: response.candidates[0].formatted_address,
           },
-        });
+        },
       });
+    });
   };
 
   const stepsTitles = [<p>Datos principales</p>, <p>El local</p>];
@@ -218,31 +199,6 @@ function EditProperty(props) {
     <div>
       <div className="row">
         <div className="col-sm-12 col-md-6">
-          <div className="form-group">
-            <label htmlFor="bookingDuration" className="label active">
-              Duración de la reserva (en minutos)
-            </label>
-            <input
-              type="number"
-              name="bookingDuration"
-              value={state.property.bookingDuration}
-              onChange={handleChange}
-            />
-          </div>
-
-          <div className="form-group">
-            <label htmlFor="availablePlaces" className="label active">
-              Plazas
-            </label>
-            <input
-              type="number"
-              name="availablePlaces"
-              value={state.property.availablePlaces}
-              onChange={handleChange}
-            />
-          </div>
-        </div>
-        <div className="col-sm-12 col-md-6">
           <form onSubmit={handleGoogleSearch} className="d-flex">
             <div className="form-group" style={{ width: "80%" }}>
               <label htmlFor="search" className="label active">
@@ -264,6 +220,8 @@ function EditProperty(props) {
               />
             </div>
           </form>
+        </div>
+        <div className="col-sm-12 col-md-6">
           <p>Candidato: {state.search}</p>
           <p>Dirección:{" " + state.property.location.name}</p>
           <p>Latitud:{" " + state.property.location.lat}</p>
@@ -281,7 +239,7 @@ function EditProperty(props) {
         <div>
           <span className="fa-stack fa-2x kokomo-back-button">
             <i className="fas fa-circle fa-stack-2x circle-back"></i>
-            <i class="fas fa-arrow-left fa-stack-1x fa-inverse arrow-back"></i>
+            <i className="fas fa-arrow-left fa-stack-1x fa-inverse arrow-back"></i>
           </span>
         </div>
       </Link>

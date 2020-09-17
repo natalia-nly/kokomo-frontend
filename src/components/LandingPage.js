@@ -1,10 +1,10 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import CarouselProperties from "./properties/CarouselProperties";
 import GeneralMap from "./search/GeneralMap";
 import Categories from "./properties/Categories";
 
 const LandingPage = () => {
-
   return (
     <div>
       <div className="hero-landing" style={{ padding: "50px 10px" }}>
@@ -19,12 +19,12 @@ const LandingPage = () => {
             <br />
             locales de tu zona
           </h2>
-          <h2 className="hero-arrow-phone mdi mdi-arrow-down"></h2>
-          <h2 className="hero-arrow-desktop mdi mdi-arrow-down"></h2>
+          <p className="hero-arrow-phone mdi mdi-arrow-down"></p>
+          <p className="hero-arrow-desktop mdi mdi-arrow-down"></p>
         </div>
       </div>
       <div className="mapa">
-        <GeneralMap/>
+        <GeneralMap />
       </div>
       <div className="bg-landing">
         <div className="container">
@@ -32,7 +32,11 @@ const LandingPage = () => {
           <div className="row text-center">
             <div className="col-md-4">
               <div className="shadow-blue">
-                <img src="/images/1.png" className="emoji-img" />
+                <img
+                  src="/images/1.png"
+                  className="emoji-img"
+                  alt="Busca locales"
+                />
                 <h2 className="subtitle-landing">
                   Encuentra los mejores locales
                 </h2>
@@ -44,14 +48,22 @@ const LandingPage = () => {
             </div>
             <div className="col-md-4">
               <div className="shadow-blue">
-                <img src="/images/2.png" className="emoji-img" />
+                <img
+                  src="/images/2.png"
+                  className="emoji-img"
+                  alt="Crea reservas"
+                />
                 <h2 className="subtitle-landing">Crea tu reserva</h2>
                 <p>Reserva rápidamente desde Kokomo en tus locales favoritos</p>
               </div>
             </div>
             <div className="col-md-4">
               <div className="shadow-blue">
-                <img src="/images/3.png" className="emoji-img" />
+                <img
+                  src="/images/3.png"
+                  className="emoji-img"
+                  alt="Comparte con los amigos"
+                />
                 <h2 className="subtitle-landing">Compártela con tus amigos</h2>
                 <p>Comparte los detalles de la reserva con quien quieras</p>
               </div>
@@ -59,40 +71,46 @@ const LandingPage = () => {
           </div>
         </div>
       </div>
-      
+      <div className="d-flex justify-content-center">
       <Categories />
+      </div>
 
-      <div className="landing-container" style={{ "paddingBottom": "80px" }}>
-        <CarouselProperties filter="All"/>
+
+      <div className="landing-container" style={{ paddingBottom: "80px" }}>
+        <CarouselProperties filter="All" />
       </div>
       <div className="banner-orange">
-          <div className="row">
-            <div className="col-md-6">
-              <h2>
-                ¿Tienes un local?
-              </h2>
-              <h3>
-                Registra tus locales y consigue reservas de tus clientes
-              </h3>
-            </div>
-            <div className="col-md-6">
-              <a
-                href="/signup-local"
-                className="btn-kokomo btn-kokomo-banner float-right p-2 mt-4"
-              >
-                Crea tu cuenta
-              </a>
-            </div>
+        <div className="row">
+          <div className="col-md-6">
+            <h2>¿Tienes un local?</h2>
+            <h3>Registra tus locales y consigue reservas de tus clientes</h3>
+          </div>
+          <div className="col-md-6">
+            <Link
+              to="/signup-local"
+              className="btn-kokomo btn-kokomo-banner float-right p-2 mt-4"
+            >
+              Crea tu cuenta
+            </Link>
           </div>
         </div>
+      </div>
       <div className="footer">
         <p>
           Made in Barcelona |{" "}
-          <a href="https://github.com/natalia-nly" target="_blank">
+          <a
+            href="https://github.com/natalia-nly"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
             Natalia
           </a>{" "}
           &{" "}
-          <a href="https://github.com/CSS1982" target="_blank">
+          <a
+            href="https://github.com/CSS1982"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
             Claudi
           </a>
         </p>

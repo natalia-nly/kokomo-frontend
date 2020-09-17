@@ -1,40 +1,50 @@
 import React, { useState, useEffect } from "react";
 import CarouselProperties from "./CarouselProperties";
 import axios from "axios";
+import PropertyService from "../../services/property/property-service";
+
+let service = new PropertyService();
+const initialState = {
+  properties: [],
+};
 
 const PropertyCategory = (props) => {
-  const initialState = {
-      title: props.match.params.name,
-    properties: [],
-  };
-
   const [state, setState] = useState(initialState);
 
   useEffect(() => {
-    console.log(props);
-    axios
-      .get(
-        process.env.REACT_APP_API_URL + "/search/category/" + state.title
-      )
-      .then((response) => {
-        console.log("CONSOLE LOG DESDE AXIOS GET", response.data[0]);
-        setState({
-          ...state,
-          properties: response.data[0]
+    const CancelToken = axios.CancelToken;
+    const source = CancelToken.source();
+
+    const loadData = () => {
+      try {
+        service.categoryProperties(props.match.params.name).then((response) => {
+          console.log("CONSOLE LOG DESDE AXIOS GET", response[0]);
+          setState((state) => ({
+            ...state,
+            properties: response[0],
+          }));
         });
-      });
-  }, [1]);
+      } catch (error) {
+        if (axios.isCancel(error)) {
+          console.log("cancelled");
+        } else {
+          throw error;
+        }
+      }
+    };
+    loadData();
+    return () => {
+      source.cancel();
+    };
+  }, [props.match.params.name]);
 
   return (
     <div>
-      <div class="body-container">
-        <h3 class="section-title mt-4">
-          <i class="fas fa-heart fa-sm"></i>
-          {state.title}
+      <div className="body-container">
+        <h3 className="section-title mt-4 text-center">
+          {props.match.params.name}
         </h3>
-
-        <CarouselProperties filter={state.title}/>
-
+        <CarouselProperties filter={props.match.params.name} />
       </div>
     </div>
   );

@@ -1,16 +1,10 @@
 import {Route, Redirect} from 'react-router-dom'
-import React, {useEffect} from 'react'
-import AuthService from './auth-service';
+import React from 'react'
+
 
 // Retrieve your data from locaStorage
 let saveData = JSON.parse(localStorage.saveData || null) || {};
-const service = new AuthService()
 
-// Store your data.
-function saveStuff(obj) {
-    saveData.obj = obj;
-    localStorage.saveData = JSON.stringify(saveData);
-}
 
 function loadStuff() {
     return saveData.obj;

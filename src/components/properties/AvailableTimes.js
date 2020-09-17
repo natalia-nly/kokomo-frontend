@@ -1,6 +1,8 @@
 import React, { useState } from "react";
-import axios from "axios";
 import { Link } from "react-router-dom";
+import BookingService from "../../services/booking/booking-service";
+
+const service = new BookingService();
 
 const AvailableTimes = (props) => {
   const initialState = {
@@ -14,7 +16,7 @@ const AvailableTimes = (props) => {
 
   const [state, setState] = useState(initialState);
 
-  let available = "No results";
+  let available = "No hay horas disponibles para tu búsqueda";
   console.log(state.availableResults);
 
   const handleSubmit = (event) => {
@@ -29,24 +31,17 @@ const AvailableTimes = (props) => {
       //property: propertyInput.current.value,
       guests: event.target.guests.value,
     };
-    axios
-      .post(
-        process.env.REACT_APP_API_URL +
-          "/booking/create-booking/" +
-          params.scheduleId,
-        body,
-        { withCredentials: true }
-      )
-      .then((response) => {
-        console.log(response.data);
-        setState({
-          ...state,
-          bookingFinished: true,
-          bookingId: response.data._id,
-          day: response.data.day,
-          hour: response.data.time,
-        });
+
+    service.createBooking(params.scheduleId, body).then((response) => {
+      console.log(response);
+      setState({
+        ...state,
+        bookingFinished: true,
+        bookingId: response._id,
+        day: response.day,
+        hour: response.time,
       });
+    });
   };
 
   if (state.availableResults) {
@@ -68,11 +63,15 @@ const AvailableTimes = (props) => {
     ));
   }
 
-  let whatsAppLink = `whatsapp://send?text=¡Te espera una reserva de Kokomo! 😎 Aquí tienes los detalles: http://kokomo-react.herokuapp.com/booking/details/${state.bookingId}`;
+  let whatsAppLink = `whatsapp://send?text=¡Te espera una reserva de Kokomo! 😎 Aquí tienes los detalles: http://kokomo-react.herokuapp.com/#/booking/details/${state.bookingId}`;
 
   let bookingDetails = (
     <>
-      <img src="/images/3.png" className="emoji-img" alt="Reserva creada con éxito"/>
+      <img
+        src="/images/3.png"
+        className="emoji-img"
+        alt="Reserva creada con éxito"
+      />
 
       <h2 className="subtitle-landing text-center mb-3">
         ¡Reserva creada con éxito!
@@ -101,8 +100,14 @@ const AvailableTimes = (props) => {
 
   let finalResult = (
     <>
-      <img src="/images/calendar.png" className="emoji-img" alt="Horas disponibles"/>
-      <a onClick={props.clearAvailableTimes} className="close-btn"><i className="fas fa-times"></i></a>
+      <img
+        src="/images/calendar.png"
+        className="emoji-img"
+        alt="Horas disponibles"
+      />
+      <button onClick={props.clearAvailableTimes} className="close-btn">
+        <i className="fas fa-times"></i>
+      </button>
       <h2 className="subtitle-landing text-center mb-3">Horas disponibles</h2>
       <div className="row justify-content-center">{available}</div>
     </>

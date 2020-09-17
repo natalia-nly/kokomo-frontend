@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
 import { Link } from "react-router-dom";
+import BookingService from "../../services/booking/booking-service";
 
+const service = new BookingService();
 const initialState = {
   booking: {
     bookingRef: "",
@@ -18,21 +19,14 @@ const BookingDetails = (props) => {
   const [state, setState] = useState(initialState);
 
   useEffect(() => {
-    axios
-      .get(
-        process.env.REACT_APP_API_URL +
-          "/booking/details/" +
-          props.match.params.bookingId
-      )
-      .then((response) => {
-        console.log("CONSOLE LOG DESDE AXIOS GET", response);
-
-        setState({
-          ...state,
-          booking: response.data,
-        });
-      });
-  }, []);
+    service.bookingDetails(props.match.params.bookingId).then((response) => {
+      console.log("CONSOLE LOG DESDE AXIOS GET", response);
+      setState(state => ({
+        ...state,
+        booking: response,
+      }));
+    });
+  }, [props.match.params.bookingId]);
 
   return (
     <>
@@ -41,7 +35,7 @@ const BookingDetails = (props) => {
         style={{ height: "90vh" }}
       >
         <div>
-          <img src="/images/3.png" className="emoji-img" />
+          <img src="/images/3.png" className="emoji-img" alt="Reserva creada" />
 
           <h2 className="subtitle-landing text-center mb-3">
             ¡Reserva creada con éxito!
@@ -63,7 +57,7 @@ const BookingDetails = (props) => {
 
           <a
             href={
-              "whatsapp://send?text=¡Te espera una reserva de Kokomo! 😎 Aquí tienes los detalles: http://kokomo-react.herokuapp.com/booking/details/" +
+              "whatsapp://send?text=¡Te espera una reserva de Kokomo! 😎 Aquí tienes los detalles: http://kokomo-react.herokuapp.com/#/booking/details/" +
               state.booking._id
             }
             className="btn-kokomo btn-kokomo-grey mt-4 p-3 mr-4"

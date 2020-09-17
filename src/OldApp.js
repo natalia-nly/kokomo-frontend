@@ -23,30 +23,26 @@ import Error500 from "./components/error/Error500";
 import EditProperty from "./components/properties/EditProperty";
 import BookingDetails from "./components/profile/BookingDetails";
 
-const initialState = {
-  loggedInUser: null,
-};
-
 function App() {
+  const initialState = {
+    loggedInUser: null,
+  };
+
   const [state, setState] = useState(initialState);
 
   const getTheUser = (userObj) => {
-    setState(state => ({ loggedInUser: userObj }));
+    setState({ loggedInUser: userObj });
   };
 
   const reset = () => {
     setState(initialState);
   };
 
-
- 
+  // Retrieve your data from locaStorage
+  let saveData = JSON.parse(localStorage.saveData || null) || {};
   const service = new AuthService();
 
-  
-
-  useEffect(() => {
-    let saveData = JSON.parse(localStorage.saveData || null) || {};
-    // Store your data.
+  // Store your data.
   function saveStuff(obj) {
     saveData.obj = obj;
     localStorage.saveData = JSON.stringify(saveData);
@@ -55,6 +51,8 @@ function App() {
   function loadStuff() {
     return saveData.obj;
   }
+
+  useEffect(() => {
     if (state.loggedInUser === null) {
       if (loadStuff() !== (null || undefined)) {
         getTheUser(loadStuff());
@@ -65,7 +63,7 @@ function App() {
         });
       }
     }
-  }, [ service, state.loggedInUser]);
+  }, [1]);
 
   const DefaultRoutes = () => {
     return (

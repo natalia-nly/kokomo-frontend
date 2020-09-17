@@ -1,18 +1,16 @@
-import React, { useState } from "react";
-import axios from "axios";
+import React from "react";
 import { useHistory } from "react-router-dom";
+import BookingService from  "../../services/booking/booking-service";
 
+let service = new BookingService();
 const AvailablePlaces = (props) => {
-  const initialState = {
-    availableResults: props.results,
-  };
 
-  const [state] = useState(initialState);
+  const availableResults = props.results
 
   let history = useHistory();
 
   let available = "No results";
-  console.log(state.availableResults);
+  console.log(availableResults);
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -23,27 +21,18 @@ const AvailablePlaces = (props) => {
     console.log(params.scheduleId);
     const body = {
       day: event.target.day.value,
-      //property: propertyInput.current.value,
       guests: event.target.guests.value,
     };
-    axios
-      .post(
-        process.env.REACT_APP_API_URL +
-          "/booking/create-booking/" +
-          params.scheduleId,
-        body,
-        { withCredentials: true }
-      )
+    service.createBooking(params.scheduleId,body)
       .then((response) => {
-        console.log(response.data);
-        history.push("/profile");
+        console.log(response);
+        history.push("/my-bookings");
       });
   };
 
-  if (state.availableResults[0].property) {
-    console.log(state.availableResults[0].property.name);
-    console.log(state.availableResults);
-    available = state.availableResults.map((result, index) => (
+  if (availableResults[0].property) {
+    console.log(availableResults);
+    available = availableResults.map((result, index) => (
       <div className="one-property" key={index}>
         <a href={"/property/" + result.property._id}>
           <div className="property-card">

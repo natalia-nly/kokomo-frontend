@@ -23,6 +23,8 @@ const ActualRating = (props) => {
     value: props.rate,
   };
 
+  console.log(props.numberReviews)
+
   return (
     <>
       <div className="d-flex">

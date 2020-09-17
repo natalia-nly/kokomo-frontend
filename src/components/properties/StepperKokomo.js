@@ -1,5 +1,4 @@
-import React, { useState } from "react";
-import axios from "axios";
+import React from "react";
 import PropTypes from "prop-types";
 import { makeStyles, withStyles } from "@material-ui/core/styles";
 import clsx from "clsx";
@@ -13,7 +12,7 @@ import RoomIcon from "@material-ui/icons/Room";
 import StepConnector from "@material-ui/core/StepConnector";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
-import { useHistory } from "react-router-dom";
+
 
 const useQontoStepIconStyles = makeStyles({
   root: {
@@ -165,7 +164,6 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const StepperKokomo = (props) => {
-    
   function getSteps() {
     return props.stepsTitles;
   }
@@ -200,7 +198,7 @@ const StepperKokomo = (props) => {
   };
 
   return (
-  <>
+    <>
       <div className={classes.root}>
         <Stepper
           alternativeLabel
@@ -261,7 +259,7 @@ const StepperKokomo = (props) => {
           )}
         </div>
       </div>
-  </>
+    </>
   );
 };
 

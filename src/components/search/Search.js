@@ -4,6 +4,7 @@ import GeneralMap from "./GeneralMap";
 import SearchIcon from "@material-ui/icons/Search";
 import SearchService from "../../services/search/search-service";
 
+const service = new SearchService();
 let curr = new Date();
 curr.setDate(curr.getDate());
 let date = curr.toISOString().substr(0, 10);
@@ -15,7 +16,7 @@ const initialState = {
 
 const Search = (props) => {
   const [state, setState] = useState(initialState);
-  const service = new SearchService();
+
 
   const handleChange = (event) => {
     setState({
@@ -32,16 +33,12 @@ const Search = (props) => {
     };
 
     service.getAvailability(body).then((response) => {
-      console.log(response);
+      console.log("response: ", response);
       setState({
         ...state,
         availableResults: response,
       });
     });
-    // axios
-    //   .post(process.env.REACT_APP_API_URL + "/search/getAvailability", body, {
-    //     withCredentials: true,
-    //   })
   };
 
   let availablePlaces = <></>;
@@ -54,7 +51,7 @@ const Search = (props) => {
     <div className="body-container">
       <div>
         <h3 className="section-title mt-4 mdi mdi-magnify">
-          Busca el mejor sitio
+          {" "}Busca el mejor sitio
         </h3>
         <GeneralMap />
       </div>

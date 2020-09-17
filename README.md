@@ -1,68 +1,107 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# KOKOMO 🌴
+<hr>
 
-## Available Scripts
+# Developers
 
-In the project directory, you can run:
+Natalia López / Claudi Sánchez
 
-### `npm start`
+# La aplicación
 
-Runs the app in the development mode.<br />
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+--
+Backend: https://github.com/natalia-nly/kokomo-backend/
 
-The page will reload if you make edits.<br />
-You will also see any lint errors in the console.
+## Descripción
 
-### `npm test`
+Facilitar la reserva en locales con aforo limitado. Así, hay una parte de la aplicación dedicado a los Propietarios (owners) de locales (properties), a su gestión y explotación (a través de disponibilidad horaria (schedules) y de espacio), y otra dedicada a los clientes que hacen reservas en dichos locales.
 
-Launches the test runner in the interactive watch mode.<br />
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+El razonamieto de desarrollo de la parte FrontEnd se ha basado en los principios siguientes: Mobile First, sobretodo porque los Clientes, quienes reservarán plaza en los chiringuitos lo harán a través de un móvil. No ha sido Mobile only ya que en acciones futuras se podrían crear dashboards de gestión para los propietarios de locales, pensando más en un uso Desktop, aunque se prevé que su uso principal sea en tablet (por ejemplo en la recepción del local para chequear reservas).
 
-### `npm run build`
+Se ha buscado ser lo más completo a nivel de funcionalidad, permitiendo a los propietarios la gestión completa (Creación, Actualización y Eliminación) de los Locales y de las Reservas en las mismas, permitiendo a los clientes poder cancelar la reserva y un sistema de notificaciones permitiend saber si el propietario ha cancelado una reserva. A fin de evitar problemas, asimismo, no se permite a un propietario borrar un local si existen reservas activas en el mismo.
 
-Builds the app for production to the `build` folder.<br />
-It correctly bundles React in production mode and optimizes the build for the best performance.
+Por último, no se ha obviado la parte del valor social y de evaluación de la aplicacón, y mediante servicios dedicados se pueden guardar locales favoritos, evaluarlos de 0 a 5 y enviar un comentario para el propietario y el resto de usuarios de la aplicación.
 
-The build is minified and the filenames include the hashes.<br />
-Your app is ready to be deployed!
+MVP → chiringuitos
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## User Stories
 
-### `npm run eject`
+[Notion Link](https://www.notion.so/1e08243224c842e29a9b44db892fec01?v=609e57e9cefd4931b2a8eead1ed3812b)
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+## Backlog
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+[Notion Link](https://www.notion.so/1e08243224c842e29a9b44db892fec01?v=609e57e9cefd4931b2a8eead1ed3812b)
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+## Componentes
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+### Auth
 
-## Learn More
+- Login: Encargado de renderizar la página de Login
+- Logout: Encargado de renderizar la página de Logout
+- Signup: Encargado de renderizar la página de registro
+- Signup: Encargado de renderizar la página de registro en el caso de un propietario
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+### Error
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+- Error 404
+- Error 500
 
-### Code Splitting
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
+### Profile
 
-### Analyzing the Bundle Size
+En la estructura de Profile y Reservas, se basa en la sección de Profile y todos los componentes que la conforman/completan
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
+- Profile: Componente Principal
+    - Local: Componente que renderiza cada uno de los Locales que posee un Propietario
+    - Messages: Componente que renderiza las notificaciones activas que tiene el usuario
 
-### Making a Progressive Web App
+- My-bookings: Componente principal que contiene todas las reservas del usuario (propias o en sus locales)
+    -Bookings: Componente dedicado a las reservas propias
+        - Booking Details: Componnte que renderiza los deatalles de la reserva y permite que sea compartida por Whatsapp y visualizada por un usuario anónimo
+    -OwnerLocal: Componente dedicado a las reservas en los locales del usuario
+        -SendMessage: Componente que permite enviar una notificación al cliente de una reserva en un local de un propietario en el caso de que vaya a ser cancelada.
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
 
-### Advanced Configuration
+### Properties
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
+Todos los componentes que permiten renderizar los locales y sus gestiones. Estos son los principales:
 
-### Deployment
+-  CreateProperty/EditProperty: Permiten crear y actualizar un local
+    - StepperKokomo: Permite rellenar los formularios en varias etapas.
+- CarouselProperties: Visión en carousel de todos los locales en BBDD.
+    - Categories: Renderiza las diferentes Categorías de locales.
+    - PropertyDetails: Renderiza una Property y todos sus detalles.
+        - AvailableTimes: Renderiza los horarios disponibles para su reserva
+        - DetailedMap: Mapa detallado de su ubicación.
+        - ActualRating: Nota actual del local
+        - AddRating: Permite añadir una nota y un comentario
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
+### Search
 
-### `npm run build` fails to minify
+Componentes que permiten realizar una búsqueda en la totalidad de locles disponibles en BBDD
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+- Search: Permite hacer la búsqueda.
+    - AvailablePlaces: Permite retornar los locales disponibles para su reserva.
+    - GeneralMap: Permite visulaizar en un mapa todos los locales en BBDD.
+
+
+### OtrosComponentes
+
+
+- LandingPage: Página de inicio para usuarios no logeados.
+- Home: Página de inicio para usuarios logeados.
+- NavbarKokomo: barra de navegación para usuaros logeados.
+
+
+## Links
+
+### Git
+
+https://github.com/natalia-nly/kokomo-frontend/
+https://github.com/natalia-nly/kokomo-backend/
+
+### Deploy
+
+https://kokomo-react.herokuapp.com/
+
+### Slides
+
+[Slides Link](--)
