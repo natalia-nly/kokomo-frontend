@@ -1,8 +1,8 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import CarouselProperties from "./properties/CarouselProperties";
-import GeneralMap from "./search/GeneralMap";
-import Categories from "./properties/Categories";
+import CarouselProperties from "../properties/CarouselProperties";
+import GeneralMap from "../search/GeneralMap";
+import Categories from "../properties/Categories";
 
 const LandingPage = () => {
   return (
@@ -72,9 +72,8 @@ const LandingPage = () => {
         </div>
       </div>
       <div className="d-flex justify-content-center">
-      <Categories />
+        <Categories />
       </div>
-
 
       <div className="landing-container" style={{ paddingBottom: "80px" }}>
         <CarouselProperties filter="All" />

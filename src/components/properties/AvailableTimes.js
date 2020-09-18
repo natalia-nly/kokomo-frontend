@@ -58,7 +58,7 @@ const AvailableTimes = (props) => {
     ));
   }
 
-  let whatsAppLink = `whatsapp://send?text=¡Te espera una reserva de Kokomo! 😎 Aquí tienes los detalles: http://kokomo-react.herokuapp.com/#/booking/details/${state.bookingId}`;
+  let whatsAppLink = `whatsapp://send?text=¡Te espera una reserva de Kokomo! 😎 Aquí tienes los detalles: http://kokomo-react.herokuapp.com/booking/details/${state.bookingId}`;
 
   let bookingDetails = (
     <>

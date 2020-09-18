@@ -15,8 +15,8 @@ const GeneralMap = () => {
     numberGuests: 0,
   };
   let center = {
-    lat: 41.35,
-    lng: 2.1,
+    lat: 41.28,
+    lng: 2.01,
   };
 
   const zoom = 11;
@@ -85,7 +85,7 @@ const GeneralMap = () => {
 
     return `
     <div>
-    <a href="/#/property/${
+    <a href="/property/${
       place._id
     }" class="btn-kokomo btn-kokomo-danger" style="font-size: 16px;">
     ${place.name}

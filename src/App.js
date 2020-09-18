@@ -2,8 +2,8 @@ import React, { useState, useEffect } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
 import { Switch, Route } from "react-router-dom";
-import LandingPage from "./components/LandingPage";
-import NavbarKokomo from "./components/NavbarKokomo";
+import LandingPage from "./components/main/LandingPage";
+import NavbarKokomo from "./components/main/NavbarKokomo";
 import Login from "./components/auth/Login";
 import Logout from "./components/auth/Logout";
 import SignUp from "./components/auth/SignUp";
@@ -14,14 +14,16 @@ import CreateProperty from "./components/properties/CreateProperty";
 import AuthService from "./services/auth/auth-service";
 import Search from "./components/search/Search";
 import PropertyDetails from "./components/properties/PropertyDetails";
-import Home from "./components/Home";
-import Favourites from "./components/Favourites";
+import Home from "./components/main/Home";
+import Favourites from "./components/properties/Favourites";
 import MyBookings from "./components/profile/MyBookings";
 import PropertyCategory from "./components/properties/PropertyCategory";
 import Error404 from "./components/error/Error404";
 import Error500 from "./components/error/Error500";
 import EditProperty from "./components/properties/EditProperty";
 import BookingDetails from "./components/profile/BookingDetails";
+import { themeKokomo } from "./components/styled-components/themeKokomo";
+import { ThemeProvider } from "styled-components";
 
 const initialState = {
   loggedInUser: null,
@@ -65,7 +67,7 @@ function App() {
 
   const DefaultRoutes = () => {
     return (
-      <div>
+      <>
         <NavbarKokomo
           getTheUser={state.loggedInUser}
           key={state.loggedInUser}
@@ -144,43 +146,45 @@ function App() {
               <Logout {...props} reset={reset} callback={getTheUser} />
             )}
           />
+          <Route path="*" component={Error404} status={404} />
+          <Route path="*" component={Error500} status={500} />
         </Switch>
-      </div>
+      </>
     );
   };
 
   return (
-    <Switch>
-      <ProtectedRoute
-        user={state.loggedInUser}
-        exact
-        callback={getTheUser}
-        path="/property/create-property"
-        component={CreateProperty}
-      />
+    <ThemeProvider theme={themeKokomo}>
+      <Switch>
+        <ProtectedRoute
+          user={state.loggedInUser}
+          exact
+          callback={getTheUser}
+          path="/property/create-property"
+          component={CreateProperty}
+        />
 
-      <ProtectedRoute
-        user={state.loggedInUser}
-        callback={getTheUser}
-        path="/property/edit/:propertyId"
-        component={EditProperty}
-      />
+        <ProtectedRoute
+          user={state.loggedInUser}
+          callback={getTheUser}
+          path="/property/edit/:propertyId"
+          component={EditProperty}
+        />
 
-      <Route
-        path="/property/:propertyId"
-        render={(props) => (
-          <PropertyDetails {...props} getTheUser={state.loggedInUser} />
-        )}
-      />
-      <Route
-        path="/booking/details/:bookingId"
-        render={(props) => <BookingDetails {...props} />}
-      />
+        <Route
+          path="/property/:propertyId"
+          render={(props) => (
+            <PropertyDetails {...props} getTheUser={state.loggedInUser} />
+          )}
+        />
+        <Route
+          path="/booking/details/:bookingId"
+          render={(props) => <BookingDetails {...props} />}
+        />
 
-      <Route component={DefaultRoutes} />
-      <Route path="*" component={Error404} status={404} />
-      <Route path="*" component={Error500} status={500} />
-    </Switch>
+        <Route component={DefaultRoutes} />
+      </Switch>
+    </ThemeProvider>
   );
 }
 

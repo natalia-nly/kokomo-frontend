@@ -1,5 +1,5 @@
 import React from 'react'
-import CarouselProperties from "./properties/CarouselProperties";
+import CarouselProperties from "./CarouselProperties";
 
 const Favourites = () => {
     return (

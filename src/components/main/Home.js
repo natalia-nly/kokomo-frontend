@@ -1,6 +1,6 @@
 import React from "react";
-import CarouselProperties from "./properties/CarouselProperties";
-import Categories from "./properties/Categories";
+import CarouselProperties from "../properties/CarouselProperties";
+import Categories from "../properties/Categories";
 
 const Home = () => {
   return (
