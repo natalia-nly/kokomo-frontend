@@ -16,8 +16,6 @@ const CarouselProperties = (props) => {
   useEffect(() => {
     if (props.filter === "All") {
       service.allProperties().then((response) => {
-        console.log("CONSOLE LOG DESDE AXIOS GET", response);
-
         setState(state => ({
           ...state,
           favourites: response[1],
@@ -26,7 +24,6 @@ const CarouselProperties = (props) => {
       });
     } else if (props.filter === "Favourites") {
       service.allProperties().then((response) => {
-        console.log("CONSOLE LOG DESDE AXIOS GET", response);
 
         let favouritesResult = response[1];
         let propertiesResult = response[0];
@@ -47,7 +44,6 @@ const CarouselProperties = (props) => {
       });
     } else if (props.filter === "Categories") {
       service.categoryProperties(props.match.params.name).then((response) => {
-        console.log("CONSOLE LOG DESDE AXIOS GET", response);
 
         setState(state => ({
           ...state,
@@ -57,8 +53,6 @@ const CarouselProperties = (props) => {
       });
     } else {
       service.categoryProperties(props.filter).then((response) => {
-        console.log("CONSOLE LOG DESDE AXIOS GET", response);
-
         setState(state => ({
           ...state,
           favourites: response[1],
@@ -69,9 +63,7 @@ const CarouselProperties = (props) => {
   }, [props]);
 
   const handleFavourite = (propertyId) => {
-    console.log("ID desde favs: ", propertyId);
     service.propertyLove(propertyId).then((response) => {
-      console.log("Favorito añadido", response);
       const newFavs = [...state.favourites];
       newFavs.push(propertyId);
 

@@ -24,7 +24,6 @@ class AuthService {
     };
    
     upload = (file) => {
-        console.log(file)
         const image = new FormData();
         image.append('image', file)
         return this

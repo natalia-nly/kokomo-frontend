@@ -31,30 +31,26 @@ function App() {
   const [state, setState] = useState(initialState);
 
   const getTheUser = (userObj) => {
-    setState(state => ({ loggedInUser: userObj }));
+    setState((state) => ({ loggedInUser: userObj }));
   };
 
   const reset = () => {
     setState(initialState);
   };
 
-
- 
   const service = new AuthService();
-
-  
 
   useEffect(() => {
     let saveData = JSON.parse(localStorage.saveData || null) || {};
     // Store your data.
-  function saveStuff(obj) {
-    saveData.obj = obj;
-    localStorage.saveData = JSON.stringify(saveData);
-  }
+    function saveStuff(obj) {
+      saveData.obj = obj;
+      localStorage.saveData = JSON.stringify(saveData);
+    }
 
-  function loadStuff() {
-    return saveData.obj;
-  }
+    function loadStuff() {
+      return saveData.obj;
+    }
     if (state.loggedInUser === null) {
       if (loadStuff() !== (null || undefined)) {
         getTheUser(loadStuff());
@@ -65,7 +61,7 @@ function App() {
         });
       }
     }
-  }, [ service, state.loggedInUser]);
+  }, [service, state.loggedInUser]);
 
   const DefaultRoutes = () => {
     return (

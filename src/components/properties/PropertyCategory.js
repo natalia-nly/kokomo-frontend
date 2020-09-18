@@ -18,7 +18,6 @@ const PropertyCategory = (props) => {
     const loadData = () => {
       try {
         service.categoryProperties(props.match.params.name).then((response) => {
-          console.log("CONSOLE LOG DESDE AXIOS GET", response[0]);
           setState((state) => ({
             ...state,
             properties: response[0],

@@ -26,14 +26,11 @@ const initialState = {
 };
 
 const Profile = (props) => {
-  console.log("estamos en profile!!");
-  // console.log(props.loggedInUser);
 
   const [state, setState] = useState(initialState);
 
   useEffect(() => {
     service.infoUser().then((response) => {
-      console.log(response.messages);
       setState(state=>({
         ...state,
         user: response,
@@ -45,11 +42,6 @@ const Profile = (props) => {
   let allBookingsOwner = 0;
 
   if (state.user && state.user.ownProperties) {
-    console.log(
-      "Property desde el mapa de ownproperties: ",
-      state.user.ownProperties
-    );
-
     properties = state.user.ownProperties.map((property, index) => (
       <Local key={index} property={property} />
     ));
@@ -78,7 +70,6 @@ const Profile = (props) => {
       telNumber: state.user.telNumber,
     };
     profileService.editPhone(body).then((response) => {
-      console.log("RESPONSE AL GUARDAR EL TELF: ", response);
       setState({
         ...state,
         showConfig: false,
@@ -99,7 +90,6 @@ const Profile = (props) => {
   let configUser = <></>;
 
   const handleConfig = () => {
-    console.log("ENTRANDO A HANDLE CONFIG");
     setState({ ...state, showConfig: true });
   };
 

@@ -5,13 +5,7 @@ import { Link } from "react-router-dom";
 
 
 const Booking = (props) => {
-  
-
-  console.log("estamos en booking");
-  console.log(props);
-
   const handleSubmit = (e) =>{
-    console.log("booking ->delete",props.booking._id )
     props.delete(props.booking._id)
   }
 

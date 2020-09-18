@@ -58,11 +58,9 @@ const PropertyDetails = (props) => {
   const [state, setState] = useState(initialState);
 
   useEffect(() => {
-    console.log(props);
     propertyService
       .propertyDetails(props.match.params.propertyId)
       .then((response) => {
-        console.log("CONSOLE LOG DESDE AXIOS GET", response);
         let counter = response.rating.counter;
         let reduceFunc = (a, b) => a + b;
 
@@ -101,7 +99,6 @@ const PropertyDetails = (props) => {
     searchService
       .getPropertyAvailability(state.property._id, body)
       .then((response) => {
-        console.log(response);
         setState({
           ...state,
           availableResults: response,
@@ -112,7 +109,6 @@ const PropertyDetails = (props) => {
 
   const handleFavourite = () => {
     propertyService.propertyLove(state.property._id).then((response) => {
-      console.log("Favorito añadido", response);
       const newFavs = [...state.favourites];
       newFavs.push(state.property._id);
 
@@ -132,7 +128,6 @@ const PropertyDetails = (props) => {
       rating: state.ratingComment,
     };
     propertyService.addComment(state.property._id, body).then((response) => {
-      console.log("Comentario añadido", response);
 
       let counter = response.rating.counter;
       let reduceFunc = (a, b) => a + b;
@@ -154,8 +149,6 @@ const PropertyDetails = (props) => {
   if (state.favourites && state.favourites.includes(state.property._id)) {
     heartKokomo = "fas fa-heart fa-stack-1x fa-inverse";
   }
-
-  console.log(state.availableResults);
 
   let availableTimes = <></>;
 

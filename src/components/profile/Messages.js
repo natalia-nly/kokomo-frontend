@@ -20,7 +20,6 @@ const Messages = () => {
     const loadData = () => {
       try {
         service.loggedin().then((response) => {
-          console.log(response.messages);
           if (response.messages) {
             setState(state =>({
               ...state,
@@ -46,7 +45,6 @@ const Messages = () => {
   }, []);
 
   const deleteMessage = (e) => {
-    console.log(e.target.messageId.value);
     profileService.deleteMessage(e.target.messageId.value).then((response) => {
       console.log(response);
     });

@@ -33,7 +33,6 @@ const Search = (props) => {
     };
 
     service.getAvailability(body).then((response) => {
-      console.log("response: ", response);
       setState({
         ...state,
         availableResults: response,

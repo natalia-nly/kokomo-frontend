@@ -31,8 +31,6 @@ function EditProperty(props) {
     propertyService
       .propertyDetails(props.match.params.propertyId)
       .then((response) => {
-        console.log("CONSOLE LOG DESDE AXIOS GET", response);
-
         setState(state => ({
           ...state,
           property: response,
@@ -56,18 +54,9 @@ function EditProperty(props) {
       mainImage: state.property.mainImage,
     };
 
-    // axios
-    //   .post(
-    //     process.env.REACT_APP_API_URL + "/property/edit/" + state.property._id,
-    //     body,
-    //     {
-    //       withCredentials: true,
-    //     }
-    //   )
     propertyService
       .editProperty(state.property._id, body)
       .then((response) => {
-        console.log("file uploaded", response);
         history.push(`/property/${state.property._id}`);
       })
       .catch((error) => console.log(error));
@@ -91,14 +80,11 @@ function EditProperty(props) {
   };
 
   const handleFile = (e) => {
-    // setState({ ...state, file: e.target.files[0] });
     e.preventDefault();
     const uploadData = new FormData();
     uploadData.append("mainImage", e.target.files[0]);
-    // axios
-    //   .post(process.env.REACT_APP_API_URL + "/property/upload", uploadData)
+
     propertyService.uploadPicture(uploadData).then((response) => {
-      console.log("File upload successful:", response);
       setState({
         ...state,
         property: { ...state.property, mainImage: response.path },
@@ -108,14 +94,8 @@ function EditProperty(props) {
 
   const handleGoogleSearch = (e) => {
     e.preventDefault();
-    // buscar la direccion y mostrar un PIN en el mapa con la dirección
-    // axios
-    //   .get(
-    //     process.env.REACT_APP_API_URL + "/search/maps?search=" + state.search
-    //   )
+
     search.searchLocation(state.search).then((response) => {
-      console.log(response);
-      console.log(state);
       // volver a renderizar el mapa con CENTER = lat, lng y un PIN =  lat, lng
       setState({
         ...state,

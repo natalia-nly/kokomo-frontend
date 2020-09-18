@@ -17,23 +17,18 @@ const AvailableTimes = (props) => {
   const [state, setState] = useState(initialState);
 
   let available = "No hay horas disponibles para tu búsqueda";
-  console.log(state.availableResults);
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    console.log(event.target);
     const params = {
       scheduleId: event.target.scheduleId.value,
     };
-    console.log(params.scheduleId);
     const body = {
       day: event.target.day.value,
-      //property: propertyInput.current.value,
       guests: event.target.guests.value,
     };
 
     service.createBooking(params.scheduleId, body).then((response) => {
-      console.log(response);
       setState({
         ...state,
         bookingFinished: true,

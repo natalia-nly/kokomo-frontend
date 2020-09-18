@@ -28,7 +28,6 @@ const GeneralMap = () => {
     const loadData = () => {
       try {
     service.allProperties().then((response) => {
-      console.log("CONSOLE LOG DESDE AXIOS GET", response);
       setState(state => ({
         ...state,
         allResults: response[0],
@@ -114,11 +113,8 @@ const GeneralMap = () => {
   const handleApiLoaded = (map, maps, places) => {
     const markers = [];
     const infowindows = [];
-    console.log(places.length);
-    console.log(places);
 
     places.forEach((place) => {
-      console.log(place.location);
       markers.push(
         new maps.Marker({
           position: {
@@ -162,7 +158,6 @@ const GeneralMap = () => {
     );
   }
 
-  console.log(state.allResults);
   return <div>{mapa}</div>;
 };
 

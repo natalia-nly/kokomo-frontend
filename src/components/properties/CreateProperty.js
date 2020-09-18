@@ -43,7 +43,6 @@ function CreateProperty() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(state);
     const body = {
       name: state.name,
       description: state.description,
@@ -63,7 +62,6 @@ function CreateProperty() {
     propertyService
       .createProperty(body)
       .then((response) => {
-        console.log("file uploaded", response);
         history.push("/");
       })
       .catch((error) => console.log(error));
@@ -81,7 +79,6 @@ function CreateProperty() {
     const uploadData = new FormData();
     uploadData.append("mainImage", e.target.files[0]);
     propertyService.uploadPicture(uploadData).then((response) => {
-      console.log("File upload successful:", response);
       setState({ ...state, mainImage: response.path });
     });
   };
@@ -114,10 +111,6 @@ function CreateProperty() {
   };
 
   const handleClosingTime = (e) => {
-    console.log(
-      "closingTime:",
-      state.openingHours[0].openingTimes[0].closingTime
-    );
     let openingHours = [...state.openingHours];
     openingHours[0].openingTimes[0].closingTime = e.target.value;
     setState({
@@ -143,8 +136,6 @@ function CreateProperty() {
   const handleGoogleSearch = (e) => {
     e.preventDefault();
     search.searchLocation(state.search).then((response) => {
-      console.log(response);
-      console.log(state);
       setState({
         ...state,
         search: response.candidates[0].name,

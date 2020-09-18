@@ -20,7 +20,6 @@ const BookingDetails = (props) => {
 
   useEffect(() => {
     service.bookingDetails(props.match.params.bookingId).then((response) => {
-      console.log("CONSOLE LOG DESDE AXIOS GET", response);
       setState(state => ({
         ...state,
         booking: response,

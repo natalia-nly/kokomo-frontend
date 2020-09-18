@@ -35,7 +35,6 @@ const MyBookings = (props) => {
     const loadData = () => {
       try {
         bookingService.myBookings().then((response) => {
-          console.log("CONSOLE LOG DESDE AXIOS GET", response.bookings);
           setState(state => ({
             ...state,
             bookings: response.bookings,
@@ -56,15 +55,7 @@ const MyBookings = (props) => {
   }, []);
 
   useEffect(() => {
-    // axios
-    //   .get(process.env.REACT_APP_API_URL + "/booking/my-properties-bookings", {
-    //     withCredentials: true,
-    //   })
     bookingService.propertiesBookings().then((response) => {
-      console.log(
-        "CONSOLE LOG DESDE AXIOS GET bookings en mis props:",
-        response.ownProperties
-      );
       setState(state => ({
         ...state,
         properties: response.ownProperties,
@@ -77,25 +68,19 @@ const MyBookings = (props) => {
   };
 
   const deleteBooking = (bookingId) => {
-    console.log("este es el bookingId: ", bookingId);
     bookingService.deleteBooking(bookingId).then((response) => {
-      console.log(response);
       refreshPage();
     });
   };
 
   if (state.bookings.length) {
-    console.log(state.bookings);
     reservas = state.bookings.map((booking, index) => (
       <Booking key={index} booking={booking} delete={deleteBooking} />
     ));
   }
 
-  console.log(props);
-
   if (props.loggedInUser.owner) {
     if (state.properties.length) {
-      console.log(state.properties);
       reservasProperties = state.properties.map((property, index) => (
         <OwnerLocal
           key={index}
