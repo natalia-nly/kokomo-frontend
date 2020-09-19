@@ -27,4 +27,14 @@ const ButtonKokomoSuccess = styled(ButtonKokomo)`
   }
 `;
 
+const ButtonKokomoGrey = styled(ButtonKokomo)`
+  color: #fff;
+  background-color: ${props => props.theme.colors.grey};
+
+  &:hover {
+    color: #fff;
+    background-color: #0ac09f;
+  }
+`;
+
 export { ButtonKokomo, ButtonKokomoSuccess };

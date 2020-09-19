@@ -25,6 +25,11 @@ import BookingDetails from "./components/profile/BookingDetails";
 import { themeKokomo } from "./components/styled-components/themeKokomo";
 import { ThemeProvider } from "styled-components";
 
+//Google Analytics
+import ReactGA from "react-ga";
+ReactGA.initialize("UA-178427902-1");
+ReactGA.pageview(window.location.pathname + window.location.search);
+
 const initialState = {
   loggedInUser: null,
 };
