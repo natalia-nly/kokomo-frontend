@@ -2,6 +2,7 @@ import React from "react";
 import { NavLink } from "react-router-dom";
 import Navbar from "react-bootstrap/Navbar";
 import Nav from "react-bootstrap/Nav";
+import { NavbarKokomoStyle } from "../styled-components/NavbarKokomoStyle";
 
 const NavbarKokomo = (props) => {
   let finalNavbar = (
@@ -55,7 +56,7 @@ const NavbarKokomo = (props) => {
   );
 
   const navbarLogin = (
-    <nav className="navbar-kokomo">
+    <NavbarKokomoStyle>
       <ul>
         {/* eslint-disable-next-line */}
         <li>
@@ -119,7 +120,7 @@ const NavbarKokomo = (props) => {
           </NavLink>
         </li>
       </ul>
-    </nav>
+    </NavbarKokomoStyle>
   );
 
   if (props.getTheUser !== null) {

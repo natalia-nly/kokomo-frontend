@@ -1,18 +1,17 @@
-import React from 'react'
+import React from "react";
 import CarouselProperties from "./CarouselProperties";
+import { SectionTitleStyle } from "../styled-components/titles";
 
 const Favourites = () => {
-    return (
-        <div>
-            <div className="body-container">
+  return (
+    <div>
+      <div className="body-container">
+        <SectionTitleStyle center>Tus favoritos</SectionTitleStyle>
 
-                <h3 className="section-title mt-4 text-center">
-                    Tus favoritos</h3>
+        <CarouselProperties filter="Favourites" />
+      </div>
+    </div>
+  );
+};
 
-                    <CarouselProperties filter="Favourites"/>
-            </div>
-        </div>
-    )
-}
-
-export default Favourites
+export default Favourites;

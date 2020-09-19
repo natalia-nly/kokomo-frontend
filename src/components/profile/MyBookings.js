@@ -6,6 +6,7 @@ import Tabs from "react-bootstrap/Tabs";
 import Tab from "react-bootstrap/Tab";
 import BookingService from "../../services/booking/booking-service";
 import AuthService from "../../services/auth/auth-service";
+import { SectionTitleStyle } from "../styled-components/titles";
 
 const service = new AuthService();
 const bookingService = new BookingService();
@@ -17,7 +18,7 @@ let ownerTab = <></>;
 const initialState = {
   bookings: [],
   properties: [],
-  user: {}
+  user: {},
 };
 
 const MyBookings = (props) => {
@@ -27,15 +28,15 @@ const MyBookings = (props) => {
     const CancelToken = axios.CancelToken;
     const source = CancelToken.source();
     service.loggedin().then((response) => {
-      if(response.owner){
-        active="owner"
+      if (response.owner) {
+        active = "owner";
       }
-      setState(state => ({...state, user: response}))
+      setState((state) => ({ ...state, user: response }));
     });
     const loadData = () => {
       try {
         bookingService.myBookings().then((response) => {
-          setState(state => ({
+          setState((state) => ({
             ...state,
             bookings: response.bookings,
           }));
@@ -56,7 +57,7 @@ const MyBookings = (props) => {
 
   useEffect(() => {
     bookingService.propertiesBookings().then((response) => {
-      setState(state => ({
+      setState((state) => ({
         ...state,
         properties: response.ownProperties,
       }));
@@ -112,9 +113,10 @@ const MyBookings = (props) => {
 
   return (
     <div className="body-container">
-      <h3 className="section-title mt-4 mdi mdi-calendar">
-        {" "}Gestión de reservas
-      </h3>
+      <SectionTitleStyle>
+        <i className="mdi mdi-calendar"></i> Gestión de reservas
+      </SectionTitleStyle>
+
       <Tabs defaultActiveKey={active} id="nav-tab" className="nav nav-tabs">
         {ownerTab}
         <Tab

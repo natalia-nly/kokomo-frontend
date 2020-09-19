@@ -3,6 +3,7 @@ import AvailablePlaces from "./AvailablePlaces";
 import GeneralMap from "./GeneralMap";
 import SearchIcon from "@material-ui/icons/Search";
 import SearchService from "../../services/search/search-service";
+import { SectionTitleStyle } from "../styled-components/titles";
 
 const service = new SearchService();
 let curr = new Date();
@@ -16,7 +17,6 @@ const initialState = {
 
 const Search = (props) => {
   const [state, setState] = useState(initialState);
-
 
   const handleChange = (event) => {
     setState({
@@ -49,9 +49,10 @@ const Search = (props) => {
   return (
     <div className="body-container">
       <div>
-        <h3 className="section-title mt-4 mdi mdi-magnify">
-          {" "}Busca el mejor sitio
-        </h3>
+        <SectionTitleStyle>
+          <i className="mdi mdi-magnify"></i> Busca el mejor sitio
+        </SectionTitleStyle>
+
         <GeneralMap />
       </div>
       <div>

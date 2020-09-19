@@ -22,6 +22,8 @@ import Error404 from "./components/error/Error404";
 import Error500 from "./components/error/Error500";
 import EditProperty from "./components/properties/EditProperty";
 import BookingDetails from "./components/profile/BookingDetails";
+
+//Styles
 import { themeKokomo } from "./components/styled-components/themeKokomo";
 import { ThemeProvider } from "styled-components";
 
@@ -160,35 +162,35 @@ function App() {
 
   return (
     <ThemeProvider theme={themeKokomo}>
-      <Switch>
-        <ProtectedRoute
-          user={state.loggedInUser}
-          exact
-          callback={getTheUser}
-          path="/property/create-property"
-          component={CreateProperty}
-        />
+        <Switch>
+          <ProtectedRoute
+            user={state.loggedInUser}
+            exact
+            callback={getTheUser}
+            path="/property/create-property"
+            component={CreateProperty}
+          />
 
-        <ProtectedRoute
-          user={state.loggedInUser}
-          callback={getTheUser}
-          path="/property/edit/:propertyId"
-          component={EditProperty}
-        />
+          <ProtectedRoute
+            user={state.loggedInUser}
+            callback={getTheUser}
+            path="/property/edit/:propertyId"
+            component={EditProperty}
+          />
 
-        <Route
-          path="/property/:propertyId"
-          render={(props) => (
-            <PropertyDetails {...props} getTheUser={state.loggedInUser} />
-          )}
-        />
-        <Route
-          path="/booking/details/:bookingId"
-          render={(props) => <BookingDetails {...props} />}
-        />
+          <Route
+            path="/property/:propertyId"
+            render={(props) => (
+              <PropertyDetails {...props} getTheUser={state.loggedInUser} />
+            )}
+          />
+          <Route
+            path="/booking/details/:bookingId"
+            render={(props) => <BookingDetails {...props} />}
+          />
 
-        <Route component={DefaultRoutes} />
-      </Switch>
+          <Route component={DefaultRoutes} />
+        </Switch>
     </ThemeProvider>
   );
 }

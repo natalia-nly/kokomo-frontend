@@ -1,6 +1,7 @@
 import React from "react";
 import CarouselProperties from "../properties/CarouselProperties";
 import Categories from "../properties/Categories";
+import { SectionSubtitleStyle } from "../styled-components/titles";
 
 const Home = () => {
   return (
@@ -13,13 +14,13 @@ const Home = () => {
         <Categories />
 
         <div className="">
-          <h2 className="title-search-home">Nuestros chiringuitos</h2>
+          <SectionSubtitleStyle>Nuestros chiringuitos</SectionSubtitleStyle>
           <CarouselProperties filter="All" />
 
-          <h2 className="title-search-home mt-4">Estilo chillout</h2>
+          <SectionSubtitleStyle>Estilo chillout</SectionSubtitleStyle>
           <CarouselProperties filter="Chillout" />
 
-          <h2 className="title-search-home mt-4">Los mejores restaurantes</h2>
+          <SectionSubtitleStyle>Los mejores restaurantes</SectionSubtitleStyle>
           <CarouselProperties filter="Restaurante" />
         </div>
       </div>

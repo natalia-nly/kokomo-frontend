@@ -5,6 +5,7 @@ import Messages from "./Messages";
 import Local from "./Local";
 import ProfileService from "../../services/profile/profile-service";
 import Badge from "react-bootstrap/Badge";
+import { SectionTitleStyle, SectionSubtitleStyle } from "../styled-components/titles";
 
 const service = new AuthService();
 const profileService = new ProfileService();
@@ -26,12 +27,11 @@ const initialState = {
 };
 
 const Profile = (props) => {
-
   const [state, setState] = useState(initialState);
 
   useEffect(() => {
     service.infoUser().then((response) => {
-      setState(state=>({
+      setState((state) => ({
         ...state,
         user: response,
       }));
@@ -47,10 +47,10 @@ const Profile = (props) => {
     ));
 
     state.user.ownProperties.map((property) => {
-      if(property.bookings){
+      if (property.bookings) {
         allBookingsOwner += property.bookings.length;
       }
-      return  allBookingsOwner
+      return allBookingsOwner;
     });
   }
 
@@ -151,10 +151,10 @@ const Profile = (props) => {
           marginBottom: "0px",
         }}
       >
-        <h3 className="section-title mt-4 mdi mdi-account-circle">
-          {" "}
-          Mi perfil
-        </h3>
+        <SectionTitleStyle>
+          <i className="mdi mdi-account-circle"></i> Mi perfil
+        </SectionTitleStyle>
+
         <div className="row">
           <div className="col-md-6">
             <div className="card-kokomo">
@@ -179,8 +179,7 @@ const Profile = (props) => {
                 }}
               >
                 <img src={state.user.avatar} alt="Avatar" className="avatar" />
-
-                <h2 className="title-profile">{props.loggedInUser.username}</h2>
+                <SectionSubtitleStyle center>{props.loggedInUser.username}</SectionSubtitleStyle>
                 <p>{state.user.email}</p>
                 <p>{state.user.telNumber ? `${state.user.telNumber}` : " "}</p>
 
@@ -215,7 +214,7 @@ const Profile = (props) => {
                   >
                     <i className="mdi mdi-plus"></i>
                   </Link>
-                  <h2 className="title-search-home"> Mis locales</h2>
+                  <SectionSubtitleStyle>Mis locales</SectionSubtitleStyle>
 
                   <table className="table mt-4">
                     <tbody>{properties}</tbody>
@@ -233,7 +232,7 @@ const Profile = (props) => {
                 >
                   <i className="mdi mdi-plus"></i>
                 </Link>
-                <h2 className="title-search-home"> Mi última reserva</h2>
+                <SectionSubtitleStyle>Mi última reserva</SectionSubtitleStyle>
                 {state.user.bookings.length ? (
                   <>
                     <div>
@@ -327,7 +326,7 @@ const Profile = (props) => {
               className="card-kokomo"
               style={{ padding: "20px", marginTop: "30px" }}
             >
-              <h2 className="title-search-home">Notificaciones</h2>
+              <SectionSubtitleStyle>Notificaciones</SectionSubtitleStyle>
               <Messages />
             </div>
           </div>
