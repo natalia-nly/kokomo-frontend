@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import ReactStars from "react-rating-stars-component";
 import PropertyService from "../../services/property/property-service";
+import ActualRatingCarousel from "./ActualRatingCarousel";
+import { CarouselPropStyles } from "../styled-components/PropertiesStyles";
 
 let service = new PropertyService();
 const initialState = {
@@ -16,7 +17,7 @@ const CarouselProperties = (props) => {
   useEffect(() => {
     if (props.filter === "All") {
       service.allProperties().then((response) => {
-        setState(state => ({
+        setState((state) => ({
           ...state,
           favourites: response[1],
           properties: response[0],
@@ -24,7 +25,6 @@ const CarouselProperties = (props) => {
       });
     } else if (props.filter === "Favourites") {
       service.allProperties().then((response) => {
-
         let favouritesResult = response[1];
         let propertiesResult = response[0];
 
@@ -33,27 +33,18 @@ const CarouselProperties = (props) => {
           if (favouritesResult.includes(property._id)) {
             onlyFavs.push(property);
           }
-          return onlyFavs
+          return onlyFavs;
         });
 
-        setState(state => ({
+        setState((state) => ({
           ...state,
           favourites: favouritesResult,
           properties: onlyFavs,
         }));
       });
-    } else if (props.filter === "Categories") {
-      service.categoryProperties(props.match.params.name).then((response) => {
-
-        setState(state => ({
-          ...state,
-          favourites: response[1],
-          properties: response[0],
-        }));
-      });
     } else {
       service.categoryProperties(props.filter).then((response) => {
-        setState(state => ({
+        setState((state) => ({
           ...state,
           favourites: response[1],
           properties: response[0],
@@ -85,7 +76,7 @@ const CarouselProperties = (props) => {
 
       if (property.rating) {
         let counter = property.rating.counter;
-        let rateNumber = 0
+        let rateNumber = 0;
         if (counter.length) {
           let reduceFunc = (a, b) => a + b;
           rateNumber = parseFloat(
@@ -93,26 +84,12 @@ const CarouselProperties = (props) => {
           );
         }
 
-
-        let actualRating = {
-          size: 12,
-          count: 5,
-          color: "#ffba69",
-          activeColor: "#ffba69",
-          a11y: true,
-          isHalf: true,
-          emptyIcon: <i className="far fa-star" />,
-          halfIcon: (
-            <i className="fa fa-star-half-alt" style={{ color: "#ffba69" }} />
-          ),
-          filledIcon: <i className="fa fa-star" />,
-          edit: false,
-          value: rateNumber,
-        };
-
         ratingProperty = (
           <div>
-            <ReactStars {...actualRating} />
+            <ActualRatingCarousel
+              rate={rateNumber}
+              numberReviews={counter.length}
+            />
           </div>
         );
       }
@@ -153,22 +130,9 @@ const CarouselProperties = (props) => {
       );
     });
 
-    allProperties = <div className="properties-group">{allPropertiesMap}</div>;
+    allProperties = <CarouselPropStyles>{allPropertiesMap}</CarouselPropStyles>;
   } else {
-    
-    if (props.filter === "All") {
-    } else if (props.filter === "Favourites") {
-      allProperties = (
-        <div className="text-center">
-          <img
-            src="/images/broken-heart.png"
-            className="black-white"
-            alt="Sin favoritos"
-          />
-          <p>Todavía no tienes favoritos</p>
-        </div>
-      );
-    } else if (props.filter === "Categories") {
+    if (props.filter === "Favourites") {
       allProperties = (
         <div className="text-center">
           <img
@@ -181,7 +145,7 @@ const CarouselProperties = (props) => {
       );
     } else {
       allProperties = (
-        <div className="text-center">
+        <div className="mb-5">
           <img
             src={"/images/" + props.filter + ".png"}
             className="black-white"
@@ -189,8 +153,7 @@ const CarouselProperties = (props) => {
           />
           <p>Todavía no hay locales en la categoria {props.filter}</p>
         </div>
-      )
-      
+      );
     }
   }
 

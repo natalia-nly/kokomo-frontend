@@ -20,4 +20,5 @@ export const SectionSubtitleStyle = styled.h2`
   color: ${(props) => props.theme.colors.darkText};
   font-weight: 700;
   text-align: ${(props) => (props.center ? "center" : "left")};
+  padding-left: 20px;
 `;

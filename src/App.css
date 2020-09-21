@@ -1,63 +1,3 @@
-/* # 00.
----------------------------------------------------------------------------------------------------- 
-
-    01.   VARIABLES
-    02.   HOME
-    03.   HEADER
-    04.   FOOTER
-    05.   HOMEPAGE
-	  06.	  PORTFOLIO
-    07.   SERVICIOS
-    08.   PAGES
-	  09.   FORMS
-    10.   #DEGRATIS
-
-/* # 01. VARIABLES
----------------------------------------------------------------------------------------------------- */
-/* ## Colors
---------------------------------------------- */
-/* ## Fonts
---------------------------------------------- */
-
-@import "~react-agenda/build/styles.css";
-@import "~react-datetime/css/react-datetime.css";
-
-body {
-  padding: 0px;
-}
-
-* {
-  font-family: europa, sans-serif;
-  font-size: 16px;
-}
-
-a {
-  color: #ffba69;
-}
-
-a:hover {
-  text-decoration: none !important;
-}
-
-h1,
-h2,
-h3,
-h4,
-h5,
-h6,
-p {
-  margin-bottom: 0px !important;
-}
-
-p {
-  color: #809eaa;
-}
-
-.body-container {
-  margin: 15px;
-  padding-bottom: 50px;
-}
-
 .padding-menu {
   padding-top: 100px;
 }
@@ -103,104 +43,6 @@ p {
 
 /* ## Botones
 --------------------------------------------- */
-.btn-kokomo {
-  display: inline-block;
-  font-weight: 400;
-  text-align: center;
-  vertical-align: middle;
-  user-select: none;
-  padding: 0.375rem 0.75rem;
-  font-size: 1rem;
-  line-height: 1.5;
-  border: none;
-  border-radius: 5px;
-  transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out,
-    border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
-}
-
-.btn-kokomo-circle {
-  display: inline-block;
-  font-weight: 400;
-  text-align: center;
-  vertical-align: middle;
-  user-select: none;
-  width: 40px;
-  height: 40px;
-  padding: 8px;
-  font-size: 1rem;
-  line-height: 1.5;
-  border: none;
-  border-radius: 100%;
-  transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out,
-    border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
-}
-
-.btn-kokomo-success {
-  color: #fff;
-  background-color: #0ac5a3;
-  border-color: #0ac5a3;
-}
-.btn-kokomo-success:hover {
-  color: #fff;
-  background-color: #0ac09f;
-  border-color: #0ac09f;
-}
-
-.btn-kokomo-grey {
-  color: #fff;
-  background-color: #c9c0b6;
-  border-color: #c9c0b6;
-}
-.btn-kokomo-grey:hover {
-  color: #fff;
-  background-color: #c7bdb3;
-  border-color: #c7bdb3;
-}
-
-.btn-kokomo-danger {
-  color: #fff;
-  background-color: #ff8d69;
-  border-color: #ff8d69;
-}
-.btn-kokomo-danger:hover {
-  color: #fff;
-  background-color: #ff8964;
-  border-color: #ff8964;
-}
-
-.btn-kokomo-white {
-  color: #49626d;
-  background-color: white;
-  border-color: white;
-  box-shadow: 0px 4px 40px rgb(68 99 111 / 22%);
-}
-.btn-kokomo-white:hover {
-  color: #49626d;
-  background-color: #fcfcfc;
-  border-color: #fcfcfc;
-  transition: 0.6s all ease;
-}
-
-.btn-kokomo-google {
-  color: #585353;
-  border: 1px solid #585353;
-}
-
-.btn-kokomo-google:hover {
-  color: #585353;
-  background-color: #f5f5f5;
-  border: 1px solid #585353;
-}
-
-.btn-kokomo-flex {
-  width: 90%;
-  padding: 22px;
-  border-radius: 8px;
-  margin-left: 10%;
-  border-color: transparent;
-  background: #0ac5a3;
-  color: white;
-}
 
 .text-review {
   padding-left: 10px;
@@ -434,46 +276,6 @@ h1 {
   border-radius: 14px;
 }
 
-.properties-group {
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
-  grid-gap: 26px;
-  overflow: scroll;
-  padding: 20px;
-}
-.properties-group .property-card {
-  width: 35vw;
-  margin-top: -60px;
-}
-.properties-group .property-card img {
-  width: 100%;
-  height: 50vw;
-  object-fit: cover;
-  border-radius: 20px;
-}
-.properties-group .property-card .blur-image {
-  position: relative;
-  top: -60vw;
-  z-index: -1;
-  filter: blur(10px);
-  opacity: 0.5;
-  margin-bottom: -60vw;
-}
-.properties-group .property-card h3 {
-  font-family: europa, sans-serif;
-  font-weight: 800;
-  color: #809eaa;
-  font-size: 18px;
-  padding-left: 4px;
-  margin-top: -10px;
-  padding-bottom: 10px;
-}
-.properties-group .property-card p {
-  color: #809eaa;
-  font-weight: 200;
-  font-size: 14px;
-  padding-left: 4px;
-}
 
 .properties-group-2 {
   overflow: scroll;
@@ -721,46 +523,6 @@ h4.section-title {
   margin-bottom: 20px;
 }
 
-.category-group {
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
-  grid-gap: 20px;
-  overflow: scroll;
-  padding: 0 0 50px 20px;
-}
-.category-group .one-category {
-  display: flex;
-  flex-direction: column;
-  width: 90px;
-  background-color: #3294bb;
-  border-radius: 80px;
-  padding: 12px;
-  align-items: center;
-  text-align: center;
-  justify-content: center;
-  transition: all ease 0.3s;
-}
-.category-group .one-category:hover {
-  background-color: #2f8aaf;
-  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
-}
-.category-group .one-category .img-container {
-  width: 100%;
-  background-color: white;
-  border-radius: 100%;
-  padding: 16px;
-  box-shadow: 0 0 10px #106688;
-}
-.category-group .one-category .img-container img {
-  width: 100%;
-}
-.category-group .one-category p {
-  color: white;
-  font-size: 14px;
-  padding-top: 10px;
-  padding-bottom: 14px;
-}
-
 .beach-background {
   min-height: 20vh;
   padding: 20px;
@@ -983,10 +745,7 @@ h4.section-title {
 /* ## MEDIA QUERIES PANTALLAS +768px
 --------------------------------------------- */
 @media all and (min-width: 768px) {
-  .body-container {
-    margin-left: 140px;
-    padding-bottom: 0px;
-  }
+  
   .shadow-blue {
     padding: 30px;
     box-shadow: 0px 0px 30px rgba(50, 148, 187, 0.28);
@@ -1120,33 +879,7 @@ h4.section-title {
   .subtitle-search-home {
     padding-left: 0px;
   }
-  .properties-group {
-    padding: 20px 0 40px 0;
-  }
-  .properties-group .property-card {
-    width: 30vw;
-  }
-  .properties-group .property-card img {
-    height: 18vw;
-    border-radius: 40px;
-  }
-  .properties-group .property-card .blur-image {
-    position: relative;
-    top: -40vw;
-    z-index: -1;
-    filter: blur(10px);
-    opacity: 0.5;
-    margin-bottom: -60vw;
-  }
-  .properties-group .property-card h3 {
-    font-size: 22px;
-    padding-top: 10px;
-  }
-  .properties-group .property-card p {
-    color: #809eaa;
-    font-weight: 200;
-    font-size: 16px;
-  }
+  
   .properties-group-2 {
     padding: 40px 0;
   }
@@ -1192,11 +925,6 @@ h4.section-title {
   }
   .column-m {
     width: 25%;
-  }
-
-  .category-group {
-    width: 560px;
-    overflow: hidden;
   }
 
   .banner-orange h2 {

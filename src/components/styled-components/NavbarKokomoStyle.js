@@ -95,3 +95,7 @@ export const NavbarKokomoStyle = styled(Navbar)`
     }
   }
 `;
+
+export const NavbarKokomoLogoutStyle = styled.nav`
+
+`
