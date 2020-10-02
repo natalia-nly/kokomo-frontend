@@ -130,6 +130,30 @@ export const GlobalStyle = createGlobalStyle`
     color: white;
   }
 
+  .badge-maps {
+    padding: 4px 10px;
+    display: inline-block;
+    font-weight: 800;
+    text-transform: uppercase;
+    border-radius: 8px;
+    font-size: 12px;
+  }
+
+  .badge-opened {
+    color: ${(props) => props.theme.colors.success};
+    background-color: rgb(10 197 163 / 20%);
+  }
+
+  .badge-closed {
+    color: ${(props) => props.theme.colors.danger};
+    background-color: rgb(255 141 105 / 20%);
+  }
+
+  .badge-tag {
+    color: ${(props) => props.theme.colors.orange};
+    background-color: rgb(255, 186, 105 / 0.2);
+  }
+
 
   @media all and (min-width: 768px) {
     .body-container {
