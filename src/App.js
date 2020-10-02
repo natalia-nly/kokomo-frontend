@@ -1,27 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, lazy, Suspense } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
 import { Switch, Route } from "react-router-dom";
-import LandingPage from "./components/main/LandingPage";
-import NavbarKokomo from "./components/main/NavbarKokomo";
-import Login from "./components/auth/Login";
-import Logout from "./components/auth/Logout";
-import SignUp from "./components/auth/SignUp";
-import SignUpLocal from "./components/auth/SignUpLocal";
-import Profile from "./components/profile/Profile";
 import ProtectedRoute from "./services/auth/protected-route.js";
-import CreateProperty from "./components/properties/CreateProperty";
 import AuthService from "./services/auth/auth-service";
-import Search from "./components/search/Search";
-import PropertyDetails from "./components/properties/PropertyDetails";
-import Home from "./components/main/Home";
-import Favourites from "./components/properties/Favourites";
-import MyBookings from "./components/profile/MyBookings";
-import PropertyCategory from "./components/properties/PropertyCategory";
-import Error404 from "./components/error/Error404";
-import Error500 from "./components/error/Error500";
-import EditProperty from "./components/properties/EditProperty";
-import BookingDetails from "./components/profile/BookingDetails";
+import Loader from "./components/main/Loader";
 
 //Styles
 import { themeKokomo } from "./components/styled-components/themeKokomo";
@@ -32,6 +15,34 @@ import { GlobalStyle } from "./components/styled-components/MainStyles";
 import ReactGA from "react-ga";
 ReactGA.initialize("UA-178427902-1");
 ReactGA.pageview(window.location.pathname + window.location.search);
+
+//Screens
+const LandingPage = lazy(() => import("./components/main/LandingPage"));
+const NavbarKokomo = lazy(() => import("./components/main/NavbarKokomo"));
+const Login = lazy(() => import("./components/auth/Login"));
+const Logout = lazy(() => import("./components/auth/Logout"));
+const SignUp = lazy(() => import("./components/auth/SignUp"));
+const SignUpLocal = lazy(() => import("./components/auth/SignUpLocal"));
+const Profile = lazy(() => import("./components/profile/Profile"));
+const CreateProperty = lazy(() =>
+  import("./components/properties/CreateProperty")
+);
+const Search = lazy(() => import("./components/search/Search"));
+const PropertyDetails = lazy(() =>
+  import("./components/properties/PropertyDetails")
+);
+const Home = lazy(() => import("./components/main/Home"));
+const Favourites = lazy(() => import("./components/properties/Favourites"));
+const MyBookings = lazy(() => import("./components/profile/MyBookings"));
+const PropertyCategory = lazy(() =>
+  import("./components/properties/PropertyCategory")
+);
+const Error404 = lazy(() => import("./components/error/Error404"));
+const Error500 = lazy(() => import("./components/error/Error500"));
+const EditProperty = lazy(() => import("./components/properties/EditProperty"));
+const BookingDetails = lazy(() =>
+  import("./components/profile/BookingDetails")
+);
 
 const initialState = {
   loggedInUser: null,
@@ -164,35 +175,37 @@ function App() {
   return (
     <ThemeProvider theme={themeKokomo}>
       <GlobalStyle />
-      <Switch>
-        <ProtectedRoute
-          user={state.loggedInUser}
-          exact
-          callback={getTheUser}
-          path="/property/create-property"
-          component={CreateProperty}
-        />
+      <Suspense fallback={<Loader />}>
+        <Switch>
+          <ProtectedRoute
+            user={state.loggedInUser}
+            exact
+            callback={getTheUser}
+            path="/property/create-property"
+            component={CreateProperty}
+          />
 
-        <ProtectedRoute
-          user={state.loggedInUser}
-          callback={getTheUser}
-          path="/property/edit/:propertyId"
-          component={EditProperty}
-        />
+          <ProtectedRoute
+            user={state.loggedInUser}
+            callback={getTheUser}
+            path="/property/edit/:propertyId"
+            component={EditProperty}
+          />
 
-        <Route
-          path="/property/:propertyId"
-          render={(props) => (
-            <PropertyDetails {...props} getTheUser={state.loggedInUser} />
-          )}
-        />
-        <Route
-          path="/booking/details/:bookingId"
-          render={(props) => <BookingDetails {...props} />}
-        />
+          <Route
+            path="/property/:propertyId"
+            render={(props) => (
+              <PropertyDetails {...props} getTheUser={state.loggedInUser} />
+            )}
+          />
+          <Route
+            path="/booking/details/:bookingId"
+            render={(props) => <BookingDetails {...props} />}
+          />
 
-        <Route component={DefaultRoutes} />
-      </Switch>
+          <Route component={DefaultRoutes} />
+        </Switch>
+      </Suspense>
     </ThemeProvider>
   );
 }

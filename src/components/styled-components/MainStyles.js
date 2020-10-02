@@ -1,5 +1,4 @@
-import styled, { createGlobalStyle } from "styled-components";
-import App from "../../App";
+import { createGlobalStyle } from "styled-components";
 
 export const GlobalStyle = createGlobalStyle`
 

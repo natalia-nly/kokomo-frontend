@@ -67,7 +67,7 @@ export const CarouselPropStyles = styled.div`
 
     .blur-image {
       position: relative;
-      top: -60vw;
+      top: -58vw;
       z-index: -1;
       filter: blur(10px);
       opacity: 0.5;

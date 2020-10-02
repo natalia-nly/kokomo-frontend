@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
 import PropertyService from "../../services/property/property-service";
 import ActualRatingCarousel from "./ActualRatingCarousel";
 import { CarouselPropStyles } from "../styled-components/PropertiesStyles";
+import PropertyCard from "./PropertyCard";
 
 let service = new PropertyService();
 const initialState = {
@@ -85,48 +85,20 @@ const CarouselProperties = (props) => {
         }
 
         ratingProperty = (
-          <div>
-            <ActualRatingCarousel
-              rate={rateNumber}
-              numberReviews={counter.length}
-            />
-          </div>
+          <ActualRatingCarousel
+            rate={rateNumber}
+            numberReviews={counter.length}
+          />
         );
       }
       return (
-        <div className="property-card" key={index}>
-          <a onClick={() => handleFavourite(property._id)}>
-            <span className="fa-stack fa-2x float-right heart-home">
-              <i className="fas fa-circle fa-stack-2x orange-80"></i>
-              <i className={heartKokomo}></i>
-            </span>
-          </a>
-          <Link to={"/property/" + property._id}>
-            <img
-              src={property.mainImage}
-              style={{
-                zIndex: 1,
-              }}
-              alt={property.name}
-            />
-            <img
-              src={property.mainImage}
-              className="blur-image"
-              alt={property.name}
-            />
-          </Link>
-          <Link to={"/property/" + property._id}>
-            <div className="flex-md-row justify-content-between align-items-baseline">
-              <h3>{property.name}</h3>
-              {ratingProperty}
-            </div>
-
-            <p className="mdi mdi-map-marker-radius">
-              {" "}
-              {property.location.name}
-            </p>
-          </Link>
-        </div>
+        <PropertyCard
+          key={index}
+          property={property}
+          handleFavourite={handleFavourite}
+          ratingProperty={ratingProperty}
+          heartKokomo={heartKokomo}
+        />
       );
     });
 
