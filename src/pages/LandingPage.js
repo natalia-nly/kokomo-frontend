@@ -1,8 +1,8 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import CarouselProperties from "../properties/CarouselProperties";
-import GeneralMap from "../search/GeneralMap";
-import Categories from "../properties/Categories";
+import CarouselProperties from "../components/properties/CarouselProperties";
+import GeneralMap from "../components/search/GeneralMap";
+import Categories from "../components/properties/Categories";
 
 const LandingPage = () => {
   return (
@@ -24,7 +24,7 @@ const LandingPage = () => {
         </div>
       </div>
       <div className="mapa">
-       {/** <GeneralMap />*/} 
+      <GeneralMap />
       </div>
       <div className="bg-landing">
         <div className="container">

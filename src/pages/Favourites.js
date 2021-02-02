@@ -1,6 +1,6 @@
 import React from "react";
-import CarouselProperties from "./CarouselProperties";
-import { SectionTitleStyle } from "../styled-components/titles";
+import CarouselProperties from "../components/properties/CarouselProperties";
+import { SectionTitleStyle } from "../components/styled-components/titles";
 
 const Favourites = () => {
   return (

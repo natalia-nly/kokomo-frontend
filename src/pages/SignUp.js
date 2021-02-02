@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
-import MainService from '../../services/service'
+import MainService from '../services/service'
 import { useHistory } from 'react-router-dom'
-import useAuth from '../../hooks/useAuth'
+import useAuth from '../hooks/useAuth'
 
 const SignUp = () => {
    const [form, setForm] = useState({
@@ -28,11 +28,8 @@ const SignUp = () => {
       setForm({ ...form, [e.target.name]: e.target.value })
 
    return (
-      <div>
-         <div
-            className="row align-middle  justify-content-center p-4"
-            style={{ 'min-height': '100vh' }}
-         >
+      <div className="container-fluid">
+         <div className="row align-middle vh-100 justify-content-center p-4">
             <div className="col-sm-12 col-md-4 align-self-center">
                <h2 className="hero-title text-center mb-4">Crea tu cuenta</h2>
                <form onSubmit={handleSubmit}>

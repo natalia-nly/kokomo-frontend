@@ -1,15 +1,15 @@
 import React, { useState, useEffect } from "react";
 import Tabs from "react-bootstrap/Tabs";
 import Tab from "react-bootstrap/Tab";
-import AvailableTimes from "./AvailableTimes";
-import DetailedMap from "../search/DetailedMap";
+import AvailableTimes from "../components/properties/AvailableTimes";
+import DetailedMap from "../components/search/DetailedMap";
 import { Link } from "react-router-dom";
 import dateFormat from "dateformat";
 import SearchIcon from "@material-ui/icons/Search";
-import ActualRating from "./ActualRating";
-import AddRating from "./AddRating";
-import PropertyService from "../../services/property/property-service";
-import SearchService from "../../services/search/search-service";
+import ActualRating from "../components/properties/ActualRating";
+import AddRating from "../components/properties/AddRating";
+import PropertyService from "../services/property/property-service";
+import SearchService from "../services/search/search-service";
 
 const propertyService = new PropertyService();
 const searchService = new SearchService();

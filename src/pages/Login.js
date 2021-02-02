@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
-import MainService from '../../services/service'
+import MainService from '../services/service'
 import { Redirect, useHistory } from 'react-router-dom'
-import useAuth from '../../hooks/useAuth'
+import useAuth from '../hooks/useAuth'
 
 const Login = () => {
    const [form, setForm] = useState({ username: '', password: '' })
@@ -25,11 +25,8 @@ const Login = () => {
       setForm({ ...form, [e.target.name]: e.target.value })
 
    return (
-      <div>
-         <div
-            className="row align-middle  justify-content-center p-4"
-            style={{ minHeight: '100vh' }}
-         >
+      <div className="container-fluid">
+         <div className="row align-middle justify-content-center vh-100">
             <div className="col-sm-12 col-md-4 align-self-center">
                <h2 className="hero-title text-center mb-4">Iniciar sesión</h2>
                <form onSubmit={handleSubmit}>

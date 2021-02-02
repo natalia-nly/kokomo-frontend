@@ -1,9 +1,9 @@
 import React, { useState } from "react";
-import AvailablePlaces from "./AvailablePlaces";
-import GeneralMap from "./GeneralMap";
+import AvailablePlaces from "../components/search/AvailablePlaces";
+import GeneralMap from "../components/search/GeneralMap";
 import SearchIcon from "@material-ui/icons/Search";
-import SearchService from "../../services/search/search-service";
-import { SectionTitleStyle } from "../styled-components/titles";
+import SearchService from "../services/search/search-service";
+import { SectionTitleStyle } from "../components/styled-components/titles";
 
 const service = new SearchService();
 let curr = new Date();

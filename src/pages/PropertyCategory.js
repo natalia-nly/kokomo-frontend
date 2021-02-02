@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
-import CarouselProperties from "./CarouselProperties";
+import CarouselProperties from "../components/properties/CarouselProperties";
 import axios from "axios";
-import PropertyService from "../../services/property/property-service";
+import PropertyService from "../services/property/property-service";
 
 let service = new PropertyService();
 const initialState = {

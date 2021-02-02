@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
-import Booking from './Booking'
-import OwnerLocal from './OwnerLocal'
+import Booking from '../components/profile/Booking'
+import OwnerLocal from '../components/profile/OwnerLocal'
 import Tabs from 'react-bootstrap/Tabs'
 import Tab from 'react-bootstrap/Tab'
-import BookingService from '../../services/booking/booking-service'
-import { SectionTitleStyle } from '../styled-components/titles'
-import useAuth from '../../hooks/useAuth'
+import BookingService from '../services/booking/booking-service'
+import { SectionTitleStyle } from '../components/styled-components/titles'
+import useAuth from '../hooks/useAuth'
 
 const bookingService = new BookingService()
 let reservas = <p>Todavía no tienes reservas</p>

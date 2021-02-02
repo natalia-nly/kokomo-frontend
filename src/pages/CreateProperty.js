@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { useHistory } from "react-router-dom";
-import StepperKokomo from "./StepperKokomo";
-import SearchService from "../../services/search/search-service";
-import PropertyService from "../../services/property/property-service";
+import StepperKokomo from "../components/properties/StepperKokomo";
+import SearchService from "../services/search/search-service";
+import PropertyService from "../services/property/property-service";
 
 const propertyService = new PropertyService();
 const search = new SearchService();

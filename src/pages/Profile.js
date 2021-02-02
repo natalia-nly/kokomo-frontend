@@ -1,15 +1,14 @@
 import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
-import AuthService from '../../services/auth/auth-service'
-import Messages from './Messages'
-import Local from './Local'
-import ProfileService from '../../services/profile/profile-service'
+import Messages from '../components/profile/Messages'
+import Local from '../components/profile/Local'
+import ProfileService from '../services/profile/profile-service'
 import Badge from 'react-bootstrap/Badge'
 import {
    SectionTitleStyle,
    SectionSubtitleStyle
-} from '../styled-components/titles'
-import useAuth from '../../hooks/useAuth'
+} from '../components/styled-components/titles'
+import useAuth from '../hooks/useAuth'
 
 const profileService = new ProfileService()
 
