@@ -13,7 +13,7 @@ const ProtectedRoute = ({ component: Component, user, callback, ...rest }) => {
             if (auth === undefined) return history.push('/login')
 
             return (
-               <Component {...props} loggedInUser={user} callback={callback} />
+               <Component {...props} />
             )
          }}
       />

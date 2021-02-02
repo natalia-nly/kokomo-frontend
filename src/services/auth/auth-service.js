@@ -38,10 +38,6 @@ class AuthService {
       .then((response) => response.data);
   };
 
-  loggedin = () => {
-    return this.service.get("/loggedin").then((response) => response.data);
-  };
-
   infoUser = () => {
     return this.service.get("/info-user/").then((response) => response.data);
   };

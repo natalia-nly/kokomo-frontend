@@ -4,7 +4,7 @@ import { Redirect, useHistory } from 'react-router-dom'
 import useAuth from '../../hooks/useAuth'
 
 const Login = () => {
-   const [form, setForm] = useState({ user: '', password: '' })
+   const [form, setForm] = useState({ username: '', password: '' })
    const history = useHistory()
    const { login, auth } = useAuth()
 
@@ -13,7 +13,7 @@ const Login = () => {
    const handleSubmit = async (e) => {
       try {
          e.preventDefault()
-         const user = await MainService.postData('/login', form)
+         const user = await MainService.postData('/auth/login', form)
          login(user)
          history.push('/')
       } catch (error) {
@@ -34,13 +34,13 @@ const Login = () => {
                <h2 className="hero-title text-center mb-4">Iniciar sesión</h2>
                <form onSubmit={handleSubmit}>
                   <div className="form-group">
-                     <label htmlFor="user" className="label active">
+                     <label htmlFor="username" className="label active">
                         Nombre de usuario
                      </label>
                      <input
                         type="text"
-                        name="user"
-                        value={form.user}
+                        name="username"
+                        value={form.username}
                         onChange={handleChange}
                      />
                   </div>

@@ -66,6 +66,7 @@ const MyBookings = (props) => {
       window.location.reload(false)
    }
 
+
    const deleteBooking = (bookingId) => {
       bookingService.deleteBooking(bookingId).then((response) => {
          refreshPage()
@@ -84,7 +85,6 @@ const MyBookings = (props) => {
             <OwnerLocal
                key={index}
                property={property}
-               user={props.loggedInUser}
                delete={deleteBooking}
             />
          ))

@@ -20,16 +20,15 @@ export function AuthContextProvider({ children }) {
    }, [realoadUser])
 
    const login = (user) => {
+      console.log("User en login context", user)
       localStorage.setItem('kokomo_user', JSON.stringify(user))
       setAuth(user)
    }
 
    const logout = () => {
-      if (auth) {
-         localStorage.removeItem('kokomo_user')
-         setAuth(null)
-         history.push('/')
-      }
+      localStorage.removeItem('kokomo_user')
+      setAuth(null)
+      history.go(0)
    }
 
    const authData = useMemo(

@@ -14,7 +14,7 @@ import useAuth from '../../hooks/useAuth'
 const profileService = new ProfileService()
 
 const Profile = () => {
-   const { auth } = useAuth()
+   const { auth, logout } = useAuth()
    const [state, setState] = useState({
       showConfig: false,
       user: {}
@@ -200,10 +200,10 @@ const Profile = () => {
                         )}
 
                         <div className="border-top mt-4 pt-4">
-                           <Link to="/logout" className="logout-kokomo">
+                           <button onClick={() => logout()} className="logout-kokomo">
                               <i className="mdi mdi-logout-variant"></i> Cerrar
                               sesión
-                           </Link>
+                           </button>
                         </div>
                      </div>
                   </div>

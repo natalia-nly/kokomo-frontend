@@ -65,7 +65,7 @@ const CarouselProperties = (props) => {
     });
   };
 
-  /*
+  
   if (state.properties?.length) {
     let allPropertiesMap = state.properties.map((property) => {
       let heartKokomo = "far fa-heart fa-stack-1x fa-inverse";
@@ -130,7 +130,7 @@ const CarouselProperties = (props) => {
     }
   }
 
-  */
+  
   return <>{allProperties}</>;
 };
 
