@@ -12,7 +12,7 @@ const initialState = {
 const CarouselProperties = (props) => {
   const [state, setState] = useState(initialState);
 
-  let allProperties;
+  let allProperties = "carousel";
 
   useEffect(() => {
     if (props.filter === "All") {
@@ -65,8 +65,9 @@ const CarouselProperties = (props) => {
     });
   };
 
-  if (state.properties.length >= 1) {
-    let allPropertiesMap = state.properties.map((property, index) => {
+  /*
+  if (state.properties?.length) {
+    let allPropertiesMap = state.properties.map((property) => {
       let heartKokomo = "far fa-heart fa-stack-1x fa-inverse";
       if (state.favourites && state.favourites.includes(property._id)) {
         heartKokomo = "fas fa-heart fa-stack-1x fa-inverse";
@@ -93,7 +94,7 @@ const CarouselProperties = (props) => {
       }
       return (
         <PropertyCard
-          key={index}
+          key={property._id}
           property={property}
           handleFavourite={handleFavourite}
           ratingProperty={ratingProperty}
@@ -129,6 +130,7 @@ const CarouselProperties = (props) => {
     }
   }
 
+  */
   return <>{allProperties}</>;
 };
 

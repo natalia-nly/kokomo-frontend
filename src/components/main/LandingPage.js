@@ -24,7 +24,7 @@ const LandingPage = () => {
         </div>
       </div>
       <div className="mapa">
-        <GeneralMap />
+       {/** <GeneralMap />*/} 
       </div>
       <div className="bg-landing">
         <div className="container">

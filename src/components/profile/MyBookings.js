@@ -1,143 +1,141 @@
-import React, { useState, useEffect } from "react";
-import axios from "axios";
-import Booking from "./Booking";
-import OwnerLocal from "./OwnerLocal";
-import Tabs from "react-bootstrap/Tabs";
-import Tab from "react-bootstrap/Tab";
-import BookingService from "../../services/booking/booking-service";
-import AuthService from "../../services/auth/auth-service";
-import { SectionTitleStyle } from "../styled-components/titles";
+import React, { useState, useEffect } from 'react'
+import axios from 'axios'
+import Booking from './Booking'
+import OwnerLocal from './OwnerLocal'
+import Tabs from 'react-bootstrap/Tabs'
+import Tab from 'react-bootstrap/Tab'
+import BookingService from '../../services/booking/booking-service'
+import { SectionTitleStyle } from '../styled-components/titles'
+import useAuth from '../../hooks/useAuth'
 
-const service = new AuthService();
-const bookingService = new BookingService();
-let reservas = <p>Todavía no tienes reservas</p>;
-let reservasProperties = <p>Todavía no tienes reservas</p>;
-let active = "client";
-let ownerTab = <></>;
+const bookingService = new BookingService()
+let reservas = <p>Todavía no tienes reservas</p>
+let reservasProperties = <p>Todavía no tienes reservas</p>
+let active = 'client'
+let ownerTab = <></>
 
 const initialState = {
-  bookings: [],
-  properties: [],
-  user: {},
-};
+   bookings: [],
+   properties: [],
+   user: {}
+}
 
 const MyBookings = (props) => {
-  const [state, setState] = useState(initialState);
+   const { auth } = useAuth()
+   const [state, setState] = useState(initialState)
 
-  useEffect(() => {
-    const CancelToken = axios.CancelToken;
-    const source = CancelToken.source();
-    service.loggedin().then((response) => {
-      if (response.owner) {
-        active = "owner";
+   useEffect(() => {
+      const CancelToken = axios.CancelToken
+      const source = CancelToken.source()
+      if (auth.owner) {
+         active = 'owner'
       }
-      setState((state) => ({ ...state, user: response }));
-    });
-    const loadData = () => {
-      try {
-        bookingService.myBookings().then((response) => {
-          setState((state) => ({
+      setState((state) => ({ ...state, user: auth }))
+      const loadData = () => {
+         try {
+            bookingService.myBookings().then((response) => {
+               setState((state) => ({
+                  ...state,
+                  bookings: response.bookings
+               }))
+            })
+         } catch (error) {
+            if (axios.isCancel(error)) {
+               console.log('cancelled')
+            } else {
+               throw error
+            }
+         }
+      }
+      loadData()
+      return () => {
+         source.cancel()
+      }
+   }, [])
+
+   useEffect(() => {
+      bookingService.propertiesBookings().then((response) => {
+         setState((state) => ({
             ...state,
-            bookings: response.bookings,
-          }));
-        });
-      } catch (error) {
-        if (axios.isCancel(error)) {
-          console.log("cancelled");
-        } else {
-          throw error;
-        }
+            properties: response.ownProperties
+         }))
+      })
+   }, [])
+
+   const refreshPage = () => {
+      window.location.reload(false)
+   }
+
+   const deleteBooking = (bookingId) => {
+      bookingService.deleteBooking(bookingId).then((response) => {
+         refreshPage()
+      })
+   }
+
+   if (state.bookings.length) {
+      reservas = state.bookings.map((booking, index) => (
+         <Booking key={index} booking={booking} delete={deleteBooking} />
+      ))
+   }
+
+   if (state.user.owner) {
+      if (state.properties.length) {
+         reservasProperties = state.properties.map((property, index) => (
+            <OwnerLocal
+               key={index}
+               property={property}
+               user={props.loggedInUser}
+               delete={deleteBooking}
+            />
+         ))
+         ownerTab = (
+            <Tab
+               eventKey="owner"
+               title="Reservas en tus Locales"
+               className="nav-item nav-link"
+            >
+               <div>
+                  <div
+                     className="tab-pane fade show active"
+                     id="nav-next-bookings"
+                     role="tabpanel"
+                     aria-labelledby="nav-next-bookings-tab"
+                  >
+                     <div className="group-booking">{reservasProperties}</div>
+                  </div>
+               </div>
+            </Tab>
+         )
       }
-    };
-    loadData();
-    return () => {
-      source.cancel();
-    };
-  }, []);
+   }
 
-  useEffect(() => {
-    bookingService.propertiesBookings().then((response) => {
-      setState((state) => ({
-        ...state,
-        properties: response.ownProperties,
-      }));
-    });
-  }, []);
+   return (
+      <div className="body-container">
+         <SectionTitleStyle>
+            <i className="mdi mdi-calendar"></i> Gestión de reservas
+         </SectionTitleStyle>
 
-  const refreshPage = () => {
-    window.location.reload(false);
-  };
-
-  const deleteBooking = (bookingId) => {
-    bookingService.deleteBooking(bookingId).then((response) => {
-      refreshPage();
-    });
-  };
-
-  if (state.bookings.length) {
-    reservas = state.bookings.map((booking, index) => (
-      <Booking key={index} booking={booking} delete={deleteBooking} />
-    ));
-  }
-
-  if (props.loggedInUser.owner) {
-    if (state.properties.length) {
-      reservasProperties = state.properties.map((property, index) => (
-        <OwnerLocal
-          key={index}
-          property={property}
-          user={props.loggedInUser}
-          delete={deleteBooking}
-        />
-      ));
-      ownerTab = (
-        <Tab
-          eventKey="owner"
-          title="Reservas en tus Locales"
-          className="nav-item nav-link"
-        >
-          <div>
-            <div
-              className="tab-pane fade show active"
-              id="nav-next-bookings"
-              role="tabpanel"
-              aria-labelledby="nav-next-bookings-tab"
+         <Tabs defaultActiveKey={active} id="nav-tab" className="nav nav-tabs">
+            {ownerTab}
+            <Tab
+               eventKey="client"
+               title="Tus reservas"
+               className="nav-item nav-link"
             >
-              <div className="group-booking">{reservasProperties}</div>
-            </div>
-          </div>
-        </Tab>
-      );
-    }
-  }
+               <div>
+                  <div
+                     className="tab-pane fade show active"
+                     id="nav-next-bookings"
+                     role="tabpanel"
+                     aria-labelledby="nav-next-bookings-tab"
+                  >
+                     <div className="group-booking">{reservas}</div>
+                  </div>
+               </div>
+            </Tab>
+         </Tabs>
+      </div>
+   )
+}
 
-  return (
-    <div className="body-container">
-      <SectionTitleStyle>
-        <i className="mdi mdi-calendar"></i> Gestión de reservas
-      </SectionTitleStyle>
-
-      <Tabs defaultActiveKey={active} id="nav-tab" className="nav nav-tabs">
-        {ownerTab}
-        <Tab
-          eventKey="client"
-          title="Tus reservas"
-          className="nav-item nav-link"
-        >
-          <div>
-            <div
-              className="tab-pane fade show active"
-              id="nav-next-bookings"
-              role="tabpanel"
-              aria-labelledby="nav-next-bookings-tab"
-            >
-              <div className="group-booking">{reservas}</div>
-            </div>
-          </div>
-        </Tab>
-      </Tabs>
-    </div>
-  );
-};
-
-export default MyBookings;
+export default MyBookings

@@ -3,8 +3,10 @@ import { NavLink } from "react-router-dom";
 import Navbar from "react-bootstrap/Navbar";
 import Nav from "react-bootstrap/Nav";
 import { NavbarKokomoStyle } from "../styled-components/NavbarKokomoStyle";
+import useAuth from "../../hooks/useAuth";
 
 const NavbarKokomo = (props) => {
+  const {auth} = useAuth()
   let finalNavbar = (
     <Navbar
       bg="light"
@@ -123,7 +125,7 @@ const NavbarKokomo = (props) => {
     </NavbarKokomoStyle>
   );
 
-  if (props.getTheUser !== null) {
+  if (auth !== undefined) {
     finalNavbar = navbarLogin;
   }
 
