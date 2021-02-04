@@ -20,7 +20,6 @@ export function AuthContextProvider({ children }) {
    }, [realoadUser])
 
    const login = (user) => {
-      console.log("User en login context", user)
       localStorage.setItem('kokomo_user', JSON.stringify(user))
       setAuth(user)
    }

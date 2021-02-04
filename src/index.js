@@ -3,14 +3,14 @@ import ReactDOM from 'react-dom'
 import App from './App'
 import { BrowserRouter } from 'react-router-dom'
 import { AuthContextProvider } from './context/AuthContext'
-import { themeKokomo } from './components/styled-components/themeKokomo'
+import { themeKokomo } from './styles/themeKokomo'
 import { ThemeProvider } from 'styled-components'
-import { GlobalStyle } from './components/styled-components/MainStyles'
+import { GlobalStyle } from './styles/MainStyles'
 
 //Styles
-import './index.css'
 import 'bootstrap/dist/css/bootstrap.min.css'
-import './App.css'
+import './styles/index.css'
+import './styles/App.css'
 
 //Google Analytics
 import ReactGA from 'react-ga'

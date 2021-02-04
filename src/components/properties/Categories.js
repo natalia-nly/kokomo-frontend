@@ -1,6 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-import { CategoriesStyles } from '../styled-components/PropertiesStyles'
+import { CategoriesStyles } from '../../styles/PropertiesStyles'
 
 const Categories = () => {
    const categoriesArr = [

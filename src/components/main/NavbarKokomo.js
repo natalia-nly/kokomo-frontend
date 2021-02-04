@@ -2,7 +2,7 @@ import React from "react";
 import { NavLink } from "react-router-dom";
 import Navbar from "react-bootstrap/Navbar";
 import Nav from "react-bootstrap/Nav";
-import { NavbarKokomoStyle } from "../styled-components/NavbarKokomoStyle";
+import { NavbarKokomoStyle } from "../../styles/NavbarKokomoStyle";
 import useAuth from "../../hooks/useAuth";
 
 const NavbarKokomo = (props) => {

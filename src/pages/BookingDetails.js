@@ -1,31 +1,22 @@
 import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
+import Loader from '../components/main/Loader'
 import BookingService from '../services/booking/booking-service'
 
 const service = new BookingService()
-const initialState = {
-   booking: {
-      bookingRef: '',
-      day: '',
-      time: '',
-      guests: 0,
-      customer: {
-         username: ''
-      }
-   }
-}
 
 const BookingDetails = (props) => {
-   const [state, setState] = useState(initialState)
+   const [state, setState] = useState({})
+   const [loading, setLoading] = useState(true)
 
    useEffect(() => {
-      service.bookingDetails(props.match.params.bookingId).then((response) => {
-         setState((state) => ({
-            ...state,
-            booking: response
-         }))
+      service.bookingDetails(props.match.params.bookingId).then((booking) => {
+         setState(booking)
+         setLoading(false)
       })
    }, [props.match.params.bookingId])
+
+   if (loading) return <Loader />
 
    return (
       <>

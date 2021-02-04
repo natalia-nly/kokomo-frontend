@@ -3,7 +3,7 @@ import AvailablePlaces from "../components/search/AvailablePlaces";
 import GeneralMap from "../components/search/GeneralMap";
 import SearchIcon from "@material-ui/icons/Search";
 import SearchService from "../services/search/search-service";
-import { SectionTitleStyle } from "../components/styled-components/titles";
+import { SectionTitleStyle } from "../styles/titles";
 
 const service = new SearchService();
 let curr = new Date();

@@ -61,7 +61,7 @@ function CreateProperty() {
 
     propertyService
       .createProperty(body)
-      .then((response) => {
+      .then(() => {
         history.push("/");
       })
       .catch((error) => console.log(error));
