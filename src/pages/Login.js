@@ -65,7 +65,6 @@ const Login = () => {
                   href={process.env.REACT_APP_API_URL + '/auth/google'}
                   className="btn-kokomo btn-kokomo-google btn-block p-3 mt-4"
                >
-                  {' '}
                   <img
                      src="/images/google.svg"
                      alt="Google logo"
