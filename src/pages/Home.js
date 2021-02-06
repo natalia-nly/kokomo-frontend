@@ -22,6 +22,8 @@ const Home = () => {
                <SectionSubtitleStyle>
                   Nuestros chiringuitos
                </SectionSubtitleStyle>
+               
+
                <CarouselProperties filter="All" />
 
                <SectionSubtitleStyle>Estilo chillout</SectionSubtitleStyle>

@@ -41,7 +41,7 @@ export const GlobalStyle = createGlobalStyle`
 
   .btn-kokomo {
     display: inline-block;
-    font-family: ${(props) => props.theme.fonts.text};
+    font-family: ${({theme}) => theme.fonts.text};
     font-weight: 400;
     text-align: center;
     vertical-align: middle;

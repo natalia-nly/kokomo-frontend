@@ -26,7 +26,7 @@ const PropertyCard = (props) => {
           {props.ratingProperty}
         </div>
 
-        <p className="mdi mdi-map-marker-radius"> {property.location.name}</p>
+        <p className="mdi mdi-map-marker-radius"> {property.location?.name}</p>
       </Link>
     </div>
   );

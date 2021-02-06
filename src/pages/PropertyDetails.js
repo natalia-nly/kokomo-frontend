@@ -4,7 +4,6 @@ import Tab from 'react-bootstrap/Tab'
 import AvailableTimes from '../components/properties/AvailableTimes'
 import DetailedMap from '../components/search/DetailedMap'
 import { Link } from 'react-router-dom'
-import dateFormat from 'dateformat'
 import SearchIcon from '@material-ui/icons/Search'
 import ActualRating from '../components/properties/ActualRating'
 import AddRating from '../components/properties/AddRating'
@@ -12,6 +11,7 @@ import PropertyService from '../services/property/property-service'
 import SearchService from '../services/search/search-service'
 import useAuth from '../hooks/useAuth'
 import Loader from '../components/main/Loader'
+import MainService from '../services/service'
 
 const propertyService = new PropertyService()
 const searchService = new SearchService()
@@ -23,10 +23,9 @@ const PropertyDetails = (props) => {
    const [loading, setLoading] = useState(true)
 
    useEffect(() => {
-      propertyService
-         .propertyDetails(props.match.params.propertyId)
-         .then((response) => {
-            let counter = response.rating.counter
+      MainService.getData(`/property/${props.match.params.propertyId}`).then(
+         (response) => {
+            let counter = response.rating?.counter || [0]
             let reduceFunc = (a, b) => a + b
 
             let rateNumber = parseFloat(
@@ -39,10 +38,11 @@ const PropertyDetails = (props) => {
                actualRating: rateNumber
             }))
             setLoading(false)
-         })
+         }
+      )
    }, [props])
 
-   console.log("Auth: ", auth)
+   console.log('state.property: ', state.property)
 
    if (loading) return <Loader />
 
@@ -135,7 +135,7 @@ const PropertyDetails = (props) => {
       )
    }
 
-   let allComments = state.property.comments.map((comment, index) => (
+   let allComments = state.property.comments?.map((comment, index) => (
       <div className="comment-kokomo pb-4 pt-4" key={index}>
          <h5>
             <img
@@ -291,58 +291,6 @@ const PropertyDetails = (props) => {
       )
    }
 
-   const formatOpening = dateFormat(
-      state.property.openingHours[0].openingDays.openingDay,
-      'dd/mm/yyyy '
-   )
-   const formatClosing = dateFormat(
-      state.property.openingHours[0].openingDays.closingDay,
-      'dd/mm/yyyy'
-   )
-   let weekDaysFormat = []
-   state.property.openingHours[0].weekDays.forEach((day) => {
-      switch (day) {
-         case 1:
-            weekDaysFormat.push('Lunes')
-            break
-         case 2:
-            weekDaysFormat.push('Martes')
-            break
-         case 3:
-            weekDaysFormat.push('Miércoles')
-            break
-         case 4:
-            weekDaysFormat.push('Jueves')
-            break
-         case 5:
-            weekDaysFormat.push('Viernes')
-            break
-         case 6:
-            weekDaysFormat.push('Sábado')
-            break
-         case 7:
-            weekDaysFormat.push('Domingo')
-            break
-         default:
-            console.log('El número no pertenece a un día de la semana')
-            break
-      }
-   })
-
-   let daysInTable = weekDaysFormat.map((day, index) => (
-      <tr key={index}>
-         <td>
-            <p>{day}</p>
-         </td>
-         <td>
-            <p>
-               {state.property.openingHours[0].openingTimes[0].openingTime}:00 -{' '}
-               {state.property.openingHours[0].openingTimes[0].closingTime}:00
-            </p>
-         </td>
-      </tr>
-   ))
-
    let showMobileForm = <></>
 
    let showForm = () => {
@@ -460,26 +408,23 @@ const PropertyDetails = (props) => {
                               <h3 className="subtitle-search mb-4">
                                  {state.property.description}
                               </h3>
-
-                              <p>
-                                 Duración de la reserva:{' '}
-                                 {state.property.bookingDuration}
-                              </p>
                               <p>
                                  Plazas disponibles:{' '}
                                  {state.property.availablePlaces}
                               </p>
                               <p>
                                  <i className="fas fa-map-marker-alt"></i>{' '}
-                                 Dirección: {state.property.location.name}
+                                 Dirección: {state.property.location?.name}
                               </p>
                            </div>
                            <div className="col-md-6">
+                              {/*
                               <DetailedMap
                                  lat={state.property.location.lat}
                                  lng={state.property.location.long}
                                  property={state.property}
                               />
+                              */}
                            </div>
                         </div>
                      </Tab>
@@ -500,21 +445,7 @@ const PropertyDetails = (props) => {
                      >
                         <div className="row">
                            <div className="col-md-6"></div>
-                           <div className="col-md-6">
-                              <p>
-                                 Día de apertura:
-                                 <span id="openingDay1"> {formatOpening}</span>
-                              </p>
-
-                              <p>
-                                 Día de cierre:
-                                 <span id="closingDay1"> {formatClosing}</span>
-                              </p>
-
-                              <table className="table">
-                                 <tbody>{daysInTable}</tbody>
-                              </table>
-                           </div>
+                           <div className="col-md-6"></div>
                         </div>
                      </Tab>
                   </Tabs>

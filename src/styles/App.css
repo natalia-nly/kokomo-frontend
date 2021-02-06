@@ -44,6 +44,10 @@
 /* ## Botones
 --------------------------------------------- */
 
+button:focus {
+  outline: none !important;
+}
+
 .text-review {
   padding-left: 10px;
   line-height: 1em;
@@ -102,6 +106,10 @@ nav i {
   color: #3294bb;
 }
 
+form {
+  width: 100%;
+}
+
 .form-group {
   position: relative;
   margin-bottom: 1rem;
@@ -123,6 +131,10 @@ nav i {
 .form-group input:focus,
 .form-group textarea:focus {
   border: 2px solid #ffba69;
+}
+
+.form-group .errors {
+  border: 2px solid #ff8d69;
 }
 .form-group textarea {
   max-width: 100%;

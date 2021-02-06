@@ -33,7 +33,7 @@ class PropertyService {
 
   propertyDetails = (propertyId) => {
     return this.service
-      .get("/details/" + propertyId)
+      .get("/" + propertyId)
       .then((response) => response.data);
   };
 

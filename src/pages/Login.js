@@ -1,30 +1,31 @@
-import React, { useState } from 'react'
+import React from 'react'
 import MainService from '../services/service'
 import { Redirect, useHistory } from 'react-router-dom'
 import useAuth from '../hooks/useAuth'
 import { useFormik } from 'formik'
 import * as Yup from 'yup'
+import InputFormik from '../components/forms/InputFormik'
+import { ButtonKokomoBlock } from '../styles/buttons'
 
 const Login = () => {
-   const [form, setForm] = useState({ username: '', password: '' })
    const history = useHistory()
    const { login, auth } = useAuth()
 
-   if (auth !== undefined) return <Redirect to="/profile" />
-
-   const handleSubmit = async (e) => {
-      try {
-         e.preventDefault()
-         const user = await MainService.postData('/auth/login', form)
-         login(user)
-         history.push('/')
-      } catch (error) {
-         console.log(error)
+   const { handleChange, handleSubmit, errors, values, setValues } = useFormik({
+      initialValues: initialValues(),
+      validationSchema: Yup.object(validationSchema()),
+      onSubmit: async (values) => {
+         try {
+            const user = await MainService.postData('/auth/login', values)
+            login(user)
+            history.push('/')
+         } catch (error) {
+            console.error(error)
+         }
       }
-   }
+   })
 
-   const handleChange = (e) =>
-      setForm({ ...form, [e.target.name]: e.target.value })
+   if (auth !== undefined) return <Redirect to="/profile" />
 
    return (
       <div className="container-fluid">
@@ -32,35 +33,20 @@ const Login = () => {
             <div className="col-sm-12 col-md-4 align-self-center">
                <h2 className="hero-title text-center mb-4">Iniciar sesión</h2>
                <form onSubmit={handleSubmit}>
-                  <div className="form-group">
-                     <label htmlFor="email" className="label active">
-                        Nombre de usuario
-                     </label>
-                     <input
-                        type="text"
-                        name="email"
-                        value={form.email}
-                        onChange={handleChange}
-                     />
-                  </div>
-                  <div className="form-group">
-                     <label htmlFor="password" className="label active">
-                        Contraseña
-                     </label>
-                     <input
-                        type="password"
-                        name="password"
-                        value={form.password}
-                        onChange={handleChange}
-                     />
-                  </div>
-
-                  <button
-                     type="submit"
-                     className="btn-kokomo btn-kokomo-success btn-block p-3"
-                  >
-                     Iniciar sesión
-                  </button>
+                  <InputFormik
+                     label="Email"
+                     name="email"
+                     handleChange={handleChange}
+                     errors={errors.email}
+                  />
+                  <InputFormik
+                     label="Contraseña"
+                     name="password"
+                     type="password"
+                     handleChange={handleChange}
+                     errors={errors.password}
+                  />
+                  <ButtonKokomoBlock success>Iniciar sesión</ButtonKokomoBlock>
                </form>
 
                <a
@@ -94,6 +80,11 @@ const validationSchema = () => {
       email: Yup.string()
          .email('Introduce un email válido')
          .required('Por favor, introduce tu email'),
-      password: Yup.string().required('Por favor, introduce tu contraseña')
+      password: Yup.string()
+         .matches(
+            /(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}/,
+            'La contraseña debe tener al menos 6 caracteres y debe contener, por lo menos, una letra minúscula, una mayúscula y un número.'
+         )
+         .required('Por favor, introduce tu contraseña')
    }
 }

@@ -1,42 +1,24 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 import Messages from '../components/profile/Messages'
 import Local from '../components/profile/Local'
-import ProfileService from '../services/profile/profile-service'
 import Badge from 'react-bootstrap/Badge'
-import {
-   SectionTitleStyle,
-   SectionSubtitleStyle
-} from '../styles/titles'
+import { SectionTitleStyle, SectionSubtitleStyle } from '../styles/titles'
 import useAuth from '../hooks/useAuth'
 
-const profileService = new ProfileService()
-
 const Profile = () => {
-   const { auth, logout } = useAuth()
-   const [state, setState] = useState({
-      showConfig: false,
-      user: {}
-   })
-
-   useEffect(() => {
-      setState((state) => ({
-         ...state,
-         user: auth
-      }))
-   }, [auth])
-
-   console.log("state.user: ", state.user.avatar)
+   const { auth, logout, setReloadUser } = useAuth()
+   const [showConfig, setShowConfig] = useState(false)
 
    let properties = <></>
    let allBookingsOwner = 0
 
-   if (state.user && state.user.ownProperties) {
-      properties = state.user.ownProperties.map((property, index) => (
+   if (auth?.ownProperties) {
+      properties = auth.ownProperties.map((property, index) => (
          <Local key={index} property={property} />
       ))
 
-      state.user.ownProperties.map((property) => {
+      auth.ownProperties.map((property) => {
          if (property.bookings) {
             allBookingsOwner += property.bookings.length
          }
@@ -45,45 +27,26 @@ const Profile = () => {
    }
 
    const handleChange = (e) => {
-      setState({
-         ...state,
-         user: {
-            ...state.user,
-            telNumber: e.target.value
-         }
-      })
+      console.log(e.target.value)
    }
 
    const handleSubmit = (e) => {
       e.preventDefault()
-      let body = {
-         telNumber: state.user.telNumber
-      }
-      profileService.editPhone(body).then((response) => {
-         setState({
-            ...state,
-            showConfig: false
-         })
-      })
+      console.log(e.target.value)
    }
 
    const addOwner = (e) => {
-      profileService.addOwner().then((response) => {
-         setState({ ...state, user: { ...state.user, owner: true } })
-      })
+      // EDIT USER DATA
+      setReloadUser()
    }
 
-   const hideForm = () => {
-      setState({ ...state, showConfig: false })
-   }
+   const hideForm = () => setShowConfig(false)
 
    let configUser = <></>
 
-   const handleConfig = () => {
-      setState({ ...state, showConfig: true })
-   }
+   const handleConfig = () => setShowConfig(true)
 
-   if (state.showConfig) {
+   if (showConfig) {
       configUser = (
          <div className="text-center d-flex align-items-center justify-content-center kokomo-popup">
             <div className="row align-middle justify-content-center w-100">
@@ -108,7 +71,7 @@ const Profile = () => {
                         <input
                            type="text"
                            name="telNumber"
-                           value={state.user.telNumber}
+                           //value={state.user.telNumber}
                            onChange={handleChange}
                         />
                      </div>
@@ -169,21 +132,17 @@ const Profile = () => {
                         }}
                      >
                         <img
-                           src={state.user.avatar}
+                           src={auth.avatar}
                            alt="Avatar"
                            className="avatar"
                         />
                         <SectionSubtitleStyle center>
-                           {state.user.username}
+                           {auth.username}
                         </SectionSubtitleStyle>
-                        <p>{state.user.email}</p>
-                        <p>
-                           {state.user.telNumber
-                              ? `${state.user.telNumber}`
-                              : ' '}
-                        </p>
+                        <p>{auth.email}</p>
+                        <p>{auth.telNumber ? `${auth.telNumber}` : ' '}</p>
 
-                        {!state.user.owner ? (
+                        {!auth.owner && (
                            <>
                               <div className="border-top mt-4 pt-4">
                                  <button
@@ -194,19 +153,20 @@ const Profile = () => {
                                  </button>
                               </div>
                            </>
-                        ) : (
-                           ''
                         )}
 
                         <div className="border-top mt-4 pt-4">
-                           <button onClick={() => logout()} className="logout-kokomo">
+                           <button
+                              onClick={() => logout()}
+                              className="logout-kokomo"
+                           >
                               <i className="mdi mdi-logout-variant"></i> Cerrar
                               sesión
                            </button>
                         </div>
                      </div>
                   </div>
-                  {state.user.owner ? (
+                  {auth.owner ? (
                      <>
                         <div
                            className="card-kokomo"
@@ -241,39 +201,35 @@ const Profile = () => {
                         <SectionSubtitleStyle>
                            Mi última reserva
                         </SectionSubtitleStyle>
-                        {state.user.bookings?.length ? (
+                        {auth.bookings?.length ? (
                            <>
                               <div>
                                  <Badge variant="info">
                                     {
-                                       state.user.bookings[
-                                          state.user.bookings.length - 1
-                                       ].bookingRef
+                                       auth.bookings[auth.bookings.length - 1]
+                                          .bookingRef
                                     }
                                  </Badge>
                                  <p>
                                     <i className="far fa-calendar-alt"></i> Día:{' '}
                                     {
-                                       state.user.bookings[
-                                          state.user.bookings.length - 1
-                                       ].day
+                                       auth.bookings[auth.bookings.length - 1]
+                                          .day
                                     }
                                  </p>
                                  <p>
                                     <i className="far fa-clock"></i> Hora:{' '}
                                     {
-                                       state.user.bookings[
-                                          state.user.bookings.length - 1
-                                       ].time
+                                       auth.bookings[auth.bookings.length - 1]
+                                          .time
                                     }
                                  </p>
                                  <p>
                                     <i className="fas fa-users"></i> Número de
                                     personas:{' '}
                                     {
-                                       state.user.bookings[
-                                          state.user.bookings.length - 1
-                                       ].guests
+                                       auth.bookings[auth.bookings.length - 1]
+                                          .guests
                                     }
                                  </p>
                               </div>
@@ -300,14 +256,14 @@ const Profile = () => {
                      style={{ padding: '20px', backgroundColor: '#207190' }}
                   >
                      <h3 className="datos-kokomo">
-                        {state.user.owner ? (
+                        {auth.owner ? (
                            <>
                               <span>{allBookingsOwner}</span>
                               Reservas
                            </>
                         ) : (
                            <>
-                              <span>{state.user.bookings?.length || 0}</span>
+                              <span>{auth.bookings?.length || 0}</span>
                               Reservas
                            </>
                         )}
@@ -322,14 +278,14 @@ const Profile = () => {
                      }}
                   >
                      <h3 className="datos-kokomo">
-                        {state.user.owner ? (
+                        {auth.owner ? (
                            <>
-                              <span>{state.user.ownProperties.length}</span>
+                              <span>{auth.ownProperties.length}</span>
                               Locales
                            </>
                         ) : (
                            <>
-                              <span>{state.user.favourites?.length || 0}</span>
+                              <span>{auth.favourites?.length || 0}</span>
                               Favoritos
                            </>
                         )}

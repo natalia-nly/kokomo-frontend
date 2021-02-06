@@ -1,6 +1,7 @@
 import React from 'react'
 import { createContext, useState, useEffect, useMemo } from 'react'
 import { useHistory } from 'react-router-dom'
+import MainService from '../services/service'
 
 const AuthContext = createContext({})
 
@@ -12,7 +13,7 @@ export function AuthContextProvider({ children }) {
    useEffect(() => {
       const user = localStorage.getItem('kokomo_user')
       if (user) {
-         setAuth(JSON.parse(user))
+         MainService.getData(`/auth/${user}`).then((user) => setAuth(user))
       } else {
          setAuth(undefined)
       }
@@ -20,7 +21,7 @@ export function AuthContextProvider({ children }) {
    }, [realoadUser])
 
    const login = (user) => {
-      localStorage.setItem('kokomo_user', JSON.stringify(user))
+      localStorage.setItem('kokomo_user', user._id)
       setAuth(user)
    }
 
