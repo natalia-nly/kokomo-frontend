@@ -1,9 +1,14 @@
 import React from 'react'
 import CarouselProperties from '../components/properties/CarouselProperties'
 import Categories from '../components/properties/Categories'
-import { SectionSubtitleStyle } from '../components/styled-components/titles'
+import { SectionSubtitleStyle } from '../styles/titles'
+import useAuth from '../hooks/useAuth'
+import LandingPage from './LandingPage'
 
 const Home = () => {
+   const { auth } = useAuth()
+   if (auth === undefined) return <LandingPage />
+
    return (
       <div>
          <div className="home-container" style={{ paddingBottom: '80px' }}>

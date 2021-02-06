@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import PropertyService from "../../services/property/property-service";
 import ActualRatingCarousel from "./ActualRatingCarousel";
-import { CarouselPropStyles } from "../styled-components/PropertiesStyles";
+import { CarouselPropStyles } from "../../styles/PropertiesStyles";
 import PropertyCard from "./PropertyCard";
 
 let service = new PropertyService();

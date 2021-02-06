@@ -5,7 +5,7 @@ import OwnerLocal from '../components/profile/OwnerLocal'
 import Tabs from 'react-bootstrap/Tabs'
 import Tab from 'react-bootstrap/Tab'
 import BookingService from '../services/booking/booking-service'
-import { SectionTitleStyle } from '../components/styled-components/titles'
+import { SectionTitleStyle } from '../styles/titles'
 import useAuth from '../hooks/useAuth'
 
 const bookingService = new BookingService()

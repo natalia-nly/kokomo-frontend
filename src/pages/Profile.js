@@ -7,7 +7,7 @@ import Badge from 'react-bootstrap/Badge'
 import {
    SectionTitleStyle,
    SectionSubtitleStyle
-} from '../components/styled-components/titles'
+} from '../styles/titles'
 import useAuth from '../hooks/useAuth'
 
 const profileService = new ProfileService()
