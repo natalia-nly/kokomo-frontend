@@ -2,6 +2,8 @@ import React, { useState } from 'react'
 import MainService from '../services/service'
 import { Redirect, useHistory } from 'react-router-dom'
 import useAuth from '../hooks/useAuth'
+import { useFormik } from 'formik'
+import * as Yup from 'yup'
 
 const Login = () => {
    const [form, setForm] = useState({ username: '', password: '' })
@@ -31,13 +33,13 @@ const Login = () => {
                <h2 className="hero-title text-center mb-4">Iniciar sesión</h2>
                <form onSubmit={handleSubmit}>
                   <div className="form-group">
-                     <label htmlFor="username" className="label active">
+                     <label htmlFor="email" className="label active">
                         Nombre de usuario
                      </label>
                      <input
                         type="text"
-                        name="username"
-                        value={form.username}
+                        name="email"
+                        value={form.email}
                         onChange={handleChange}
                      />
                   </div>
@@ -79,3 +81,19 @@ const Login = () => {
 }
 
 export default Login
+
+const initialValues = () => {
+   return {
+      email: '',
+      password: ''
+   }
+}
+
+const validationSchema = () => {
+   return {
+      email: Yup.string()
+         .email('Introduce un email válido')
+         .required('Por favor, introduce tu email'),
+      password: Yup.string().required('Por favor, introduce tu contraseña')
+   }
+}

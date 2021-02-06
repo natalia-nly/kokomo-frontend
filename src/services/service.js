@@ -1,5 +1,4 @@
 import axios from 'axios'
-
 class MainService {
    constructor() {
       let service = axios.create({
