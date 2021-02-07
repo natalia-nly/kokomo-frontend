@@ -1,23 +1,14 @@
-import { Route, useHistory } from 'react-router-dom'
+import { Redirect, Route } from 'react-router-dom'
 import React from 'react'
 import useAuth from '../../hooks/useAuth'
+import Loader from '../../components/main/Loader'
 
-const ProtectedRoute = ({ component: Component, user, callback, ...rest }) => {
-   const { auth } = useAuth()
-   const history = useHistory()
+const ProtectedRoute = ({ component, ...options }) => {
+   const { auth, loading } = useAuth()
+   if(loading) return <Loader/>
+   if (!auth) return <Redirect to="/login" />
 
-   return (
-      <Route
-         {...rest}
-         render={(props) => {
-            if (auth === undefined) return history.push('/login')
-
-            return (
-               <Component {...props} />
-            )
-         }}
-      />
-   )
+   return <Route {...options} component={component} />
 }
 
 export default ProtectedRoute

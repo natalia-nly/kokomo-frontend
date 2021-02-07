@@ -11,7 +11,7 @@ const Login = () => {
    const history = useHistory()
    const { login, auth } = useAuth()
 
-   const { handleChange, handleSubmit, errors, values, setValues } = useFormik({
+   const { handleChange, handleSubmit, errors } = useFormik({
       initialValues: initialValues(),
       validationSchema: Yup.object(validationSchema()),
       onSubmit: async (values) => {

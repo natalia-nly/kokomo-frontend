@@ -110,7 +110,7 @@ const MyBookings = (props) => {
    }
 
    return (
-      <div className="body-container">
+      <div className="container mt-5">
          <SectionTitleStyle>
             <i className="mdi mdi-calendar"></i> Gestión de reservas
          </SectionTitleStyle>

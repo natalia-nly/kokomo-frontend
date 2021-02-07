@@ -14,7 +14,7 @@ class PropertyService {
   }
 
   uploadPicture = (uploadData) => {
-    return this.service.post("/upload",uploadData).then((response) => response.data);
+    return this.service.post("/upload", uploadData).then((response) => response.data);
   }
 
   editProperty = (propertyId, body) => {

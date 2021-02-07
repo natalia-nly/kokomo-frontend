@@ -19,12 +19,12 @@ ReactGA.pageview(window.location.pathname + window.location.search)
 
 ReactDOM.render(
    <BrowserRouter>
-      <AuthContextProvider>
-         <ThemeProvider theme={themeKokomo}>
+      <ThemeProvider theme={themeKokomo}>
+         <AuthContextProvider>
             <GlobalStyle />
             <App />
-         </ThemeProvider>
-      </AuthContextProvider>
+         </AuthContextProvider>
+      </ThemeProvider>
    </BrowserRouter>,
    document.getElementById('root')
 )

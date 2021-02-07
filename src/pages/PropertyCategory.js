@@ -4,7 +4,7 @@ import CarouselProperties from '../components/properties/CarouselProperties'
 const PropertyCategory = (props) => {
    return (
       <div>
-         <div className="body-container">
+         <div>
             <h3 className="section-title mt-4 text-center">
                {props.match.params.name}
             </h3>

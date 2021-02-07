@@ -47,7 +47,7 @@ const Search = (props) => {
   }
 
   return (
-    <div className="body-container">
+    <div>
       <div>
         <SectionTitleStyle>
           <i className="mdi mdi-magnify"></i> Busca el mejor sitio

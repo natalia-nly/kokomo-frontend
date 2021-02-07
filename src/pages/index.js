@@ -14,4 +14,5 @@ export { default as PropertyDetails } from './PropertyDetails'
 export { default as Search } from './Search'
 export { default as SignUp } from './SignUp'
 export { default as SignUpLocal } from './SignUpLocal'
+export { default as Notifications } from './Notifications'
 

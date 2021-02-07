@@ -1,4 +1,4 @@
-import { createGlobalStyle } from "styled-components";
+import { createGlobalStyle } from 'styled-components'
 
 export const GlobalStyle = createGlobalStyle`
 
@@ -34,14 +34,11 @@ export const GlobalStyle = createGlobalStyle`
     color: #809eaa;
   }
 
-  .body-container {
-    margin: 15px;
-    padding-bottom: 50px;
-  }
+  
 
   .btn-kokomo {
     display: inline-block;
-    font-family: ${({theme}) => theme.fonts.text};
+    font-family: ${({ theme }) => theme.fonts.text};
     font-weight: 400;
     text-align: center;
     vertical-align: middle;
@@ -153,12 +150,4 @@ export const GlobalStyle = createGlobalStyle`
     color: ${(props) => props.theme.colors.orange};
     background-color: rgb(255, 186, 105 / 0.2);
   }
-
-
-  @media all and (min-width: 768px) {
-    .body-container {
-      margin-left: 140px;
-      padding-bottom: 0px;
-    }
-  }
-`;
+`

@@ -1,42 +1,44 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import CarouselProperties from '../components/properties/CarouselProperties'
 import Categories from '../components/properties/Categories'
 import { SectionSubtitleStyle } from '../styles/titles'
 import useAuth from '../hooks/useAuth'
 import LandingPage from './LandingPage'
+import MainService from '../services/service'
+import Loader from '../components/main/Loader'
 
 const Home = () => {
-   const { auth } = useAuth()
-   if (auth === undefined) return <LandingPage />
+  const { auth } = useAuth()
+  const [properties, setProperties] = useState([])
+  const [loading, setLoading] = useState(true)
 
-   return (
-      <div>
-         <div className="home-container" style={{ paddingBottom: '80px' }}>
-            <div className="hero">
-               <h2 className="hero-title">Inicio</h2>
-            </div>
+  const fetchData = async () => {
+    const properties = await MainService.getData('/property/')
+    setProperties(properties)
+    setLoading(false)
+  }
 
-            <Categories />
+  useEffect(() => {
+    fetchData()
+  }, [])
 
-            <div className="">
-               <SectionSubtitleStyle>
-                  Nuestros chiringuitos
-               </SectionSubtitleStyle>
-               
+  if (auth === undefined) return <LandingPage properties={properties} />
+  if (loading) return <Loader />
 
-               <CarouselProperties filter="All" />
+  return (
+    <div>
+      <div className="container mt-5">
+        <div className="hero">
+          <h2 className="hero-title">Inicio</h2>
+        </div>
 
-               <SectionSubtitleStyle>Estilo chillout</SectionSubtitleStyle>
-               <CarouselProperties filter="Chillout" />
+        <Categories />
 
-               <SectionSubtitleStyle>
-                  Los mejores restaurantes
-               </SectionSubtitleStyle>
-               <CarouselProperties filter="Restaurante" />
-            </div>
-         </div>
+        <SectionSubtitleStyle>Nuestros chiringuitos</SectionSubtitleStyle>
+        <CarouselProperties properties={properties} />
       </div>
-   )
+    </div>
+  )
 }
 
 export default Home

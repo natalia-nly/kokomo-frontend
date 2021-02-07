@@ -24,11 +24,24 @@ class MainService {
       return this.service.delete(url).then(({ data }) => data)
    }
 
-   upload = (file) => {
-      console.log(file)
-      const image = new FormData()
-      image.append('image', file)
-      return this.service.put('/upload', image).then(({ data }) => data)
+   upload = async (files) => {
+      try {
+         return new Promise((resolve, reject) => {
+            if (!files) return resolve(null)
+            const formData = new FormData()
+            if (files.length === 1) {
+               formData.append('file', files[0], files[0].name)
+            } else {
+               files.forEach((f) => formData.append('file', f, f.name))
+            }
+            this.service
+               .post('/property/upload', formData)
+               .then(({ data }) => resolve(data))
+               .catch((err) => reject(err))
+         })
+      } catch (error) {
+         console.error(error)
+      }
    }
 }
 

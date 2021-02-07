@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled from 'styled-components'
 
 export const CategoriesStyles = styled.div`
   display: grid;
@@ -44,7 +44,7 @@ export const CategoriesStyles = styled.div`
     width: 560px;
     overflow: hidden;
   }
-`;
+`
 
 export const CarouselPropStyles = styled.div`
   display: grid;
@@ -123,4 +123,30 @@ export const CarouselPropStyles = styled.div`
       }
     }
   }
-`;
+`
+
+export const PropertyCardStyles = styled.div`
+  img {
+    width: 100%;
+    height: 24vh;
+    border-radius: 40px;
+    margin-bottom: 24px;
+    object-fit: cover;
+    box-shadow: 6px 6px;
+    transition: color 0.5s ease;
+
+    &:hover {
+      color: ${({ theme }) => theme.colors.darkBlue};
+    }
+  }
+
+  a {
+    &:hover {
+      color: ${({ theme }) => theme.colors.darkBlue};
+    }
+  }
+
+  h3 {
+    font-family: ${({ theme }) => theme.fonts.heading};
+  }
+`

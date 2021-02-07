@@ -4,7 +4,7 @@ import CarouselProperties from '../components/properties/CarouselProperties'
 import GeneralMap from '../components/search/GeneralMap'
 import Categories from '../components/properties/Categories'
 
-const LandingPage = () => {
+const LandingPage = ({properties}) => {
    return (
       <div>
          <div className="hero-landing" style={{ padding: '50px 10px' }}>
@@ -23,9 +23,12 @@ const LandingPage = () => {
                <p className="hero-arrow-desktop mdi mdi-arrow-down"></p>
             </div>
          </div>
-         <div className="mapa">
+         {/**
+          <div className="mapa">
             <GeneralMap />
-         </div>
+         </div> 
+          */}
+         
          <div className="bg-landing">
             <div className="container">
                <h2 className="title-landing text-center">
@@ -84,8 +87,8 @@ const LandingPage = () => {
             <Categories />
          </div>
 
-         <div className="landing-container" style={{ paddingBottom: '80px' }}>
-            <CarouselProperties filter="All" />
+         <div className="container mb-5">
+            <CarouselProperties properties={properties} />
          </div>
          <div className="banner-orange">
             <div className="row">

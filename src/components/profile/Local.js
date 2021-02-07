@@ -48,7 +48,7 @@ const Local = (props) => {
       <>
         <tr>
           <td>
-            <img src={props.property.mainImage} className="mini-kokomo" alt={props.property.name}/>
+            <img src={props.property.media[0]} className="mini-kokomo" alt={props.property.name}/>
           </td>
           <td>
             <Link to="/my-bookings">
