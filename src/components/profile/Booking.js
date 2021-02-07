@@ -5,13 +5,7 @@ import { Link } from "react-router-dom";
 
 
 const Booking = (props) => {
-  
-
-  console.log("estamos en booking");
-  console.log(props);
-
   const handleSubmit = (e) =>{
-    console.log("booking ->delete",props.booking._id )
     props.delete(props.booking._id)
   }
 
@@ -75,7 +69,7 @@ const Booking = (props) => {
               variant="success"
               className="dropdown-item"
               href={
-                "whatsapp://send?text=¡Te espera una reserva de Kokomo! 😎 Aquí tienes los detalles: http://kokomo-react.herokuapp.com/#/booking/details/" +
+                "whatsapp://send?text=¡Te espera una reserva de Kokomo! 😎 Aquí tienes los detalles: http://kokomo-react.herokuapp.com/booking/details/" +
                 props.booking._id
               }
             >

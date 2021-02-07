@@ -22,13 +22,9 @@ const Local = (props) => {
 
   const deleteProperty = () => {
     if (props.property.bookings.length) {
-      console.log(
-        "Por favor, cancele todos las reservas de este local primero"
-      );
       setState({ ...state, alert: true });
     } else {
       service.deleteProperty(props.property._id).then((response) => {
-        console.log(response);
         refreshPage();
       });
     }
@@ -52,7 +48,7 @@ const Local = (props) => {
       <>
         <tr>
           <td>
-            <img src={props.property.mainImage} className="mini-kokomo" alt={props.property.name}/>
+            <img src={props.property.media[0]} className="mini-kokomo" alt={props.property.name}/>
           </td>
           <td>
             <Link to="/my-bookings">

@@ -1,45 +1,14 @@
-import {Route, Redirect} from 'react-router-dom'
+import { Redirect, Route } from 'react-router-dom'
 import React from 'react'
+import useAuth from '../../hooks/useAuth'
+import Loader from '../../components/main/Loader'
 
+const ProtectedRoute = ({ component, ...options }) => {
+   const { auth, loading } = useAuth()
+   if(loading) return <Loader/>
+   if (!auth) return <Redirect to="/login" />
 
-// Retrieve your data from locaStorage
-let saveData = JSON.parse(localStorage.saveData || null) || {};
-
-
-function loadStuff() {
-    return saveData.obj;
+   return <Route {...options} component={component} />
 }
 
-
-const ProtectedRoute = ({
-    component: Component,
-    user,
-    callback,
-    ...rest
-}) => {
-
-            return (
-            <Route
-                {...rest}
-                render={props => {
-                if (user) {
-                    console.log('user2',user)
-                    return <Component {...props} loggedInUser={user} callback={callback}/>
-                } else if(loadStuff()!== (null||undefined)){
-                    return <Component {...props} loggedInUser={loadStuff()} callback={callback}/>
-                }
-                else {
-                    return <Redirect
-                        to={{
-                        pathname: '/login',
-                        state: {
-                            from: props.location
-                        }
-                    }}/>
-                }
-            }}/>
-    )
-    }
-   
-
-export default ProtectedRoute;
+export default ProtectedRoute

@@ -14,7 +14,7 @@ class PropertyService {
   }
 
   uploadPicture = (uploadData) => {
-    return this.service.post("/upload",uploadData).then((response) => response.data);
+    return this.service.post("/upload", uploadData).then((response) => response.data);
   }
 
   editProperty = (propertyId, body) => {
@@ -33,7 +33,7 @@ class PropertyService {
 
   propertyDetails = (propertyId) => {
     return this.service
-      .get("/details/" + propertyId)
+      .get("/" + propertyId)
       .then((response) => response.data);
   };
 

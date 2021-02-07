@@ -4,7 +4,6 @@ import GoogleMapReact from "google-map-react";
 const DetailedMap = (props) => {
   let curr = new Date();
   curr.setDate(curr.getDate());
-  // let date = curr.toISOString().substr(0, 10);
 
   let center = {
     lat: 41.2862717,
@@ -56,7 +55,7 @@ const DetailedMap = (props) => {
 
     return `
     <div>
-    <a href="/#/property/${
+    <a href="/property/${
       place._id
     }" class="btn-kokomo btn-kokomo-danger" style="font-size: 16px;">
     ${place.name}
@@ -86,7 +85,6 @@ const DetailedMap = (props) => {
   const handleApiLoaded = (map, maps, places) => {
     const markers = [];
     const infowindows = [];
-    console.log(places);
     markers.push(
       new maps.Marker({
         position: {
@@ -107,7 +105,6 @@ const DetailedMap = (props) => {
     });
   };
 
-  console.log(props.property);
   return (
     <div className="container mapa">
       <GoogleMapReact

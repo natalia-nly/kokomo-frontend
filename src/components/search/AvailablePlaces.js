@@ -10,28 +10,24 @@ const AvailablePlaces = (props) => {
   let history = useHistory();
 
   let available = "No results";
-  console.log(availableResults);
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    console.log(event.target);
     const params = {
       scheduleId: event.target.scheduleId.value,
     };
-    console.log(params.scheduleId);
+
     const body = {
       day: event.target.day.value,
       guests: event.target.guests.value,
     };
     service.createBooking(params.scheduleId,body)
       .then((response) => {
-        console.log(response);
         history.push("/my-bookings");
       });
   };
 
   if (availableResults[0].property) {
-    console.log(availableResults);
     available = availableResults.map((result, index) => (
       <div className="one-property" key={index}>
         <a href={"/property/" + result.property._id}>

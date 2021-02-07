@@ -15,7 +15,6 @@ const SendMessages = (props) => {
   let message = <></>;
 
   const handleChange = (event) => {
-    console.log(state);
     setState({
       ...state,
       [event.target.name]: event.target.value,
@@ -31,7 +30,6 @@ const SendMessages = (props) => {
       avatar: props.user.avatar,
     };
     service.sendMessage(props.customer, body).then((response) => {
-      console.log("Mensaje enviado", response);
       setState({
         ...state,
         topic: "",

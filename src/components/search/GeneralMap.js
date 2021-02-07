@@ -15,8 +15,8 @@ const GeneralMap = () => {
     numberGuests: 0,
   };
   let center = {
-    lat: 41.35,
-    lng: 2.1,
+    lat: 41.28,
+    lng: 2.01,
   };
 
   const zoom = 11;
@@ -27,20 +27,20 @@ const GeneralMap = () => {
     const source = CancelToken.source();
     const loadData = () => {
       try {
-    service.allProperties().then((response) => {
-      console.log("CONSOLE LOG DESDE AXIOS GET", response);
-      setState(state => ({
-        ...state,
-        allResults: response[0],
-      }));
-    }); 
-  } catch (error) {
-      if (axios.isCancel(error)) {
-        console.log("cancelled");
-      } else {
-        throw error;
+        service.allProperties().then((response) => {
+          setState((state) => ({
+            ...state,
+            allResults: response[0],
+          }));
+        });
+      } catch (error) {
+        if (axios.isCancel(error)) {
+          console.log("cancelled");
+        } else {
+          throw error;
+        }
       }
-    }}
+    };
     loadData();
     return () => {
       source.cancel();
@@ -70,12 +70,14 @@ const GeneralMap = () => {
     let counter = rating.counter;
     if (rating.counter.length) {
       let reduceFunc = (a, b) => a + b;
-      return parseFloat(
+      let ratingNum = parseFloat(
         (counter.reduce(reduceFunc, 0) / counter.length).toFixed(2)
       );
-      
+      return `
+          <i class="fa fa-star" aria-hidden="true"></i> ${ratingNum}
+       `;
     } else {
-      return 'Sin evaluaciones';
+      return "";
     }
   };
 
@@ -83,42 +85,42 @@ const GeneralMap = () => {
     let today = new Date();
     let openingDate = new Date(place.openingHours[0].openingDays.openingDay);
     let closingDate = new Date(place.openingHours[0].openingDays.closingDay);
+    let finalRating = ActualRating(place.rating);
 
     return `
     <div>
-    <a href="/#/property/${
+    <a href="/property/${
       place._id
-    }" class="btn-kokomo btn-kokomo-danger" style="font-size: 16px;">
+    }" style="font-size: 18px; color: #809eaa; font-weight: 800">
     ${place.name}
     </a>
 
     <div style="font-size: 14px;">
-        <span style="color: grey;">Nota:
-        ${ActualRating(place.rating)}
+        <span style="color: #809eaa">
+        ${finalRating}
         </span>
       </div>
-      <div style="font-size: 14px; color: grey;">Categoría:
-        ${place.categories[0]}
-      </div>
-      <div style="font-size: 14px; color: green;">
+      ${
+        place.categories[0]
+          ? `<p class="badge-maps badge-tag">${place.categories[0]}</p>`
+          : ""
+      }
+
         ${
           openingDate.getTime() <= today.getTime() &&
           today.getTime() <= closingDate.getTime()
-            ? "Abierto"
-            : "Cerrado"
+            ? `<p class="badge-maps badge-opened"> Abierto </p>`
+            : `<p class="badge-maps badge-closed"> Cerrado </p>`
         }
-      </div>
+
     </div>`;
   };
 
   const handleApiLoaded = (map, maps, places) => {
     const markers = [];
     const infowindows = [];
-    console.log(places.length);
-    console.log(places);
 
     places.forEach((place) => {
-      console.log(place.location);
       markers.push(
         new maps.Marker({
           position: {
@@ -162,7 +164,6 @@ const GeneralMap = () => {
     );
   }
 
-  console.log(state.allResults);
   return <div>{mapa}</div>;
 };
 

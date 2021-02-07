@@ -1,52 +1,26 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React from 'react'
+import { Link } from 'react-router-dom'
+import { CategoriesStyles } from '../../styles/PropertiesStyles'
 
 const Categories = () => {
-  return (
-    <div className="category-group">
-      <div className="one-category">
-        <Link to="/category/Surfer">
-          <div className="img-container">
-            <img src="/images/Surfer.png" alt="Surfer" />
-          </div>
-          <p>Surfer</p>
-        </Link>
-      </div>
-      <div className="one-category">
-        <Link to="/category/Restaurante">
-          <div className="img-container">
-            <img src="/images/Restaurante.png" alt="Restaurant" />
-          </div>
-          <p>Restaurant</p>
-        </Link>
-      </div>
-      <div className="one-category">
-        <Link to="/category/Chillout">
-          <div className="img-container">
-            <img src="/images/chillout.png" alt="Chillout" />
-          </div>
-          <p>Chillout</p>
-        </Link>
-      </div>
-      <div className="one-category">
-        <Link to="/category/Bar">
-          <div className="img-container">
-            <img src="/images/bar.png" alt="Bar" />
-          </div>
-          <p>Bar</p>
-        </Link>
-      </div>
-      <div className="one-category">
-        <Link to="/category/Discoteca">
-          <div className="img-container">
-            <img src="/images/Discoteca.png" alt="Disco" />
-          </div>
-          <p>Disco</p>
-        </Link>
-      </div>
-      
-    </div>
-  );
-};
+   const categoriesArr = [
+      { name: 'Surfer', image: '/images/emoji-surfer.png' },
+      { name: 'Restaurant', image: '/images/emoji-restaurant.png' },
+      { name: 'Chillout', image: '/images/emoji-chillout.png' },
+      { name: 'Bar', image: '/images/emoji-bar.png' },
+      { name: 'Disco', image: '/images/emoji-disco.png' }
+   ]
 
-export default Categories;
+   const allCategories = categoriesArr.map((category, index) => (
+      <div key={index}>
+         <Link to={`/category/${category.name.toLowerCase()}`}>
+            <img src={category.image} alt={category.name} />
+            <p>{category.name}</p>
+         </Link>
+      </div>
+   ))
+
+   return <CategoriesStyles>{allCategories}</CategoriesStyles>
+}
+
+export default Categories
