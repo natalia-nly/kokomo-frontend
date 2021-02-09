@@ -5,6 +5,7 @@ import Local from '../components/profile/Local'
 import Badge from 'react-bootstrap/Badge'
 import { SectionTitleStyle, SectionSubtitleStyle } from '../styles/titles'
 import useAuth from '../hooks/useAuth'
+import { ProfileStyled } from '../styles/profileStyle'
 
 const Profile = () => {
   const { auth, logout, setReloadUser } = useAuth()
@@ -94,7 +95,7 @@ const Profile = () => {
   }
 
   return (
-    <div style={{ backgroundColor: '#f8fafb' }} className="vh-100">
+    <ProfileStyled>
       <div className="container py-5">
         <SectionTitleStyle>
           <i className="mdi mdi-account-circle"></i> Mi perfil
@@ -104,7 +105,7 @@ const Profile = () => {
           <div className="col-md-6">
             <div className="card-kokomo">
               <div className="beach-background">
-                <div className="text-right">
+                <div className="float-right">
                   <button
                     onClick={() => handleConfig()}
                     className="btn-kokomo-circle btn-kokomo-white"
@@ -114,21 +115,11 @@ const Profile = () => {
                 </div>
               </div>
 
-              <div
-                className="text-center"
-                style={{
-                  borderRadius: '26px 26px 0 0',
-                  marginTop: '-30px',
-                  backgroundColor: 'white',
-                  paddingBottom: '30px'
-                }}
-              >
+              <div className="profile-card">
                 <img src={auth.avatar} alt="Avatar" className="avatar" />
-                <SectionSubtitleStyle center>
-                  {auth.username}
-                </SectionSubtitleStyle>
+                <h2>{auth.username}</h2>
                 <p>{auth.email}</p>
-                <p>{auth.telNumber ? `${auth.telNumber}` : ' '}</p>
+                <p>{auth.telNumber ? auth.telNumber : ' '}</p>
 
                 {!auth.owner && (
                   <>
@@ -149,10 +140,7 @@ const Profile = () => {
             </div>
             {auth.owner ? (
               <>
-                <div
-                  className="card-kokomo"
-                  style={{ padding: '20px', marginTop: '30px' }}
-                >
+                <div className="card-kokomo p-4 mt-4">
                   <Link
                     to="/property/create-property"
                     className="btn-kokomo-circle btn-kokomo-success float-right"
@@ -167,10 +155,7 @@ const Profile = () => {
                 </div>
               </>
             ) : (
-              <div
-                className="card-kokomo"
-                style={{ padding: '20px', marginTop: '30px' }}
-              >
+              <div className="card-kokomo p-4 mt-4">
                 <Link
                   to="/search"
                   className="btn-kokomo-circle btn-kokomo-success float-right"
@@ -215,10 +200,7 @@ const Profile = () => {
           </div>
 
           <div className="col-md-6">
-            <div
-              className="card-kokomo"
-              style={{ padding: '20px', backgroundColor: '#207190' }}
-            >
+            <div className="card-kokomo dark-blue p-4">
               <h3 className="datos-kokomo">
                 {auth.owner ? (
                   <>
@@ -233,14 +215,7 @@ const Profile = () => {
                 )}
               </h3>
             </div>
-            <div
-              className="card-kokomo"
-              style={{
-                padding: '20px',
-                marginTop: '30px',
-                backgroundColor: '#3394ba'
-              }}
-            >
+            <div className="card-kokomo light-blue p-4 mt-4">
               <h3 className="datos-kokomo">
                 {auth.owner ? (
                   <>
@@ -255,10 +230,7 @@ const Profile = () => {
                 )}
               </h3>
             </div>
-            <div
-              className="card-kokomo"
-              style={{ padding: '20px', marginTop: '30px' }}
-            >
+            <div className="card-kokomo p-4 mt-4">
               <SectionSubtitleStyle>Notificaciones</SectionSubtitleStyle>
               <Messages />
             </div>
@@ -267,7 +239,7 @@ const Profile = () => {
       </div>
 
       {configUser}
-    </div>
+    </ProfileStyled>
   )
 }
 
